@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -8,7 +8,7 @@
 import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'package:mraa/mraa.dart';
-import 'upm/mraa_upm_pir.dart';
+import 'package:grove/grove.dart';
 
 // The GPIO pin for the Grove PIR motion sensor, set as needed.
 const int pirSensorGPIOPin = 73;
@@ -42,7 +42,7 @@ int main() {
       mraa.gpio.initialise(pirSensorGPIOPin);
 
   print('Checking for a PIR motion trigger');
-  final MraaUpmPirMotion pir = MraaUpmPirMotion(mraa, context);
+  final GrovePir pir = GrovePir(mraa, context);
   for (int i = 1; i <= 10000; i++) {
     print('Current value is ${pir.value()}');
     if (pir.hasTriggered()) {

@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -8,7 +8,7 @@
 import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'package:mraa/mraa.dart';
-import 'upm/mraa_upm_light.dart';
+import 'package:grove/grove.dart';
 
 // The AIO pin for the light sensor, set as needed. Note the light sensor
 // used here is the Grove light sensor, recognised in the UPM library
@@ -44,9 +44,9 @@ int main() {
       mraa.aio.initialise(lightSensorAIOPin);
 
   print('Reading the light sensor values');
-  final MraaUpmLight light = MraaUpmLight(mraa, context);
+  final GroveLight light = GroveLight(mraa, context);
   for (int i = 1; i <= 100; i++) {
-    final MraaUpmLightValues values = light.getValues();
+    final GroveLightValues values = light.getValues();
     print(values);
     sleep(const Duration(milliseconds: 2000));
   }

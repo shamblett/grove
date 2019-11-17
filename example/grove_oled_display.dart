@@ -8,7 +8,7 @@
 import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'package:mraa/mraa.dart';
-import 'upm/mraa_upm_lcd.dart';
+import 'package:grove/grove.dart';
 
 // The Seeed logo bitmap
 const List<int> seeedLogo96x96 = <int>[
@@ -1198,7 +1198,7 @@ int main() {
   /// The LCD initialisation
   print('Initialising LCD');
   final ffi.Pointer<MraaI2cContext> context = mraa.i2c.initialise(i2cBusId);
-  final MraaUpmLcd lcd = MraaUpmLcd(mraa, context)..initialise();
+  final GroveLcd lcd = GroveLcd(mraa, context)..initialise();
 
   print('Printing to the LCD');
   lcd.setCursor(1, 0);

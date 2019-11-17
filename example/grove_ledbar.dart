@@ -44,7 +44,7 @@ int main() {
       mraa.gpio.initialise(dataGPIOPin);
   final ffi.Pointer<MraaGpioContext> clockContext =
       mraa.gpio.initialise(clockGPIOPin);
-  final GroveLedBar ledbar = MraaUpmLedBar(mraa, clockContext, dataContext)
+  final GroveLedBar ledbar = GroveLedBar(mraa, clockContext, dataContext)
     ..initialise();
 
   print('All on/off');

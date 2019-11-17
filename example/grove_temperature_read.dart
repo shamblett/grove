@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -8,7 +8,7 @@
 import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'package:mraa/mraa.dart';
-import 'upm/mraa_upm_temperature.dart';
+import 'package:grove/grove.dart';
 
 // The AIO pin for the temperature sensor, set as needed.
 // Note the temperature sensor used here is the Grove temperature
@@ -45,9 +45,9 @@ int main() {
       mraa.aio.initialise(temperatureSensorAIOPin);
 
   print('Reading the temperature sensor values');
-  final MraaUpmTemperature temperature = MraaUpmTemperature(mraa, context);
+  final GroveTemperature temperature = GroveTemperature(mraa, context);
   for (int i = 1; i <= 100; i++) {
-    final MraaUpmTemperatureValues values = temperature.getValues();
+    final GroveTemperatureValues values = temperature.getValues();
     print(values);
     sleep(const Duration(milliseconds: 2000));
   }

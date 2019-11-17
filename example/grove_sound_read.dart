@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 12/11/2019
  * Copyright :  S.Hamblett
@@ -8,7 +8,7 @@
 import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'package:mraa/mraa.dart';
-import 'upm/mraa_upm_sound.dart';
+import 'package:grove/grove.dart';
 
 // The AIO pin for the sound sensor, set as needed. Note the sound sensor
 // used here is the Grove sound sensor, recognised in the UPM library
@@ -44,7 +44,7 @@ int main() {
       mraa.aio.initialise(soundSensorAIOPin);
 
   print('Reading the sound sensor values');
-  final MraaUpmSound sound = MraaUpmSound(mraa, context);
+  final GroveSound sound = GroveSound(mraa, context);
   for (int i = 1; i <= 100; i++) {
     print('Current raw sound value is : ${sound.rawValue()}');
     print('Current smoothed sound value is : ${sound.value()}');

@@ -162,13 +162,11 @@ class GroveLcdDefinitions {
   ];
 }
 
-/// A local support implementation of the UPM LCD sensor, taken from the UPM lcd/ssd1327.cxx
-/// implementation.
-///
 /// The SSD1327 is a 96x96 dot-matrix OLED/PLED segment driver with a controller.
 /// This implementation supports the Grove LED 96*96 display module,
 /// which is an OLED monochrome display.
 class GroveLcd {
+  /// Construction
   GroveLcd(this._mraa, this._context) {
     // Set the device address
     _mraa.i2c.address(_context, lcdDeviceAddress);
