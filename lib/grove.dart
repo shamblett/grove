@@ -14,9 +14,9 @@ import 'dart:typed_data';
 
 import 'package:mraa/mraa.dart';
 
-part 'src/grove_lcd.dart';
-part 'src/grove_ledbar.dart';
-part 'src/grove_light.dart';
-part 'src/grove_pir.dart';
-part 'src/grove_sound.dart';
-part 'src/grove_temperature.dart';
+part 'src/display/grove_lcd.dart';
+part 'src/display/grove_ledbar.dart';
+part 'src/environment/grove_light.dart';
+part 'src/environment/grove_pir.dart';
+part 'src/environment/grove_sound.dart';
+part 'src/environment/grove_temperature.dart';
