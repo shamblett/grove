@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 10/11/2019
  * Copyright :  S.Hamblett
@@ -15,7 +15,7 @@ import 'package:grove/grove.dart';
 const int clockGPIOPin = 59;
 const int dataGPIOPin = 57;
 
-/// An exercise for the Grove Led Bar
+/// Simple exercises for the Grove Led Bar
 int main() {
   // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.
@@ -91,6 +91,8 @@ int main() {
     ledbar.setLevel(state);
     sleep(const Duration(milliseconds: 2000));
   }
+
+  ledbar.clearAll();
 
   return 0;
 }

@@ -10,14 +10,12 @@ import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 
-// The AIO pin for the sound sensor, set as needed. Note the sound sensor
-// used here is the Grove sound sensor, recognised in the UPM library
-// simply as a sound device.
+// The AIO pin for the sound sensor, set as needed.
 const int soundSensorAIOPin = 4;
 
 /// Read the sound level from the sound sensor
 int main() {
-  // Initialise form our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
+  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.
   final Mraa mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
     ..noJsonLoading = true

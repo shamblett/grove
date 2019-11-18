@@ -20,7 +20,7 @@ int main() {
   group('Environment', () {
     // Mock the Mraa AIO interface
     final Mraa mraa = MockMraa();
-    Pointer<MraaAioContext> context = allocate<MraaAioContext>();
+    final Pointer<MraaAioContext> context = allocate<MraaAioContext>();
 
     test('Light - Lux values 1024 bit', () {
       final GroveLight light = GroveLight(mraa, context);

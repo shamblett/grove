@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -1166,15 +1166,12 @@ const List<int> seeedLogo96x96 = <int>[
   0x00
 ];
 
-// The I2C bus id for the OLED display, set as needed. Note the OLED display
-// used here is the Grove OLED display, recognised in the UPM library
-// simply as an LCD device. The device address is set automatically in the
-// UPM support class.
+// The I2C bus id for the OLED display, set as needed.
 const int i2cBusId = 1;
 
 /// Output to the Grove OLED display.
 int main() {
-  // Initialise form our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
+  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.
   final Mraa mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
     ..noJsonLoading = true

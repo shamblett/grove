@@ -10,12 +10,10 @@ import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 
-// The AIO pin for the light sensor, set as needed. Note the light sensor
-// used here is the Grove light sensor, recognised in the UPM library
-// simply as a light device.
+// The AIO pin for the light sensor, set as needed.
 const int lightSensorAIOPin = 0;
 
-/// Read the current light value using AIO from the Grove light sensor
+/// Read the current light values using AIO from the Grove light sensor
 int main() {
   // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.

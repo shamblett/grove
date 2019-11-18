@@ -13,7 +13,7 @@ import 'package:grove/grove.dart';
 // The GPIO pin for the Grove PIR motion sensor, set as needed.
 const int pirSensorGPIOPin = 73;
 
-/// Check if the Grove PIR motion sensor has been triggered
+/// Checks if the Grove PIR motion sensor has been triggered
 int main() {
   // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.
