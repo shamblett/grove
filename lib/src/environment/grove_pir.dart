@@ -1,5 +1,5 @@
 /**
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 13/11/2019
  * Copyright :  S.Hamblett
@@ -7,11 +7,14 @@
 
 part of grove;
 
+/// The Grove PIR Motion Sensor.
+///
 /// This sensor allows you to sense motion, usually human movement
 /// in its range. It uses passive infra red sensing.
 /// When anyone moves in its detecting range, the sensor will
 /// output HIGH on its SIG pin.
 class GrovePir {
+  /// Construction
   GrovePir(this._mraa, this._context);
 
   /// The initialised MRAA library
