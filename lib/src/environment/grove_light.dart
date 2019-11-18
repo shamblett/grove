@@ -24,6 +24,14 @@ class GroveLightValues {
 }
 
 /// The Grove light sensor.
+///
+/// The Grove light sensor integrates a photo-resistor(light dependent
+/// resistor) to detect the intensity of light. The resistance of
+/// photo-resistor decreases when the intensity of light increases.
+/// A dual OpAmp chip LM358 on board produces voltage corresponding to
+/// intensity of light(i.e. based on resistance value).
+/// The output signal is analog value, the brighter the light is,
+/// the larger the value.
 class GroveLight {
   /// Construction
   GroveLight(this._mraa, this._context);

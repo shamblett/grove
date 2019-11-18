@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -28,11 +28,21 @@ class GroveTemperatureValues {
       '${celsius.toStringAsFixed(2)}';
 }
 
-/// A local support implementation of the Grove temperature sensor.
+/// The Grove temperature sensor.
+///
+/// The Grove temperature Sensor(V1.2) uses a Thermistor to detect the ambient
+/// temperature.
+/// The resistance of a thermistor will increase when the ambient
+/// temperature decreases.
+/// It's this characteristic that we use to calculate the ambient temperature.
+/// The detectable range of this sensor is -40 - 125ºC, and the
+/// accuracy is ±1.5ºC
 class GroveTemperature {
+  /// Construction
   GroveTemperature(this._mraa, this._context);
 
-  /// Scaling factor for raw analog value from the ADC, useful for mixed 3.3V/5V boards, default 1.0
+  /// Scaling factor for raw analog value from the ADC, useful for mixed
+  /// 3.3V/5V boards, default 1.0
   static const double scale = 1;
 
   /// Zero power resistance, this is 100K (default) for v1.1-v1.2
@@ -55,6 +65,7 @@ class GroveTemperature {
     return calculateCelsius(raw);
   }
 
+  /// Calculates a celsius value from a raw value.
   GroveTemperatureValues calculateCelsius(int rawValue) {
     final GroveTemperatureValues values = GroveTemperatureValues();
     if (rawValue == Mraa.generalError) {
