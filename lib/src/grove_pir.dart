@@ -18,7 +18,7 @@ class GrovePir {
   final Mraa _mraa;
 
   /// The initialised device context
-  final ffi.Pointer<MraaGpioContext> _context;
+  final Pointer<MraaGpioContext> _context;
 
   int _lastValue = 0;
 

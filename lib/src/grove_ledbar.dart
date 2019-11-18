@@ -8,8 +8,8 @@
 part of grove;
 
 class My9221Context {
-  ffi.Pointer<MraaGpioContext> gpioClk;
-  ffi.Pointer<MraaGpioContext> gpioData;
+  Pointer<MraaGpioContext> gpioClk;
+  Pointer<MraaGpioContext> gpioData;
 
   bool autoRefresh = true;
   // We're only doing 8-bit greyscale, so the high order bits are
@@ -38,8 +38,8 @@ class My9221Context {
 /// There are 10 LED bars in the LED bar graph:
 /// one red, one yellow, one light green, and seven green bars.
 class GroveLedBar {
-  GroveLedBar(Mraa mraa, ffi.Pointer<MraaGpioContext> clockPin,
-      ffi.Pointer<MraaGpioContext> dataPin) {
+  GroveLedBar(Mraa mraa, Pointer<MraaGpioContext> clockPin,
+      Pointer<MraaGpioContext> dataPin) {
     _dev = My9221Context();
     _dev.gpioClk = clockPin;
     _dev.gpioData = dataPin;

@@ -17,7 +17,7 @@ class GroveSound {
   final Mraa _mraa;
 
   /// The initialised device context
-  final ffi.Pointer<MraaAioContext> _context;
+  final Pointer<MraaAioContext> _context;
 
   /// The sample count
   final int sampleCount;

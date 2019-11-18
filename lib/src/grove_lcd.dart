@@ -176,7 +176,7 @@ class GroveLcd {
   final Mraa _mraa;
 
   /// The initialised I2C context
-  final ffi.Pointer<MraaI2cContext> _context;
+  final Pointer<MraaI2cContext> _context;
 
   static const int lcdDeviceAddress = 0x3C;
   static const Duration INIT_SLEEP = Duration(milliseconds: 3);

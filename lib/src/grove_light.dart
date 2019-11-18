@@ -31,7 +31,7 @@ class GroveLight {
   final Mraa _mraa;
 
   /// The initialised device context
-  final ffi.Pointer<MraaAioContext> _context;
+  final Pointer<MraaAioContext> _context;
 
   /// Get the raw and Lux light values and timestamp them.
   GroveLightValues getValues() {
