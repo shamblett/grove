@@ -1,5 +1,5 @@
 /**
-* Package : mraa
+* Package : grove
 * Author : S. Hamblett <steve.hamblett@linux.com>
 * Date   : 13/11/2019
 * Copyright :  S.Hamblett
@@ -7,10 +7,13 @@
 
 part of grove;
 
-/// Grove - Sound Sensor can detect the sound intensity of the environment.
+/// The Grove Sound Sensor can detect the sound intensity of the environment.
+///
 /// The main component of the module is a simple microphone, which is based
-/// on the LM386 amplifier and an electret microphone.
+/// on the LM386 amplifier and an electret microphone. This module's output
+/// is analogue.
 class GroveSound {
+  /// Construction
   GroveSound(this._mraa, this._context, [this.sampleCount = 5]);
 
   /// The initialised MRAA library
