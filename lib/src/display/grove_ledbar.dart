@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 10/11/2019
  * Copyright :  S.Hamblett
@@ -7,37 +7,49 @@
 
 part of grove;
 
+/// Local context for the MY9221 chip
 class My9221Context {
+  /// GPIO clock pin context
   Pointer<MraaGpioContext> gpioClk;
+
+  /// GPIO data pin context
   Pointer<MraaGpioContext> gpioData;
 
+  /// Auto refresh state
   bool autoRefresh = true;
-  // We're only doing 8-bit greyscale, so the high order bits are
-  // always 0
+
+  /// Low intensity level
   int lowIntensity;
+
+  /// High intensity level
   int highIntensity;
 
+  /// Maximum led bars
   int maxLed;
 
+  /// Maximum led bar instances
   int instances;
 
-  // An array of Uint16's representing our bit states (on/off)
-  // intensities.  Only the low 8 bits are used, but in the future
-  // 16bit support can work here as well.
+  /// An array of Uint16's representing our bit states (on/off)
+  /// intensities.  Only the low 8 bits are used.
   Uint16List bitStates;
 
+  /// The command word
   int commandWord;
 
+  /// Initialise status
   bool initialized;
 }
 
-/// Grove – LED Bar is comprised of a 10 segment LED gauge bar and an MY9221
+/// The Grove LED Bar is comprised of a 10 segment LED gauge bar and an MY9221
 /// LED controlling chip.
+///
 /// It can be used as an indicator for remaining battery life, voltage,
 /// water level, music volume or other values that require a gradient display.
-/// There are 10 LED bars in the LED bar graph:
-/// one red, one yellow, one light green, and seven green bars.
+/// There are 10 LED bars in the LED bar graph: one red, one yellow,
+/// one light green, and seven green bars.
 class GroveLedBar {
+  /// Construction
   GroveLedBar(Mraa mraa, Pointer<MraaGpioContext> clockPin,
       Pointer<MraaGpioContext> dataPin) {
     _dev = My9221Context();
@@ -46,23 +58,30 @@ class GroveLedBar {
     _mraa = mraa;
   }
 
+  /// Led bars per instance + 2 for intensity settings
   static const int ledPerInstance = 12;
 
+  /// The My9221 context
   My9221Context _dev;
+
+  /// The initialised MRAA library
   Mraa _mraa;
 
-  ///Initialise - must be called before use
-  void initialise() {
-    MraaReturnCode ret;
+  /// Initialise - must be called before use
+  MraaReturnCode initialise() {
+    MraaReturnCode ret = MraaReturnCode.success;
+    // Set the clock and data pin directions
     ret = _mraa.gpio.direction(_dev.gpioClk, MraaGpioDirection.out);
     if (ret != MraaReturnCode.success) {
-      print('initialise - Failed to set direction for clock pin, statis is '
+      print('initialise - Failed to set direction for clock pin, state is '
           '${returnCode.asString(ret)}');
+      return ret;
     }
     ret = _mraa.gpio.direction(_dev.gpioData, MraaGpioDirection.out);
     if (ret != MraaReturnCode.success) {
-      print('initialise - Failed to set direction for data pin, statis is '
+      print('initialise - Failed to set direction for data pin, state is '
           '${returnCode.asString(ret)}');
+      return ret;
     }
     setLowIntensityValue(0x00);
     setHighIntensityValue(0xFF);
@@ -73,8 +92,11 @@ class GroveLedBar {
     _dev.maxLed = ledPerInstance;
     clearAll();
     _dev.initialized = true;
+    return ret;
   }
 
+  /// Close the GPIO pin contexts and
+  /// the MY9221 context.
   void close() {
     if (_dev.initialized) {
       clearAll();
@@ -84,6 +106,7 @@ class GroveLedBar {
     }
     _mraa.gpio.close(_dev.gpioClk);
     _mraa.gpio.close(_dev.gpioData);
+    _dev.initialized = false;
   }
 
   /// Set level (0-10)
@@ -98,7 +121,6 @@ class GroveLedBar {
       setAll();
       return;
     }
-
     for (int i = 0; i < level; i++) {
       _dev.bitStates[i] = 1;
     }
@@ -107,6 +129,8 @@ class GroveLedBar {
     }
   }
 
+  /// Set and individual led on or off, note this will
+  /// auto scale to the led range.
   void setLed(int led, {bool on}) {
     final int maxLed = _dev.maxLed - 1;
     int localLed = led;
@@ -123,48 +147,54 @@ class GroveLedBar {
     }
   }
 
+  /// Set low intensity
   void setLowIntensityValue(int intensity) =>
       _dev.lowIntensity = intensity & 0xff;
 
+  /// Set high intensity
   void setHighIntensityValue(int intensity) =>
       _dev.highIntensity = intensity & 0xff;
 
+  /// Set all Led's on
   void setAll() {
     for (int i = 0; i < _dev.maxLed; i++) {
       _dev.bitStates[i] = _dev.highIntensity;
     }
-
     if (_dev.autoRefresh) {
       refresh();
     }
   }
 
+  /// Clear all Led's
   void clearAll() {
     for (int i = 0; i < _dev.maxLed; i++) {
       _dev.bitStates[i] = _dev.lowIntensity;
     }
-
     if (_dev.autoRefresh) {
       refresh();
     }
   }
 
+  /// Auto refresh state
   set autoRefresh(bool enable) => _dev.autoRefresh = enable;
 
+  /// Max led bars
   int get maxLed => _dev.maxLed;
 
+  /// Refresh the display
   void refresh() {
-    send16BitBlock(_dev.commandWord);
+    _send16BitBlock(_dev.commandWord);
     for (int i = 0; i < 10; i++) {
-      send16BitBlock(_dev.bitStates[i]);
+      _send16BitBlock(_dev.bitStates[i]);
     }
-    // Two extra empty bits for padding the command to the correct length
-    send16BitBlock(0x00);
-    send16BitBlock(0x00);
-    lockData();
+    // Send two extra empty bits for padding the command to the correct length.
+    _send16BitBlock(0x00);
+    _send16BitBlock(0x00);
+    _lockData();
   }
 
-  void lockData() {
+  void _lockData() {
+    // Writes command data to the MY9221 chip latch
     _mraa.gpio.write(_dev.gpioData, 0);
     _mraa.gpio.write(_dev.gpioClk, 1);
     _mraa.gpio.write(_dev.gpioClk, 0);
@@ -181,7 +211,7 @@ class GroveLedBar {
     _mraa.gpio.write(_dev.gpioClk, 0);
   }
 
-  void send16BitBlock(int data) {
+  void _send16BitBlock(int data) {
     MraaReturnCode ret;
     int localData = data;
     for (int bitIdx = 0; bitIdx < 16; bitIdx++) {

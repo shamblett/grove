@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -23,8 +23,9 @@ class GroveLightValues {
       'Light values at $validAt :: Raw : $raw : Lux ${lux.toStringAsFixed(2)}';
 }
 
-/// A local support implementation of the Grove light sensor.
+/// The Grove light sensor.
 class GroveLight {
+  /// Construction
   GroveLight(this._mraa, this._context);
 
   /// The initialised MRAA library
@@ -41,6 +42,9 @@ class GroveLight {
     return calculateLux(raw, maxAdc);
   }
 
+  /// Get the Lux value from a raw value, using the ADC resolution , this
+  /// value 1024,2048 or 4096 and can be taken from the board implementation.
+  /// If the [maxAdc] value is to small a Nan may be returned.
   GroveLightValues calculateLux(int rawValue, int maxAdc) {
     final GroveLightValues values = GroveLightValues();
     values.raw = rawValue;

@@ -1,5 +1,5 @@
 /*
- * Package : mraa
+ * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
  * Date   : 03/10/2019
  * Copyright :  S.Hamblett
@@ -397,10 +397,8 @@ class GroveLcd {
         int c = 0x00;
         final int bit1 = bitmap[i] << j & 0x80;
         final int bit2 = bitmap[i] << (j + 1) & 0x80;
-
         // Each bit is changed to a nibble
         c |= (bit1 == 0) ? _grayHigh : 0x00;
-        // Each bit is changed to a nibble
         c |= (bit2 == 0) ? _grayLow : 0x00;
         error = _writeReg(GroveLcdDefinitions.lcdData, <int>[c]);
       }
@@ -427,7 +425,6 @@ class GroveLcd {
                 0x1;
         data |= (bitOne != 0) ? _grayHigh : 0x00;
         data |= (bitTwo != 0) ? _grayLow : 0x00;
-
         rv = _writeReg(GroveLcdDefinitions.lcdData, <int>[data]);
         sleep(cmdSleep);
       }
