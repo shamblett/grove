@@ -1,5 +1,5 @@
 # grove
-[![Build Status](https://travis-ci.org/shamblett/grove.svg?branch=master)](https://travis-ci.org/shamblett/grove)
+[![Build Status](https://travis-ci.com/shamblett/grove.svg?branch=master)](https://travis-ci.com/shamblett/grove)
 
 This package provides interface classes to the [Grove](http://wiki.seeedstudio.com/Grove_System/) series of
 devices comprising of sensors, actuators, display devices, communications and others. The package provides initialisation
