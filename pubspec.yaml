@@ -1,5 +1,5 @@
 name: grove
-description: A Dart library package for interfacing to the Grove range of sensors
+description: A Dart library package for interfacing to the Grove range of devices
 version: 1.0.0
 author: Steve Hamblett <steve.hamblett@linux.com>
 homepage: https://github.com/shamblett/grove
