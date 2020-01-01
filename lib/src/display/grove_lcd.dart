@@ -8,6 +8,10 @@
 part of grove;
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: omit_local_variable_types
+// ignore_for_file: unnecessary_final
+// ignore_for_file: cascade_invocations
+// ignore_for_file: avoid_print
 
 /// Command/Data definitions for the Grove OLED SSD1327 based LCD device
 class GroveLcdDefinitions {
