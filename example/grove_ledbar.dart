@@ -10,6 +10,11 @@ import 'dart:math';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 
+// ignore_for_file: omit_local_variable_types
+// ignore_for_file: unnecessary_final
+// ignore_for_file: cascade_invocations
+// ignore_for_file: avoid_print
+
 // The GPIO pins for the Grove Led bar, set as needed.
 const int clockGPIOPin = 59;
 const int dataGPIOPin = 57;

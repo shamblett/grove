@@ -7,6 +7,11 @@
 
 part of grove;
 
+// ignore_for_file: omit_local_variable_types
+// ignore_for_file: unnecessary_final
+// ignore_for_file: cascade_invocations
+// ignore_for_file: avoid_print
+
 /// The Grove Sound Sensor can detect the sound intensity of the environment.
 ///
 /// The main component of the module is a simple microphone, which is based

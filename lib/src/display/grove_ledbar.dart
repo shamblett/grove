@@ -7,6 +7,11 @@
 
 part of grove;
 
+// ignore_for_file: omit_local_variable_types
+// ignore_for_file: unnecessary_final
+// ignore_for_file: cascade_invocations
+// ignore_for_file: avoid_print
+
 /// Local context for the MY9221 chip
 class My9221Context {
   /// GPIO clock pin context
@@ -176,6 +181,7 @@ class GroveLedBar {
   }
 
   /// Auto refresh state
+  // ignore: avoid_setters_without_getters
   set autoRefresh(bool enable) => _dev.autoRefresh = enable;
 
   /// Max led bars
