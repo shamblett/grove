@@ -5,8 +5,6 @@
  * Copyright :  S.Hamblett
  */
 
-import 'dart:ffi';
-
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mockito/mockito.dart';
@@ -20,11 +18,11 @@ int main() {
   group('Environment', () {
     // Mock the Mraa AIO interface
     final Mraa mraa = MockMraa();
-    final Pointer<MraaAioContext> context = allocate<MraaAioContext>();
+    final context = allocate<MraaAioContext>();
 
     test('Light - Lux values 1024 bit', () {
-      final GroveLight light = GroveLight(mraa, context);
-      GroveLightValues values = light.calculateLux(100, 1024);
+      final light = GroveLight(mraa, context);
+      var values = light.calculateLux(100, 1024);
       expect(values.lux.toStringAsFixed(2), '0.65');
       values = light.calculateLux(200, 1024);
       expect(values.lux.toStringAsFixed(2), '1.90');
@@ -46,8 +44,8 @@ int main() {
       expect(values.lux.toStringAsFixed(2), '1812.44');
     });
     test('Light - Lux values 4096 bit', () {
-      final GroveLight light = GroveLight(mraa, context);
-      GroveLightValues values = light.calculateLux(100, 4096);
+      final light = GroveLight(mraa, context);
+      var values = light.calculateLux(100, 4096);
       expect(values.lux.toStringAsFixed(2), '0.09');
       values = light.calculateLux(400, 4096);
       expect(values.lux.toStringAsFixed(2), '0.65');
@@ -69,8 +67,8 @@ int main() {
       expect(values.lux.toStringAsFixed(2), '1812.44');
     });
     test('Temperature', () {
-      final GroveTemperature temperature = GroveTemperature(mraa, context);
-      GroveTemperatureValues values = temperature.calculateCelsius(100);
+      final temperature = GroveTemperature(mraa, context);
+      var values = temperature.calculateCelsius(100);
       expect(values.celsius.toStringAsFixed(2), '-15.01');
       values = temperature.calculateCelsius(200);
       expect(values.celsius.toStringAsFixed(2), '-1.77');

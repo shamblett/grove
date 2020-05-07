@@ -7,8 +7,6 @@
 
 part of grove;
 
-// ignore_for_file: public_member_api_docs
-
 /// Command/Data definitions for the Grove OLED SSD1327 based LCD device
 class GroveLcdDefinitions {
   static const int lcdCleardisplay = 0x01;
@@ -310,14 +308,14 @@ class GroveLcd {
   /// Pixels are arranged in one byte for 8 vertical pixels and not
   /// addressed individually.
   MraaReturnCode draw(Uint8List data, int bytes) {
-    MraaReturnCode error = MraaReturnCode.success;
+    var error = MraaReturnCode.success;
     _setHorizontalMode();
-    for (int row = 0; row < bytes; row++) {
-      for (int col = 0; col < 8; col += 2) {
-        int value = 0x0;
+    for (var row = 0; row < bytes; row++) {
+      for (var col = 0; col < 8; col += 2) {
+        var value = 0x0;
 
-        final int bitOne = (data[row] << col) & 0x80;
-        final int bitTwo = (data[row] << (col + 1)) & 0x80;
+        final bitOne = (data[row] << col) & 0x80;
+        final bitTwo = (data[row] << (col + 1)) & 0x80;
 
         value |= (bitOne != 0) ? _grayHigh : 0x00;
         value |= (bitTwo != 0) ? _grayLow : 0x00;
@@ -338,7 +336,7 @@ class GroveLcd {
   /// Writes a string to the LCD
   /// Note: only ASCII characters are supported.
   MraaReturnCode write(String msg) {
-    MraaReturnCode error = MraaReturnCode.success;
+    var error = MraaReturnCode.success;
     error = _setVerticalMode();
     msg.codeUnits.forEach(_writeChar);
     return error;
@@ -346,7 +344,7 @@ class GroveLcd {
 
   /// Sets the cursor to specified coordinates
   MraaReturnCode setCursor(int row, int column) {
-    MraaReturnCode error = MraaReturnCode.success;
+    var error = MraaReturnCode.success;
     // Column Address
     error = _writeReg(GroveLcdDefinitions.lcdCmd, <int>[0x15]);
     sleep(cmdSleep);
@@ -370,7 +368,7 @@ class GroveLcd {
 
   /// Clears the display of all characters
   MraaReturnCode clear() {
-    MraaReturnCode error = MraaReturnCode.success;
+    var error = MraaReturnCode.success;
     int columnIdx, rowIdx;
     for (rowIdx = 0; rowIdx < 12; rowIdx++) {
       setCursor(rowIdx, 0);
@@ -387,16 +385,16 @@ class GroveLcd {
 
   /// Draws a bitmap
   MraaReturnCode drawBitMap(List<int> bitmap, int bytes) {
-    MraaReturnCode error = MraaReturnCode.success;
+    var error = MraaReturnCode.success;
     // Set horizontal mode for drawing
-    final bool wasVertical = _isVerticalMode;
+    final wasVertical = _isVerticalMode;
     _setHorizontalMode();
 
-    for (int i = 0; i < bytes; i++) {
-      for (int j = 0; j < 8; j = j + 2) {
-        int c = 0x00;
-        final int bit1 = bitmap[i] << j & 0x80;
-        final int bit2 = bitmap[i] << (j + 1) & 0x80;
+    for (var i = 0; i < bytes; i++) {
+      for (var j = 0; j < 8; j = j + 2) {
+        var c = 0x00;
+        final bit1 = bitmap[i] << j & 0x80;
+        final bit2 = bitmap[i] << (j + 1) & 0x80;
         // Each bit is changed to a nibble
         c |= (bit1 == 0) ? _grayHigh : 0x00;
         c |= (bit2 == 0) ? _grayLow : 0x00;
@@ -410,17 +408,17 @@ class GroveLcd {
   }
 
   MraaReturnCode _writeChar(int value) {
-    MraaReturnCode rv = MraaReturnCode.success;
-    int calcValue = value;
+    var rv = MraaReturnCode.success;
+    var calcValue = value;
     if (value < 0x20 || value > 0x7F) {
       calcValue = 0x20;
     }
-    for (int row = 0; row < 8; row = row + 2) {
-      for (int col = 0; col < 8; col++) {
-        int data = 0x0;
-        final int bitOne =
+    for (var row = 0; row < 8; row = row + 2) {
+      for (var col = 0; col < 8; col++) {
+        var data = 0x0;
+        final bitOne =
             ((GroveLcdDefinitions.basicFont[calcValue - 32][row]) >> col) & 0x1;
-        final int bitTwo =
+        final bitTwo =
             ((GroveLcdDefinitions.basicFont[calcValue - 32][row + 1]) >> col) &
                 0x1;
         data |= (bitOne != 0) ? _grayHigh : 0x00;
@@ -436,7 +434,7 @@ class GroveLcd {
       <int>[GroveLcdDefinitions.displayCmdSetNormal]);
 
   MraaReturnCode _setHorizontalMode() {
-    MraaReturnCode rv = MraaReturnCode.success;
+    var rv = MraaReturnCode.success;
     rv = _writeReg(GroveLcdDefinitions.lcdCmd, <int>[0xA0]); // remap to
     sleep(cmdSleep);
     rv = _writeReg(GroveLcdDefinitions.lcdCmd, <int>[0x42]); // horizontal mode
@@ -463,7 +461,7 @@ class GroveLcd {
   }
 
   MraaReturnCode _setVerticalMode() {
-    MraaReturnCode rv = MraaReturnCode.success;
+    var rv = MraaReturnCode.success;
     // Remap to vertical mode
     rv = _writeReg(GroveLcdDefinitions.lcdCmd, <int>[0xA0]);
     sleep(cmdSleep);

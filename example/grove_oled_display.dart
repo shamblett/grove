@@ -5,7 +5,6 @@
  * Copyright :  S.Hamblett
  */
 
-import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
@@ -1173,29 +1172,29 @@ const int i2cBusId = 1;
 int main() {
   // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.
-  final Mraa mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
+  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
     ..noJsonLoading = true
     ..initialise();
 
   // Version
-  final String mraaVersion = mraa.common.version();
+  final mraaVersion = mraa.common.version();
   print('Mraa version is : $mraaVersion');
 
   print('Initialising MRAA');
-  final MraaReturnCode ret = mraa.common.initialise();
+  final ret = mraa.common.initialise();
   if (ret != MraaReturnCode.success) {
     print('Failed to initialise MRAA, return code is '
         '${returnCode.asString(ret)}');
   }
 
   print('Getting platform name');
-  final String platformName = mraa.common.platformName();
+  final platformName = mraa.common.platformName();
   print('The platform name is : $platformName');
 
   /// The LCD initialisation
   print('Initialising LCD');
-  final ffi.Pointer<MraaI2cContext> context = mraa.i2c.initialise(i2cBusId);
-  final GroveLcd lcd = GroveLcd(mraa, context)..initialise();
+  final context = mraa.i2c.initialise(i2cBusId);
+  final lcd = GroveLcd(mraa, context)..initialise();
 
   print('Printing to the LCD');
   lcd.setCursor(1, 0);

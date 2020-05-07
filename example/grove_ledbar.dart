@@ -5,7 +5,6 @@
  * Copyright :  S.Hamblett
  */
 
-import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'dart:math';
 import 'package:mraa/mraa.dart';
@@ -19,33 +18,30 @@ const int dataGPIOPin = 57;
 int main() {
   // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
   // Please change this for your platform.
-  final Mraa mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
+  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
     ..noJsonLoading = true
     ..initialise();
 
   // Version
-  final String mraaVersion = mraa.common.version();
+  final mraaVersion = mraa.common.version();
   print('Mraa version is : $mraaVersion');
 
   print('Initialising MRAA');
-  final MraaReturnCode ret = mraa.common.initialise();
+  final ret = mraa.common.initialise();
   if (ret != MraaReturnCode.success) {
     print('Failed to initialise MRAA, return code is '
         '${returnCode.asString(ret)}');
   }
 
   print('Getting platform name');
-  final String platformName = mraa.common.platformName();
+  final platformName = mraa.common.platformName();
   print('The platform name is : $platformName');
 
   /// The Led Bar sensor initialisation
   print('Initialising the Led bar');
-  final ffi.Pointer<MraaGpioContext> dataContext =
-      mraa.gpio.initialise(dataGPIOPin);
-  final ffi.Pointer<MraaGpioContext> clockContext =
-      mraa.gpio.initialise(clockGPIOPin);
-  final GroveLedBar ledbar = GroveLedBar(mraa, clockContext, dataContext)
-    ..initialise();
+  final dataContext = mraa.gpio.initialise(dataGPIOPin);
+  final clockContext = mraa.gpio.initialise(clockGPIOPin);
+  final ledbar = GroveLedBar(mraa, clockContext, dataContext)..initialise();
 
   print('All on/off');
   ledbar.clearAll();
@@ -78,16 +74,16 @@ int main() {
   sleep(const Duration(milliseconds: 2000));
 
   print('Random single bars');
-  for (int i = 0; i < 19; i++) {
-    final int state = Random().nextInt(9);
+  for (var i = 0; i < 19; i++) {
+    final state = Random().nextInt(9);
     ledbar.setLed(state, on: true);
     sleep(const Duration(milliseconds: 2000));
     ledbar.setLed(state, on: false);
   }
 
   print('Random levels');
-  for (int i = 0; i < 19; i++) {
-    final int state = Random().nextInt(10);
+  for (var i = 0; i < 19; i++) {
+    final state = Random().nextInt(10);
     ledbar.setLevel(state);
     sleep(const Duration(milliseconds: 2000));
   }

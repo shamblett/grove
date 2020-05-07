@@ -30,8 +30,8 @@ class GroveSound {
 
   /// Get a smoothed value averaged over [sampleCount] samples
   int value() {
-    int retValue = 0;
-    for (int i = 0; i < sampleCount; i++) {
+    var retValue = 0;
+    for (var i = 0; i < sampleCount; i++) {
       retValue += rawValue();
       sleep(const Duration(milliseconds: 10));
     }

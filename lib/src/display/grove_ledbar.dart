@@ -69,7 +69,7 @@ class GroveLedBar {
 
   /// Initialise - must be called before use
   MraaReturnCode initialise() {
-    MraaReturnCode ret = MraaReturnCode.success;
+    var ret = MraaReturnCode.success;
     // Set the clock and data pin directions
     ret = _mraa.gpio.direction(_dev.gpioClk, MraaGpioDirection.out);
     if (ret != MraaReturnCode.success) {
@@ -121,7 +121,7 @@ class GroveLedBar {
       setAll();
       return;
     }
-    for (int i = 0; i < level; i++) {
+    for (var i = 0; i < level; i++) {
       _dev.bitStates[i] = 1;
     }
     if (_dev.autoRefresh) {
@@ -132,8 +132,8 @@ class GroveLedBar {
   /// Set and individual led on or off, note this will
   /// auto scale to the led range.
   void setLed(int led, {bool on}) {
-    final int maxLed = _dev.maxLed - 1;
-    int localLed = led;
+    final maxLed = _dev.maxLed - 1;
+    var localLed = led;
 
     if (localLed > maxLed) {
       localLed = maxLed;
@@ -157,7 +157,7 @@ class GroveLedBar {
 
   /// Set all Led's on
   void setAll() {
-    for (int i = 0; i < _dev.maxLed; i++) {
+    for (var i = 0; i < _dev.maxLed; i++) {
       _dev.bitStates[i] = _dev.highIntensity;
     }
     if (_dev.autoRefresh) {
@@ -167,7 +167,7 @@ class GroveLedBar {
 
   /// Clear all Led's
   void clearAll() {
-    for (int i = 0; i < _dev.maxLed; i++) {
+    for (var i = 0; i < _dev.maxLed; i++) {
       _dev.bitStates[i] = _dev.lowIntensity;
     }
     if (_dev.autoRefresh) {
@@ -184,7 +184,7 @@ class GroveLedBar {
   /// Refresh the display
   void refresh() {
     _send16BitBlock(_dev.commandWord);
-    for (int i = 0; i < 10; i++) {
+    for (var i = 0; i < 10; i++) {
       _send16BitBlock(_dev.bitStates[i]);
     }
     // Send two extra empty bits for padding the command to the correct length.
@@ -202,7 +202,7 @@ class GroveLedBar {
     _mraa.gpio.write(_dev.gpioClk, 0);
     sleep(const Duration(microseconds: 240));
 
-    for (int idx = 0; idx < 4; idx++) {
+    for (var idx = 0; idx < 4; idx++) {
       _mraa.gpio.write(_dev.gpioData, 1);
       _mraa.gpio.write(_dev.gpioData, 0);
     }
@@ -213,9 +213,9 @@ class GroveLedBar {
 
   void _send16BitBlock(int data) {
     MraaReturnCode ret;
-    int localData = data;
-    for (int bitIdx = 0; bitIdx < 16; bitIdx++) {
-      int state = (localData & 0x8000) != 0 ? 1 : 0;
+    var localData = data;
+    for (var bitIdx = 0; bitIdx < 16; bitIdx++) {
+      var state = (localData & 0x8000) != 0 ? 1 : 0;
       ret = _mraa.gpio.write(_dev.gpioData, state);
       if (ret != MraaReturnCode.success) {
         print('send16BitBlock - Failed to write state to data pin, status is '

@@ -61,20 +61,20 @@ class GroveTemperature {
 
   /// Get the raw and Celsius temperature values and timestamp them.
   GroveTemperatureValues getValues() {
-    final int raw = _mraa.aio.read(_context);
+    final raw = _mraa.aio.read(_context);
     return calculateCelsius(raw);
   }
 
   /// Calculates a celsius value from a raw value.
   GroveTemperatureValues calculateCelsius(int rawValue) {
-    final GroveTemperatureValues values = GroveTemperatureValues();
+    final values = GroveTemperatureValues();
     if (rawValue == Mraa.generalError) {
       values.celsius = -1.0;
       values.raw = -1;
       return values;
     }
     values.raw = rawValue;
-    final double r = (1023.0 - values.raw) * (r0 / values.raw);
+    final r = (1023.0 - values.raw) * (r0 / values.raw);
     values.celsius = 1.0 / (log(r / r0) / b + 1.0 / 298.15) - 273.15;
     return values;
   }

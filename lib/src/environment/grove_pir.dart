@@ -31,7 +31,7 @@ class GrovePir {
 
   /// Check if the sensor has triggered, i.e has transitioned from a 0 to a 1
   bool hasTriggered() {
-    final int now = value();
+    final now = value();
     if (now > _lastValue) {
       _lastValue = now;
       return true;
