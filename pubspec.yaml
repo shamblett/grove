@@ -9,7 +9,7 @@ environment:
 
 dependencies:
  ffi: '^0.1.3'
- mraa: '^1.0.0'
+ mraa: '^1.1.2'
 
 dev_dependencies:
  test: "^1.14.2"
