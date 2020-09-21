@@ -20,3 +20,5 @@ part 'src/environment/grove_light.dart';
 part 'src/environment/grove_pir.dart';
 part 'src/environment/grove_sound.dart';
 part 'src/environment/grove_temperature.dart';
+part 'src/deviceinterface/grove_iaio_interface.dart';
+part 'src/deviceinterface/mraa/grove_mraa_aio_interface.dart';
