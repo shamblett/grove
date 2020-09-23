@@ -7,34 +7,18 @@
 
 part of grove;
 
-/// The values class for the Grove light class
-class GroveLightValues {
-  /// Raw value
-  int raw;
-
-  /// Lux
-  double lux;
-
-  /// Timestamp
-  DateTime validAt;
-
-  @override
-  String toString() =>
-      'Light values at $validAt :: Raw : $raw : Lux ${lux.toStringAsFixed(2)}';
-}
-
 /// The Grove light sensor.
 ///
-/// The Grove light sensor integrates a photo-resistor(light dependent
+/// The Grove LM358 light sensor integrates a photo-resistor(light dependent
 /// resistor) to detect the intensity of light. The resistance of
 /// photo-resistor decreases when the intensity of light increases.
-/// A dual OpAmp chip LM358 on board produces voltage corresponding to
+/// The dual OpAmp chip LM358 on board produces voltage corresponding to
 /// intensity of light(i.e. based on resistance value).
 /// The output signal is analog value, the brighter the light is,
 /// the larger the value.
-class GroveLight {
+class GroveLightLM358 {
   /// Construction
-  GroveLight(this._mraa, this._context);
+  GroveLightLM358(this._mraa, this._context);
 
   /// The initialised MRAA library
   final Mraa _mraa;

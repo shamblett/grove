@@ -40,7 +40,7 @@ int main() {
   final context = mraa.aio.initialise(lightSensorAIOPin);
 
   print('Reading the light sensor values');
-  final light = GroveLight(mraa, context);
+  final light = GroveLightLM358(mraa, context);
   for (var i = 1; i <= 100; i++) {
     final values = light.getValues();
     print(values);

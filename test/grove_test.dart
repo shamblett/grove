@@ -25,7 +25,7 @@ int main() {
 
     group('Light', () {
       test('Lux values 1024 bit', () {
-        final light = GroveLight(mraa, context);
+        final light = GroveLightLM358(mraa, context);
         // Response values
         final lightResponses = <int>[
           100,
@@ -64,7 +64,7 @@ int main() {
         expect(values.lux.toStringAsFixed(2), '1918.26');
       });
       test('Lux values 4096 bit', () {
-        final light = GroveLight(mraa, context);
+        final light = GroveLightLM358(mraa, context);
         // Response values
         final lightResponses = <int>[
           100,

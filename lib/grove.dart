@@ -16,9 +16,8 @@ import 'package:mraa/mraa.dart';
 
 part 'src/display/grove_lcd.dart';
 part 'src/display/grove_ledbar.dart';
-part 'src/environment/grove_light.dart';
+part 'src/environment/light/grove_light_lm358.dart';
+part 'src/environment/light/grove_light_values.dart';
 part 'src/environment/grove_pir.dart';
 part 'src/environment/grove_sound.dart';
 part 'src/environment/grove_temperature.dart';
-part 'src/deviceinterface/grove_iaio_interface.dart';
-part 'src/deviceinterface/mraa/grove_mraa_aio_interface.dart';
