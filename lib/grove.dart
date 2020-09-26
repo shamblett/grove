@@ -20,4 +20,5 @@ part 'src/environment/light/grove_light_lm358.dart';
 part 'src/environment/light/grove_light_values.dart';
 part 'src/environment/grove_pir.dart';
 part 'src/environment/grove_sound.dart';
-part 'src/environment/grove_temperature.dart';
+part 'src/environment/temperature/grove_temperature_v12.dart';
+part 'src/environment/temperature/grove_temperature_values.dart';

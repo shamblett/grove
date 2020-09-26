@@ -23,9 +23,10 @@ int main() {
     final MraaAio mraaAio = MockMraaAio();
     final context = allocate<MraaAioContext>();
     when(mraa.aio).thenReturn(mraaAio);
-    test('Lux values 1024 bit', () {
+
+    test('Values 1024 bit ADC', () {
       final light = GroveLightLM358(mraa, context);
-      // Response values
+      // Responsevalues
       final lightResponses = <int>[
         100,
         200,
@@ -40,30 +41,30 @@ int main() {
       ];
       when(mraaAio.getBit(context)).thenReturn(10);
       when(mraaAio.read(context)).thenAnswer((_) => lightResponses.removeAt(0));
-      var values = light.getValues();
+      var values = light.values;
       expect(values.lux.toStringAsFixed(2), '0.65');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '1.90');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '3.88');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '6.95');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '11.82');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '20.00');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '35.19');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '68.91');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '178.24');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '1918.26');
     });
-    test('Lux values 4096 bit', () {
+    test('Values 4096 bit ADC', () {
       final light = GroveLightLM358(mraa, context);
-      // Response values
+      // Responsevalues
       final lightResponses = <int>[
         100,
         400,
@@ -78,25 +79,25 @@ int main() {
       ];
       when(mraaAio.getBit(context)).thenReturn(12);
       when(mraaAio.read(context)).thenAnswer((_) => lightResponses.removeAt(0));
-      var values = light.getValues();
+      var values = light.values;
       expect(values.lux.toStringAsFixed(2), '0.09');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '0.65');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '3.88');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '6.94');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '11.79');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '19.95');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '35.08');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '68.60');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '176.80');
-      values = light.getValues();
+      values = light.values;
       expect(values.lux.toStringAsFixed(2), '1837.92');
     });
   });

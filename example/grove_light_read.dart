@@ -39,7 +39,7 @@ int main() {
   print('Reading the light sensor values');
   final light = GroveLightLM358(mraa, context);
   for (var i = 1; i <= 100; i++) {
-    final values = light.getValues();
+    final values = light.values;
     print(values);
     sleep(const Duration(milliseconds: 2000));
   }
