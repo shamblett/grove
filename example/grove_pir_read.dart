@@ -8,16 +8,13 @@
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
-
-// The GPIO pin for the Grove PIR motion sensor, set as needed.
-const int pirSensorGPIOPin = 73;
+import 'example_config.dart';
 
 /// Checks if the Grove PIR motion sensor has been triggered
 int main() {
-  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
-  // Please change this for your platform.
-  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
-    ..noJsonLoading = true
+  final mraa = Mraa.fromLib(mraaLibraryPath)
+    ..noJsonLoading = noJsonLoading
+    ..useGrovePi = useGrovePi
     ..initialise();
 
   // Version
@@ -42,8 +39,8 @@ int main() {
   print('Checking for a PIR motion trigger');
   final pir = GrovePir(mraa, context);
   for (var i = 1; i <= 10000; i++) {
-    print('Current value is ${pir.value()}');
-    if (pir.hasTriggered()) {
+    print('Current value is ${pir.value}');
+    if (pir.hasTriggered) {
       print('PIR has triggered');
     }
     sleep(const Duration(milliseconds: 300));

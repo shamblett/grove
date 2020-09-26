@@ -8,6 +8,7 @@ dart_task:
 script:
   pub run test test/grove_temperature_test.dart
   pub run test test/grove_light_test.dart
+  pub run test test/grove_pir_test.dart
 
 branches:
     only:

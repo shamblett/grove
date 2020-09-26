@@ -26,7 +26,6 @@ int main() {
 
     test('Values 1024 bit ADC', () {
       final light = GroveLightLM358(mraa, context);
-      // Responsevalues
       final lightResponses = <int>[
         100,
         200,
@@ -64,7 +63,6 @@ int main() {
     });
     test('Values 4096 bit ADC', () {
       final light = GroveLightLM358(mraa, context);
-      // Responsevalues
       final lightResponses = <int>[
         100,
         400,

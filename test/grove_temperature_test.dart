@@ -26,7 +26,6 @@ int main() {
 
     test('Values', () {
       final temperature = GroveTemperatureV12(mraa, context);
-      // Responsevalues
       final temperatureResponses = <int>[
         100,
         200,
