@@ -9,17 +9,13 @@ import 'dart:io';
 import 'dart:math';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
-
-// The GPIO pins for the Grove Led bar, set as needed.
-const int clockGPIOPin = 59;
-const int dataGPIOPin = 57;
+import 'example_config.dart';
 
 /// Simple exercises for the Grove Led Bar
 int main() {
-  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
-  // Please change this for your platform.
-  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
-    ..noJsonLoading = true
+  final mraa = Mraa.fromLib(mraaLibraryPath)
+    ..noJsonLoading = noJsonLoading
+    ..useGrovePi = useGrovePi
     ..initialise();
 
   // Version
@@ -41,7 +37,11 @@ int main() {
   print('Initialising the Led bar');
   final dataContext = mraa.gpio.initialise(dataGPIOPin);
   final clockContext = mraa.gpio.initialise(clockGPIOPin);
-  final ledbar = GroveLedBar(mraa, clockContext, dataContext)..initialise();
+  final ledbar = GroveLedBarMy9221(mraa, clockContext, dataContext)
+    ..initialise();
+
+  /// Set auto refresh
+  ledbar.autoRefresh = true;
 
   print('All on/off');
   ledbar.clearAll();

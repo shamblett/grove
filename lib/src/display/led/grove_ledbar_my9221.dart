@@ -38,19 +38,20 @@ class My9221Context {
   int commandWord;
 
   /// Initialise status
-  bool initialized;
+  bool initialized = false;
 }
 
-/// The Grove LED Bar is comprised of a 10 segment LED gauge bar and an MY9221
+/// The Grove LED Bar MY9221 is comprised of a 10 segment LED gauge bar and an MY9221
 /// LED controlling chip.
 ///
 /// It can be used as an indicator for remaining battery life, voltage,
 /// water level, music volume or other values that require a gradient display.
+///
 /// There are 10 LED bars in the LED bar graph: one red, one yellow,
 /// one light green, and seven green bars.
-class GroveLedBar {
+class GroveLedBarMy9221 {
   /// Construction
-  GroveLedBar(Mraa mraa, Pointer<MraaGpioContext> clockPin,
+  GroveLedBarMy9221(Mraa mraa, Pointer<MraaGpioContext> clockPin,
       Pointer<MraaGpioContext> dataPin) {
     _dev = My9221Context();
     _dev.gpioClk = clockPin;
@@ -61,8 +62,10 @@ class GroveLedBar {
   /// Led bars per instance + 2 for intensity settings
   static const int ledPerInstance = 12;
 
-  /// The My9221 context
   My9221Context _dev;
+
+  /// The My9221 context
+  My9221Context get deviceContext => _dev;
 
   /// The initialised MRAA library
   Mraa _mraa;
@@ -84,11 +87,10 @@ class GroveLedBar {
       return ret;
     }
     setLowIntensityValue(0x00);
-    setHighIntensityValue(0xFF);
+    setHighIntensityValue(0xff);
     _dev.commandWord = 0x0000; // all defaults
     _dev.instances = 1;
     _dev.bitStates = Uint16List(ledPerInstance);
-    autoRefresh = true;
     _dev.maxLed = ledPerInstance;
     clearAll();
     _dev.initialized = true;
