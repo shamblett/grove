@@ -16,7 +16,7 @@ class My9221Context {
   Pointer<MraaGpioContext> gpioData;
 
   /// Auto refresh state
-  bool autoRefresh = true;
+  bool autoRefresh = false;
 
   /// Low intensity level
   int lowIntensity;

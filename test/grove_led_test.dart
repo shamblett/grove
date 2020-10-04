@@ -25,14 +25,15 @@ int main() {
 
     group('MY9221', () {
       final clockPin = Pointer<MraaGpioContext>.fromAddress(0);
-      final dataPin = Pointer<MraaGpioContext>.fromAddress(0);
-      test('Initialise - no auto refresh - success', () {
+      final dataPin = Pointer<MraaGpioContext>.fromAddress(1);
+
+      test('Initialise - success', () {
         when(mraaGpio.direction(any, MraaGpioDirection.out))
             .thenReturn(MraaReturnCode.success);
         final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
         expect(ledbar.deviceContext.initialized, isFalse);
-        ledbar.autoRefresh = false;
         final ret = ledbar.initialise();
+        verify(mraaGpio.direction(any, MraaGpioDirection.out)).called(2);
         expect(ret, MraaReturnCode.success);
         expect(ledbar.deviceContext.autoRefresh, isFalse);
         expect(ledbar.deviceContext.lowIntensity, 0);
@@ -46,6 +47,42 @@ int main() {
             isTrue);
         expect(ledbar.deviceContext.maxLed, 12);
         expect(ledbar.deviceContext.initialized, isTrue);
+      });
+      test('Initialise - clock pin fail', () {
+        when(mraaGpio.direction(clockPin, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.errorUnspecified);
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        final ret = ledbar.initialise();
+        verify(mraaGpio.direction(any, MraaGpioDirection.out)).called(1);
+        expect(ret, MraaReturnCode.errorUnspecified);
+        expect(ledbar.deviceContext.autoRefresh, isFalse);
+        expect(ledbar.deviceContext.lowIntensity, isNull);
+        expect(ledbar.deviceContext.highIntensity, isNull);
+        expect(ledbar.deviceContext.commandWord, isNull);
+        expect(ledbar.deviceContext.instances, isNull);
+        expect(ledbar.deviceContext.bitStates, isNull);
+        expect(ledbar.deviceContext.maxLed, isNull);
+        expect(ledbar.deviceContext.initialized, isFalse);
+      });
+      test('Initialise - data pin fail', () {
+        when(mraaGpio.direction(clockPin, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.success);
+        when(mraaGpio.direction(dataPin, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.errorUnspecified);
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        final ret = ledbar.initialise();
+        verify(mraaGpio.direction(any, MraaGpioDirection.out)).called(2);
+        expect(ret, MraaReturnCode.errorUnspecified);
+        expect(ledbar.deviceContext.autoRefresh, isFalse);
+        expect(ledbar.deviceContext.lowIntensity, isNull);
+        expect(ledbar.deviceContext.highIntensity, isNull);
+        expect(ledbar.deviceContext.commandWord, isNull);
+        expect(ledbar.deviceContext.instances, isNull);
+        expect(ledbar.deviceContext.bitStates, isNull);
+        expect(ledbar.deviceContext.maxLed, isNull);
+        expect(ledbar.deviceContext.initialized, isFalse);
       });
     });
   });
