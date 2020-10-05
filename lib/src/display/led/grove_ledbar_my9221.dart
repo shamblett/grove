@@ -49,6 +49,11 @@ class My9221Context {
 ///
 /// There are 10 LED bars in the LED bar graph: one red, one yellow,
 /// one light green, and seven green bars.
+///
+/// An individual led is on or off dependent on its intensity value, initially
+/// values of 0 and 0xff are used for low and high intensity values. These can
+/// be set as you wish, with a high intensity value 0x7f being half the intensity of
+/// a 0xff value.
 class GroveLedBarMy9221 {
   /// Construction
   GroveLedBarMy9221(Mraa mraa, Pointer<MraaGpioContext> clockPin,
@@ -86,12 +91,12 @@ class GroveLedBarMy9221 {
           '${returnCode.asString(ret)}');
       return ret;
     }
-    setLowIntensityValue(0x00);
-    setHighIntensityValue(0xff);
-    _dev.commandWord = 0x0000; // all defaults
+    lowIntensity = 0x00;
+    highIntensity = 0xff;
+    _dev.commandWord = 0x0000;
     _dev.instances = 1;
     _dev.bitStates = Uint16List(ledPerInstance);
-    _dev.maxLed = ledPerInstance;
+    _dev.maxLed = ledPerInstance - 2;
     clearAll();
     _dev.initialized = true;
     return ret;
@@ -119,12 +124,12 @@ class GroveLedBarMy9221 {
     if (level <= 0) {
       return;
     }
-    if (level >= 10) {
+    if (level >= ledPerInstance - 2) {
       setAll();
       return;
     }
     for (var i = 0; i < level; i++) {
-      _dev.bitStates[i] = 1;
+      _dev.bitStates[i] = _dev.highIntensity;
     }
     if (_dev.autoRefresh) {
       refresh();
@@ -133,7 +138,7 @@ class GroveLedBarMy9221 {
 
   /// Set and individual led on or off, note this will
   /// auto scale to the led range.
-  void setLed(int led, {bool on}) {
+  void setLed(int led, {bool on = false}) {
     final maxLed = _dev.maxLed - 1;
     var localLed = led;
 
@@ -150,12 +155,10 @@ class GroveLedBarMy9221 {
   }
 
   /// Set low intensity
-  void setLowIntensityValue(int intensity) =>
-      _dev.lowIntensity = intensity & 0xff;
+  set lowIntensity(int intensity) => _dev.lowIntensity = intensity & 0xff;
 
   /// Set high intensity
-  void setHighIntensityValue(int intensity) =>
-      _dev.highIntensity = intensity & 0xff;
+  set highIntensity(int intensity) => _dev.highIntensity = intensity & 0xff;
 
   /// Set all Led's on
   void setAll() {

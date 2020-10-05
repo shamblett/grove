@@ -84,6 +84,78 @@ int main() {
         expect(ledbar.deviceContext.maxLed, isNull);
         expect(ledbar.deviceContext.initialized, isFalse);
       });
+      test('Close', () {
+        when(mraaGpio.direction(any, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.success);
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        final ret = ledbar.initialise();
+        expect(ret, MraaReturnCode.success);
+        ledbar.setAll();
+        expect(
+            ledbar.deviceContext.bitStates
+                .every((e) => e == ledbar.deviceContext.highIntensity),
+            isTrue);
+        when(mraaGpio.close(any)).thenReturn(MraaReturnCode.success);
+        ledbar.close();
+        expect(
+            ledbar.deviceContext.bitStates
+                .every((e) => e == ledbar.deviceContext.lowIntensity),
+            isTrue);
+        expect(ledbar.deviceContext.initialized, isFalse);
+      });
+      test('Set Level', () {
+        when(mraaGpio.direction(any, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.success);
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        final ret = ledbar.initialise();
+        expect(ret, MraaReturnCode.success);
+        expect(
+            ledbar.deviceContext.bitStates
+                .every((e) => e == ledbar.deviceContext.lowIntensity),
+            isTrue);
+        ledbar.setLevel(-1);
+        expect(
+            ledbar.deviceContext.bitStates
+                .every((e) => e == ledbar.deviceContext.lowIntensity),
+            isTrue);
+        ledbar.setLevel(5);
+        expect(
+            ledbar.deviceContext.bitStates
+                .take(5)
+                .every((e) => e == ledbar.deviceContext.highIntensity),
+            isTrue);
+        ledbar.setLevel(11);
+        expect(
+            ledbar.deviceContext.bitStates
+                .every((e) => e == ledbar.deviceContext.highIntensity),
+            isTrue);
+      });
+      test('Set Led', () {
+        when(mraaGpio.direction(any, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.success);
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        final ret = ledbar.initialise();
+        expect(ret, MraaReturnCode.success);
+        expect(
+            ledbar.deviceContext.bitStates
+                .every((e) => e == ledbar.deviceContext.lowIntensity),
+            isTrue);
+        ledbar.setLed(-1, on: true);
+        expect(ledbar.deviceContext.bitStates[0],
+            ledbar.deviceContext.highIntensity);
+        ledbar.setLed(5, on: true);
+        expect(ledbar.deviceContext.bitStates[5],
+            ledbar.deviceContext.highIntensity);
+        ledbar.setLed(14, on: true);
+        expect(ledbar.deviceContext.bitStates[0],
+            ledbar.deviceContext.highIntensity);
+        ledbar.setLed(5);
+        expect(ledbar.deviceContext.bitStates[5],
+            ledbar.deviceContext.lowIntensity);
+      });
     });
   });
 
