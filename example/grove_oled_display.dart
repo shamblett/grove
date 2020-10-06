@@ -1188,9 +1188,12 @@ int main() {
   final platformName = mraa.common.platformName();
   print('The platform name is : $platformName');
 
-  /// The LCD initialisation
-  print('Initialising LCD');
+  /// The OLED initialisation
+  print('Initialising OLED');
   final context = mraa.i2c.initialise(i2cBusId);
+
+  /// You can pass an optional device address if you wish to override
+  /// the default one.
   final lcd = GroveOledSsd1327(mraa, context)..initialise();
 
   print('Printing to the LCD');

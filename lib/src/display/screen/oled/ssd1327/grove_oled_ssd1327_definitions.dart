@@ -14,8 +14,8 @@ class GroveOledSsd1327Definitions {
   static const int lcdCmd = 0x80;
   static const int displayCmdSetNormal = 0xA4;
   static const int setColumnAddress = 0x15;
-  static const int setCommandLock1 = 0xfd;
-  static const int setCommandLock2 = 0x12;
+  static const int setCommandLock = 0xfd;
+  static const int setCommandLockReset = 0x12;
 
   static const int startColumn = 8;
 

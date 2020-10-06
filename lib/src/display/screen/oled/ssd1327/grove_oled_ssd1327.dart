@@ -13,14 +13,24 @@ part of grove;
 /// associated controller, accessed through the I2C bus.
 
 class GroveOledSsd1327 {
+  /// Default device address.
+  static const int defaultDeviceAddress = 0x3C;
+
   /// Construction
-  GroveOledSsd1327(this._mraa, this._context) {
+  GroveOledSsd1327(this._mraa, this._context,
+      [int deviceAddress = defaultDeviceAddress]) {
     // Set the device address
-    _mraa.i2c.address(_context, lcdDeviceAddress);
+    _mraa.i2c.address(_context, deviceAddress);
   }
 
   /// The initialised MRAA library
   final Mraa _mraa;
+
+  /// Initialise sleep time default.
+  static const Duration initSleepDefault = Duration(microseconds: 3000);
+
+  /// Command sleep time default.
+  static const Duration cmdSleepDefault = Duration(microseconds: 1000);
 
   /// Initialisation inter command sleep time in microseconds
   Duration initSleep = initSleepDefault;
@@ -31,27 +41,30 @@ class GroveOledSsd1327 {
   /// The initialised I2C context
   final Pointer<MraaI2cContext> _context;
 
-  static const int lcdDeviceAddress = 0x3C;
-  static const Duration initSleepDefault = Duration(microseconds: 3000);
-  static const Duration cmdSleepDefault = Duration(microseconds: 1000);
-
+  /// Last command error
   MraaReturnCode error = MraaReturnCode.success;
+
+  bool _initialised = false;
+
+  /// Initialised.
+  bool get initialised => _initialised;
 
   int _grayHigh = 0;
   int _grayLow = 0;
 
   bool _isVerticalMode = false;
 
-  /// Initialise the display for use
+  /// Initialise the display for use.
+  /// Must be called otherwise no commands are sent to the device.
   void initialise() {
     sleep(initSleep);
-    // Unlock OLED driver IC MCU interface from entering command.
-    // i.e: accept commands
+    // Unlock the OLED driver IC MCU interface from entering command.
+    // i.e. accept commands
     _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-        <int>[GroveOledSsd1327Definitions.setCommandLock1]);
+        <int>[GroveOledSsd1327Definitions.setCommandLock]);
     sleep(initSleep);
     _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-        <int>[GroveOledSsd1327Definitions.setCommandLock2]);
+        <int>[GroveOledSsd1327Definitions.setCommandLockReset]);
     sleep(initSleep);
     // Set display off
     error = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0xAE]);
@@ -155,6 +168,7 @@ class GroveOledSsd1327 {
     setGrayLevel(12);
     _setNormalDisplay();
     _setVerticalMode();
+    _initialised = true;
   }
 
   /// Draws an image.
@@ -334,6 +348,10 @@ class GroveOledSsd1327 {
     return rv;
   }
 
-  MraaReturnCode _writeReg(int reg, List<int> data) =>
-      _mraa.i2c.writeByteData(_context, data[0], reg);
+  MraaReturnCode _writeReg(int reg, List<int> data) {
+    if (!_initialised) {
+      return MraaReturnCode.errorPlatformNotInitialised;
+    }
+    return _mraa.i2c.writeByteData(_context, data[0], reg);
+  }
 }
