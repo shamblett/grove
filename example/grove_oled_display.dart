@@ -8,6 +8,7 @@
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
+import 'example_config.dart';
 
 // The Seeed logo bitmap
 const List<int> seeedLogo96x96 = <int>[
@@ -1165,15 +1166,11 @@ const List<int> seeedLogo96x96 = <int>[
   0x00
 ];
 
-// The I2C bus id for the OLED display, set as needed.
-const int i2cBusId = 1;
-
 /// Output to the Grove OLED display.
 int main() {
-  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
-  // Please change this for your platform.
-  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
-    ..noJsonLoading = true
+  final mraa = Mraa.fromLib(mraaLibraryPath)
+    ..noJsonLoading = noJsonLoading
+    ..useGrovePi = useGrovePi
     ..initialise();
 
   // Version
@@ -1194,7 +1191,7 @@ int main() {
   /// The LCD initialisation
   print('Initialising LCD');
   final context = mraa.i2c.initialise(i2cBusId);
-  final lcd = GroveLcd(mraa, context)..initialise();
+  final lcd = GroveOledSsd1327(mraa, context)..initialise();
 
   print('Printing to the LCD');
   lcd.setCursor(1, 0);
