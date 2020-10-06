@@ -169,6 +169,12 @@ int main() {
         verify(mraaGpio.write(any, any)).called(431);
         verify(mraaGpio.read(any)).called(208);
       });
+      test('Refresh - not initialised', () {
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        verifyNever(mraaGpio.write(any, any));
+        verifyNever(mraaGpio.read(any));
+      });
     });
   });
 

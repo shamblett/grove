@@ -75,7 +75,8 @@ class GroveLedBarMy9221 {
   /// The initialised MRAA library
   Mraa _mraa;
 
-  /// Initialise - must be called before use
+  /// Initialise - must be called before use otherwise
+  /// no commands will be sent to the device.
   MraaReturnCode initialise() {
     var ret = MraaReturnCode.success;
     // Set the clock and data pin directions
@@ -193,7 +194,11 @@ class GroveLedBarMy9221 {
 
   /// Refresh the display.
   /// This can be done automatically see [autoRefresh].
+  /// The device must be initialised.
   void refresh() {
+    if (!_dev.initialized) {
+      return;
+    }
     _send16BitBlock(_dev.commandWord);
     for (var i = 0; i < maxLed; i++) {
       _send16BitBlock(_dev.bitStates[i]);
