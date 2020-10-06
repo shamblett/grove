@@ -40,12 +40,12 @@ int main() {
         expect(ledbar.deviceContext.highIntensity, 0xff);
         expect(ledbar.deviceContext.commandWord, 0);
         expect(ledbar.deviceContext.instances, 1);
-        expect(ledbar.deviceContext.bitStates.length, 12);
+        expect(ledbar.deviceContext.bitStates.length, 10);
         expect(
             ledbar.deviceContext.bitStates
                 .every((e) => e == ledbar.deviceContext.lowIntensity),
             isTrue);
-        expect(ledbar.deviceContext.maxLed, 12);
+        expect(ledbar.deviceContext.maxLed, 10);
         expect(ledbar.deviceContext.initialized, isTrue);
       });
       test('Initialise - clock pin fail', () {
@@ -155,6 +155,19 @@ int main() {
         ledbar.setLed(5);
         expect(ledbar.deviceContext.bitStates[5],
             ledbar.deviceContext.lowIntensity);
+      });
+      test('Refresh', () {
+        when(mraaGpio.direction(any, MraaGpioDirection.out))
+            .thenReturn(MraaReturnCode.success);
+        final ledbar = GroveLedBarMy9221(mraa, clockPin, dataPin);
+        expect(ledbar.deviceContext.initialized, isFalse);
+        final ret = ledbar.initialise();
+        expect(ret, MraaReturnCode.success);
+        when(mraaGpio.write(any, any)).thenReturn(MraaReturnCode.success);
+        when(mraaGpio.read(any)).thenReturn(0);
+        ledbar.refresh();
+        verify(mraaGpio.write(any, any)).called(431);
+        verify(mraaGpio.read(any)).called(208);
       });
     });
   });

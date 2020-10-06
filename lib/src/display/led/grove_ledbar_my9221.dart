@@ -64,8 +64,8 @@ class GroveLedBarMy9221 {
     _mraa = mraa;
   }
 
-  /// Led bars per instance + 2 for intensity settings
-  static const int ledPerInstance = 12;
+  /// Led bars per instance
+  static const int ledPerInstance = 10;
 
   My9221Context _dev;
 
@@ -96,7 +96,7 @@ class GroveLedBarMy9221 {
     _dev.commandWord = 0x0000;
     _dev.instances = 1;
     _dev.bitStates = Uint16List(ledPerInstance);
-    _dev.maxLed = ledPerInstance - 2;
+    _dev.maxLed = ledPerInstance;
     clearAll();
     _dev.initialized = true;
     return ret;
@@ -162,7 +162,7 @@ class GroveLedBarMy9221 {
 
   /// Set all Led's on
   void setAll() {
-    for (var i = 0; i < _dev.maxLed; i++) {
+    for (var i = 0; i < maxLed; i++) {
       _dev.bitStates[i] = _dev.highIntensity;
     }
     if (_dev.autoRefresh) {
@@ -172,7 +172,7 @@ class GroveLedBarMy9221 {
 
   /// Clear all Led's
   void clearAll() {
-    for (var i = 0; i < _dev.maxLed; i++) {
+    for (var i = 0; i < maxLed; i++) {
       _dev.bitStates[i] = _dev.lowIntensity;
     }
     if (_dev.autoRefresh) {
@@ -180,16 +180,22 @@ class GroveLedBarMy9221 {
     }
   }
 
-  /// Auto refresh state
+  /// Auto refresh
+  ///
+  /// If true then any updates to the state of the led bar will be
+  /// automatically sent to the device. If false the user must do this
+  /// themselves.
+  /// Defaults to false.
   set autoRefresh(bool enable) => _dev.autoRefresh = enable;
 
   /// Max led bars
   int get maxLed => _dev.maxLed;
 
-  /// Refresh the display
+  /// Refresh the display.
+  /// This can be done automatically see [autoRefresh].
   void refresh() {
     _send16BitBlock(_dev.commandWord);
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < maxLed; i++) {
       _send16BitBlock(_dev.bitStates[i]);
     }
     // Send two extra empty bits for padding the command to the correct length.
