@@ -9,7 +9,6 @@ part of grove;
 
 /// Command, data and font definitions for the Grove OLED SSD1327 based device.
 class GroveOledSsd1327Definitions {
-
   static const int lcdData = 0x40;
   static const int lcdCmd = 0x80;
   static const int displayCmdSetNormal = 0xA4;

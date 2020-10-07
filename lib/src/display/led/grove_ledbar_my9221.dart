@@ -75,32 +75,23 @@ class GroveLedBarMy9221 {
   /// The initialised MRAA library
   Mraa _mraa;
 
+  final _monitor = GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
+
+  /// Last monitored sequence status
+  GroveSequenceMonitor<MraaReturnCode> get monitored => _monitor;
+
   /// Initialise - must be called before use otherwise
   /// no commands will be sent to the device.
-  MraaReturnCode initialise() {
-    var ret = MraaReturnCode.success;
-    // Set the clock and data pin directions
-    ret = _mraa.gpio.direction(_dev.gpioClk, MraaGpioDirection.out);
-    if (ret != MraaReturnCode.success) {
-      print('initialise - Failed to set direction for clock pin, state is '
-          '${returnCode.asString(ret)}');
-      return ret;
+  /// Returns true if initialisation succeeded and is a
+  /// monitored sequence.
+  bool initialise() {
+    _monitor.reset();
+    _initialise(_monitor);
+    if (_monitor.isOk) {
+      _dev.initialized = true;
+      return true;
     }
-    ret = _mraa.gpio.direction(_dev.gpioData, MraaGpioDirection.out);
-    if (ret != MraaReturnCode.success) {
-      print('initialise - Failed to set direction for data pin, state is '
-          '${returnCode.asString(ret)}');
-      return ret;
-    }
-    lowIntensity = 0x00;
-    highIntensity = 0xff;
-    _dev.commandWord = 0x0000;
-    _dev.instances = 1;
-    _dev.bitStates = Uint16List(ledPerInstance);
-    _dev.maxLed = ledPerInstance;
-    clearAll();
-    _dev.initialized = true;
-    return ret;
+    return false;
   }
 
   /// Close the GPIO pin contexts and
@@ -254,5 +245,18 @@ class GroveLedBarMy9221 {
       }
       localData <<= 1;
     }
+  }
+
+  void _initialise(GroveSequenceMonitor<MraaReturnCode> monitor) {
+    // Set the clock and data pin directions
+    monitor + _mraa.gpio.direction(_dev.gpioClk, MraaGpioDirection.out);
+    monitor + _mraa.gpio.direction(_dev.gpioData, MraaGpioDirection.out);
+    lowIntensity = 0x00;
+    highIntensity = 0xff;
+    _dev.commandWord = 0x0000;
+    _dev.instances = 1;
+    _dev.bitStates = Uint16List(ledPerInstance);
+    _dev.maxLed = ledPerInstance;
+    clearAll();
   }
 }
