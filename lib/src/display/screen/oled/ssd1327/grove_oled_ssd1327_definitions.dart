@@ -9,14 +9,51 @@ part of grove;
 
 /// Command, data and font definitions for the Grove OLED SSD1327 based device.
 class GroveOledSsd1327Definitions {
-  static const int lcdData = 0x40;
-  static const int lcdCmd = 0x80;
-  static const int displayCmdSetNormal = 0xA4;
-  static const int setColumnAddress = 0x15;
-  static const int setCommandLock = 0xfd;
-  static const int setCommandLockReset = 0x12;
+  static const lcdData = 0x40;
+  static const lcdCmd = 0x80;
+  static const displayCmdSetNormal = 0xA4;
+  static const setColumnAddress = 0x15;
+  static const setCommandLock = 0xfd;
+  static const setCommandLockReset = 0x12;
+  static const setDisplayOff = 0xae;
+  static const setDisplayOn = 0xaf;
+  static const setMuxRatio = 0xa8;
+  static const setDisplayStartLine = 0xa1;
+  static const setDisplayOffset = 0xa2;
+  static const setRemap = 0xa0;
+  static const functionSelectionA = 0xab;
+  static const functionSelectionB = 0xd5;
+  static const setContrast = 0x81;
+  static const setPhaseLength = 0xb1;
+  static const setFrontClock = 0xb3;
+  static const setLinearLut = 0xb9;
+  static const setPreChargeVoltage = 0xbc;
+  static const setVcomh = 0xbe;
+  static const setSecondPreChargePeriod = 0xb6;
+  static const setNormalDisplay = 0xa4;
+  static const deactivateScroll = 0x2e;
+  static const setRowAddress = 0x75;
 
-  static const int startColumn = 8;
+  static const startColumn = 8;
+  static const startRowAddress = 0;
+  static const endRowAddress = 95;
+  static const startColumnAddress = 8;
+  static const endColumnAddress = 55;
+  static const defaultGrayLevel = 12;
+
+  static const muxRatio = 0x5f;
+  static const displayStartLine = 0;
+  static const displayOffset = 0x60;
+  static const remap = 0x46;
+  static const vddInternal = 1;
+  static const contrast = 0x53;
+  static const phaseLength = 0x51;
+  static const frontClockFrequency = 0x01;
+  static const preChargeVoltage = 0x08;
+  static const vcomh = 0x07;
+  static const secondPreChargePeriod = 0x01;
+  static const secondPrechargeAndVSL = 0X62;
+  
 
   static const List<List<int>> basicFont = <List<int>>[
     <int>[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],

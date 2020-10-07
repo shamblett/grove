@@ -1194,32 +1194,39 @@ int main() {
 
   /// You can pass an optional device address if you wish to override
   /// the default one.
-  final lcd = GroveOledSsd1327(mraa, context)..initialise();
+  final oled = GroveOledSsd1327(mraa, context);
 
-  print('Printing to the LCD');
-  lcd.setCursor(1, 0);
-  lcd.write('Hello from');
-  lcd.setCursor(2, 0);
-  lcd.write('the Dart VM');
-  lcd.setCursor(4, 0);
-  lcd.write('Brought to');
-  lcd.setCursor(5, 0);
-  lcd.write('you by FFI');
-  lcd.setCursor(6, 0);
-  lcd.write('and Intel\'s');
-  lcd.setCursor(7, 0);
-  lcd.write('MRAA library');
+  final result = oled.initialise();
+  if (!result) {
+    print('ERROR - failed to initialise the OLED display');
+    print(oled.monitored.failureValues);
+    return -1;
+  }
+
+  print('Printing to the OLED');
+  oled.setCursor(1, 0);
+  oled.write('Hello from');
+  oled.setCursor(2, 0);
+  oled.write('the Dart VM');
+  oled.setCursor(4, 0);
+  oled.write('Brought to');
+  oled.setCursor(5, 0);
+  oled.write('you by FFI');
+  oled.setCursor(6, 0);
+  oled.write('and Intel\'s');
+  oled.setCursor(7, 0);
+  oled.write('MRAA library');
 
   print('Press a key to clear the display and continue.....');
   stdin.readByteSync();
-  lcd.home();
-  lcd.clear();
+  oled.home();
+  oled.clear();
   print('Now lets draw a logo.....');
-  lcd.drawBitMap(seeedLogo96x96, seeedLogo96x96.length);
+  oled.drawBitMap(seeedLogo96x96, seeedLogo96x96.length);
   print('Press a key to clear the display and exit .....');
   stdin.readByteSync();
-  lcd.home();
-  lcd.clear();
+  oled.home();
+  oled.clear();
 
   return 0;
 }
