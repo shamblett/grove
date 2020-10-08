@@ -9,6 +9,7 @@ part of grove;
 
 /// Command, data and font definitions for the Grove OLED SSD1327 based device.
 class GroveOledSsd1327Definitions {
+  /// Command codes
   static const lcdData = 0x40;
   static const lcdCmd = 0x80;
   static const displayCmdSetNormal = 0xA4;
@@ -34,6 +35,7 @@ class GroveOledSsd1327Definitions {
   static const deactivateScroll = 0x2e;
   static const setRowAddress = 0x75;
 
+  /// Setting defaults
   static const startColumn = 8;
   static const startRowAddress = 0;
   static const endRowAddress = 95;
@@ -41,6 +43,7 @@ class GroveOledSsd1327Definitions {
   static const endColumnAddress = 55;
   static const defaultGrayLevel = 12;
 
+  /// Command defaults
   static const muxRatio = 0x5f;
   static const displayStartLine = 0;
   static const displayOffset = 0x60;
@@ -53,8 +56,8 @@ class GroveOledSsd1327Definitions {
   static const vcomh = 0x07;
   static const secondPreChargePeriod = 0x01;
   static const secondPrechargeAndVSL = 0X62;
-  
 
+  /// A basic font implementation
   static const List<List<int>> basicFont = <List<int>>[
     <int>[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
     <int>[0x00, 0x00, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x00],

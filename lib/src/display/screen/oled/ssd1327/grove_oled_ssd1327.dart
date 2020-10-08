@@ -57,7 +57,7 @@ class GroveOledSsd1327 {
   bool _isVerticalMode = false;
 
   /// Initialise the display for use.
-  /// Must be called otherwise no commands are sent to the device.
+  /// Must succeed otherwise no commands are sent to the device.
   /// Returns true if initialisation succeeded and is a
   /// monitored sequence.
   bool initialise() {
@@ -65,6 +65,9 @@ class GroveOledSsd1327 {
     _initialise(_monitor);
     if (_monitor.isOk) {
       _initialised = true;
+      // Initialize the screen
+      setGrayLevel(GroveOledSsd1327Definitions.defaultGrayLevel);
+      clear();
       return true;
     }
     return false;
@@ -203,10 +206,6 @@ class GroveOledSsd1327 {
     return rv;
   }
 
-  MraaReturnCode _setNormalDisplay() => _writeReg(
-      GroveOledSsd1327Definitions.lcdCmd,
-      <int>[GroveOledSsd1327Definitions.displayCmdSetNormal]);
-
   MraaReturnCode _setHorizontalMode() {
     var rv = MraaReturnCode.success;
     rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0xA0]); // remap to
@@ -247,14 +246,21 @@ class GroveOledSsd1327 {
     return rv;
   }
 
-  MraaReturnCode _writeReg(int reg, List<int> data) {
-    if (!_initialised) {
-      print(
-          '_writeReg - Failed to write data to the command register, not initialised');
-      return MraaReturnCode.errorPlatformNotInitialised;
+  MraaReturnCode _writeReg(int reg, List<int> data,
+      [bool initialising = false]) {
+    if (!initialising) {
+      if (!_initialised) {
+        print(
+            '_writeReg - Failed to write data to the command register, not initialised');
+        return MraaReturnCode.errorPlatformNotInitialised;
+      }
     }
     final ret = _mraa.i2c.writeByteData(_context, data[0], reg);
-    if (ret != MraaReturnCode.success) {}
+    if (ret != MraaReturnCode.success && !initialising) {
+      print(
+          '_writeReg - Failed to write data to the command register, status is '
+          '${returnCode.asString(ret)}, register is ${reg.toRadixString(16)}');
+    }
     return ret;
   }
 
@@ -263,180 +269,175 @@ class GroveOledSsd1327 {
     // i.e. accept commands
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setCommandLock]);
+            <int>[GroveOledSsd1327Definitions.setCommandLock], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setCommandLockReset]);
+            <int>[GroveOledSsd1327Definitions.setCommandLockReset], true);
     sleep(initSleep);
     // Set display off
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setDisplayOff]);
+            <int>[GroveOledSsd1327Definitions.setDisplayOff], true);
     sleep(initSleep);
     // Set multiplex ratio to 96
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setMuxRatio]);
+            <int>[GroveOledSsd1327Definitions.setMuxRatio], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.muxRatio]);
+            <int>[GroveOledSsd1327Definitions.muxRatio], true);
     sleep(initSleep);
     // Set the display start line
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setDisplayStartLine]);
+            <int>[GroveOledSsd1327Definitions.setDisplayStartLine], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.displayStartLine]);
+            <int>[GroveOledSsd1327Definitions.displayStartLine], true);
     sleep(initSleep);
     // Set the display offset
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setDisplayOffset]);
+            <int>[GroveOledSsd1327Definitions.setDisplayOffset], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.displayOffset]);
+            <int>[GroveOledSsd1327Definitions.displayOffset], true);
     sleep(initSleep);
     // Set remap
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setRemap]);
+            <int>[GroveOledSsd1327Definitions.setRemap], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.remap]);
+            <int>[GroveOledSsd1327Definitions.remap], true);
     sleep(initSleep);
+    _isVerticalMode = true;
     // Set vdd internal
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.functionSelectionA]);
+            <int>[GroveOledSsd1327Definitions.functionSelectionA], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.vddInternal]);
+            <int>[GroveOledSsd1327Definitions.vddInternal], true);
     sleep(initSleep);
     // Set the contrast
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setContrast]);
+            <int>[GroveOledSsd1327Definitions.setContrast], true);
     sleep(initSleep);
     // 100 nit
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.contrast]);
+            <int>[GroveOledSsd1327Definitions.contrast], true);
     sleep(initSleep);
     // Set the phase Length
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setPhaseLength]);
+            <int>[GroveOledSsd1327Definitions.setPhaseLength], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.phaseLength]);
+            <int>[GroveOledSsd1327Definitions.phaseLength], true);
     sleep(initSleep);
     // Set the Display Clock Divide Ratio/Oscillator frequency
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setFrontClock]);
+            <int>[GroveOledSsd1327Definitions.setFrontClock], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.frontClockFrequency]);
+            <int>[GroveOledSsd1327Definitions.frontClockFrequency], true);
     sleep(initSleep);
     // Linear LUT
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setLinearLut]);
+            <int>[GroveOledSsd1327Definitions.setLinearLut], true);
     sleep(initSleep);
     // Set pre_charge voltage
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setPreChargeVoltage]);
+            <int>[GroveOledSsd1327Definitions.setPreChargeVoltage], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.preChargeVoltage]);
+            <int>[GroveOledSsd1327Definitions.preChargeVoltage], true);
     sleep(initSleep);
     // Set VCOMH
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setVcomh]);
+            <int>[GroveOledSsd1327Definitions.setVcomh], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.vcomh]);
+            <int>[GroveOledSsd1327Definitions.vcomh], true);
     sleep(initSleep);
     // Set second pre-charge period
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setSecondPreChargePeriod]);
+            <int>[GroveOledSsd1327Definitions.setSecondPreChargePeriod], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.secondPreChargePeriod]);
+            <int>[GroveOledSsd1327Definitions.secondPreChargePeriod], true);
     sleep(initSleep);
     // Enable second precharge and internal vsl
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.functionSelectionB]);
+            <int>[GroveOledSsd1327Definitions.functionSelectionB], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.secondPrechargeAndVSL]);
+            <int>[GroveOledSsd1327Definitions.secondPrechargeAndVSL], true);
     sleep(initSleep);
     // Set Normal Display Mode
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setNormalDisplay]);
+            <int>[GroveOledSsd1327Definitions.setNormalDisplay], true);
     sleep(initSleep);
     // Deactivate Scroll
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.deactivateScroll]);
+            <int>[GroveOledSsd1327Definitions.deactivateScroll], true);
     sleep(initSleep);
     // Switch on display
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setDisplayOn]);
+            <int>[GroveOledSsd1327Definitions.setDisplayOn], true);
     sleep(initSleep);
     // Set Row Address
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setRowAddress]);
+            <int>[GroveOledSsd1327Definitions.setRowAddress], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.startRowAddress]);
+            <int>[GroveOledSsd1327Definitions.startRowAddress], true);
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.endRowAddress]);
+            <int>[GroveOledSsd1327Definitions.endRowAddress], true);
     sleep(initSleep);
 
     // Set Column Address
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.setColumnAddress]);
+            <int>[GroveOledSsd1327Definitions.setColumnAddress], true);
     sleep(initSleep);
     // Start from 8th Column of driver IC. This is 0th Column for OLED
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.startColumnAddress]);
+            <int>[GroveOledSsd1327Definitions.startColumnAddress], true);
     sleep(initSleep);
     // End at  (8 + 47)th column. Each Column has 2  // pixels(segments)
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.endColumnAddress]);
+            <int>[GroveOledSsd1327Definitions.endColumnAddress], true);
     sleep(initSleep);
-
-    // Initialize the screen
-    clear();
-    setGrayLevel(GroveOledSsd1327Definitions.defaultGrayLevel);
-    _setNormalDisplay();
-    _setVerticalMode();
   }
 }
