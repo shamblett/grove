@@ -56,6 +56,15 @@ int main() {
         expect(oled.monitored.failureValues[1],
             MraaReturnCode.errorFeatureNotImplemented);
       });
+      test('Gray level', () {
+        final oled = GroveOledSsd1327(mraa, context);
+        oled.grayLevel = 12;
+        expect(oled.grayLevel, 12);
+        oled.grayLevel = 20;
+        expect(oled.grayLevel, 4);
+        oled.grayLevel = -7;
+        expect(oled.grayLevel, 0);
+      });
     });
   });
 

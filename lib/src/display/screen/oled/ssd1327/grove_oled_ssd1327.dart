@@ -7,7 +7,7 @@
 
 part of grove;
 
-/// This implementation supports the Grove LED 96*96 display module,
+/// This implementation supports the Grove OLED 96*96 display module,
 /// which is an OLED monochrome display based on a SSD1327 chip.
 /// The SSD1327 is a 96x96 dot-matrix OLED/PLED segment driver with an
 /// associated controller, accessed through the I2C bus.
@@ -54,9 +54,24 @@ class GroveOledSsd1327 {
   int _grayHigh = 0;
   int _grayLow = 0;
 
+  /// The gray level for the OLED panel.
+  /// Values are constrained to range 0 - 15.
+  set grayLevel(int level) {
+    if (level < 0) {
+      _grayHigh = 0;
+      _grayLow = 0;
+      return;
+    }
+    _grayHigh = (level << 4) & 0xF0;
+    _grayLow = level & 0x0F;
+  }
+
+  int get grayLevel => _grayLow;
+
   bool _isVerticalMode = false;
 
   /// Initialise the display for use.
+  ///
   /// Must succeed otherwise no commands are sent to the device.
   /// Returns true if initialisation succeeded and is a
   /// monitored sequence.
@@ -66,7 +81,7 @@ class GroveOledSsd1327 {
     if (_monitor.isOk) {
       _initialised = true;
       // Initialize the screen
-      setGrayLevel(GroveOledSsd1327Definitions.defaultGrayLevel);
+      grayLevel = GroveOledSsd1327Definitions.defaultGrayLevel;
       clear();
       return true;
     }
@@ -74,6 +89,7 @@ class GroveOledSsd1327 {
   }
 
   /// Draws an image.
+  ///
   /// Pixels are arranged in one byte for 8 vertical pixels and not
   /// addressed individually.
   MraaReturnCode draw(Uint8List data, int bytes) {
@@ -96,13 +112,8 @@ class GroveOledSsd1327 {
     return error;
   }
 
-  /// Sets the gray level for the LCD panel
-  void setGrayLevel(int level) {
-    _grayHigh = (level << 4) & 0xF0;
-    _grayLow = level & 0x0F;
-  }
-
-  /// Writes a string to the LCD
+  /// Writes a string to the OLED.
+  ///
   /// Note: only ASCII characters are supported.
   MraaReturnCode write(String msg) {
     var error = MraaReturnCode.success;
@@ -111,7 +122,7 @@ class GroveOledSsd1327 {
     return error;
   }
 
-  /// Sets the cursor to specified coordinates
+  /// Sets the cursor to specified coordinates.
   MraaReturnCode setCursor(int row, int column) {
     var error = MraaReturnCode.success;
     // Column Address
@@ -139,24 +150,28 @@ class GroveOledSsd1327 {
     return error;
   }
 
-  /// Clears the display of all characters
+  /// Clears the display of all characters.
   MraaReturnCode clear() {
     var error = MraaReturnCode.success;
     int columnIdx, rowIdx;
-    for (rowIdx = 0; rowIdx < 12; rowIdx++) {
+    for (rowIdx = GroveOledSsd1327Definitions.textRowStart;
+        rowIdx < GroveOledSsd1327Definitions.textRowEnd;
+        rowIdx++) {
       setCursor(rowIdx, 0);
       // Clear all columns
-      for (columnIdx = 0; columnIdx < 12; columnIdx++) {
+      for (columnIdx = GroveOledSsd1327Definitions.textColumnStart;
+          columnIdx < GroveOledSsd1327Definitions.textColumnEnd;
+          columnIdx++) {
         error = _writeChar(' '.codeUnitAt(0));
       }
     }
     return error;
   }
 
-  /// Returns to the original coordinates (0,0)
+  /// Returns to the original coordinates (0,0).
   MraaReturnCode home() => setCursor(0, 0);
 
-  /// Draws a bitmap
+  /// Draws a bitmap.
   MraaReturnCode drawBitMap(List<int> bitmap, int bytes) {
     var error = MraaReturnCode.success;
     // Set horizontal mode for drawing

@@ -42,6 +42,10 @@ class GroveOledSsd1327Definitions {
   static const startColumnAddress = 8;
   static const endColumnAddress = 55;
   static const defaultGrayLevel = 12;
+  static const textRowStart = 0;
+  static const textRowEnd = 12;
+  static const textColumnStart = 0;
+  static const textColumnEnd = 12;
 
   /// Command defaults
   static const muxRatio = 0x5f;
