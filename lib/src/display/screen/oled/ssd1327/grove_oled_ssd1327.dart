@@ -7,8 +7,9 @@
 
 part of grove;
 
-/// This implementation supports the Grove OLED 96*96 display module,
+/// Provides support for the Grove OLED 96*96 display module,
 /// which is an OLED monochrome display based on a SSD1327 chip.
+///
 /// The SSD1327 is a 96x96 dot-matrix OLED/PLED segment driver with an
 /// associated controller, accessed through the I2C bus.
 
