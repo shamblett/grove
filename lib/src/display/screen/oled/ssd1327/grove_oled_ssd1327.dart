@@ -14,7 +14,7 @@ part of grove;
 
 class GroveOledSsd1327 {
   /// Default device address.
-  static const int defaultDeviceAddress = 0x3C;
+  static const int defaultDeviceAddress = 0x3c;
 
   /// Construction
   GroveOledSsd1327(this._mraa, this._context,
@@ -129,19 +129,20 @@ class GroveOledSsd1327 {
     error = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
         <int>[GroveOledSsd1327Definitions.setColumnAddress]);
     sleep(cmdSleep);
-    // Start Column, start from 8
+    // Start Column
     error = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
         <int>[GroveOledSsd1327Definitions.startColumn + (column * 4)]);
     sleep(cmdSleep);
     // End column
-    error = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x37]);
+    error = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.endColumnAddress]);
     sleep(cmdSleep);
     // Row Address
-    error = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x75]);
+    error = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.setRowAddress]);
     sleep(cmdSleep);
     // Start row
-    error =
-        _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x00 + (row * 8)]);
+    error = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[(row * 8)]);
     sleep(cmdSleep);
     // End Row
     error =
@@ -201,14 +202,14 @@ class GroveOledSsd1327 {
     if (value < 0x20 || value > 0x7F) {
       calcValue = 0x20;
     }
+    calcValue -= 0x20;
     for (var row = 0; row < 8; row = row + 2) {
       for (var col = 0; col < 8; col++) {
         var data = 0x0;
-        final bitOne = ((GroveOledSsd1327Definitions.basicFont[calcValue - 32]
-                    [row]) >>
-                col) &
-            0x1;
-        final bitTwo = ((GroveOledSsd1327Definitions.basicFont[calcValue - 32]
+        final bitOne =
+            ((GroveOledSsd1327Definitions.basicFont[calcValue][row]) >> col) &
+                0x1;
+        final bitTwo = ((GroveOledSsd1327Definitions.basicFont[calcValue]
                     [row + 1]) >>
                 col) &
             0x1;
@@ -223,28 +224,34 @@ class GroveOledSsd1327 {
 
   MraaReturnCode _setHorizontalMode() {
     var rv = MraaReturnCode.success;
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0xA0]); // remap to
+    // Remap to horizontal mode
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.setRemap]);
     sleep(cmdSleep);
-    rv = _writeReg(
-        GroveOledSsd1327Definitions.lcdCmd, <int>[0x42]); // horizontal mode
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.horizontalMode]);
     sleep(cmdSleep);
-    // Row Address
-    rv = _writeReg(
-        GroveOledSsd1327Definitions.lcdCmd, <int>[0x75]); // Set Row Address
+    // Reset row Address
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.setRowAddress]);
     sleep(cmdSleep);
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x00]); // Start 0
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.startRowAddress]);
     sleep(cmdSleep);
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x5f]); // End 95
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.endRowAddress]);
     sleep(cmdSleep);
     // Column Address
-    rv = _writeReg(
-        GroveOledSsd1327Definitions.lcdCmd, <int>[0x15]); // Set Column Address
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.setColumnAddress]);
     sleep(cmdSleep);
     // Start from 8th Column of driver IC. This is 0th Column for OLED
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x08]);
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.startColumnAddress]);
     sleep(cmdSleep);
     // End at  (8 + 47)th column. Each column has 2 pixels(or segments)
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x37]);
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.endColumnAddress]);
     sleep(cmdSleep);
     _isVerticalMode = false;
     return rv;
@@ -253,9 +260,11 @@ class GroveOledSsd1327 {
   MraaReturnCode _setVerticalMode() {
     var rv = MraaReturnCode.success;
     // Remap to vertical mode
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0xA0]);
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.setRemap]);
     sleep(cmdSleep);
-    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd, <int>[0x46]);
+    rv = _writeReg(GroveOledSsd1327Definitions.lcdCmd,
+        <int>[GroveOledSsd1327Definitions.verticalMode]);
     sleep(cmdSleep);
     _isVerticalMode = true;
     return rv;
@@ -329,7 +338,7 @@ class GroveOledSsd1327 {
     sleep(initSleep);
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
-            <int>[GroveOledSsd1327Definitions.remap], true);
+            <int>[GroveOledSsd1327Definitions.verticalMode], true);
     sleep(initSleep);
     _isVerticalMode = true;
     // Set vdd internal
@@ -438,7 +447,6 @@ class GroveOledSsd1327 {
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,
             <int>[GroveOledSsd1327Definitions.endRowAddress], true);
     sleep(initSleep);
-
     // Set Column Address
     monitor +
         _writeReg(GroveOledSsd1327Definitions.lcdCmd,

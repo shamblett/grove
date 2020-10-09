@@ -51,7 +51,7 @@ class GroveOledSsd1327Definitions {
   static const muxRatio = 0x5f;
   static const displayStartLine = 0;
   static const displayOffset = 0x60;
-  static const remap = 0x46;
+  static const verticalMode = 0x46;
   static const vddInternal = 1;
   static const contrast = 0x53;
   static const phaseLength = 0x51;
@@ -60,6 +60,7 @@ class GroveOledSsd1327Definitions {
   static const vcomh = 0x07;
   static const secondPreChargePeriod = 0x01;
   static const secondPrechargeAndVSL = 0X62;
+  static const horizontalMode = 0x42;
 
   /// A basic font implementation
   static const List<List<int>> basicFont = <List<int>>[
