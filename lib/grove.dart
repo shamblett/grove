@@ -13,6 +13,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:mraa/mraa.dart';
+import 'package:meta/meta.dart';
 
 part 'src/display/screen/oled/ssd1327/grove_oled_ssd1327.dart';
 part 'src/display/screen/oled/ssd1327/grove_oled_ssd1327_definitions.dart';

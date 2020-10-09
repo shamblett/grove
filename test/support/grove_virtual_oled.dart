@@ -26,41 +26,41 @@ const Map<int, state> sm = {
 
 /// Virtual OLED test support package.
 class GroveVirtualOled {
-  int startColumn = 0;
-  int endColumn = 0;
-  int startRow = 0;
-  int endRow = 0;
+  int startColumn = -1;
+  int endColumn = -1;
+  int startRow = -1;
+  int endRow = -1;
 
   final commandStack = <int>[];
-  final dataStack = [<int>[]];
+  final dataStack = <int>[];
 
   state currentState = state.commandExpected;
 
-  void writeByteData(int command, List<int> data) {
+  void writeByteData(int command, int data) {
     if (currentState != state.commandExpected) {
       dataStack.add(data);
       switch (currentState) {
         case state.startColumnExpected:
           {
-            startColumn = data[0];
+            startColumn = data;
             currentState = state.endColumnExpected;
             break;
           }
         case state.endColumnExpected:
           {
-            endColumn = data[0];
+            endColumn = data;
             currentState = state.commandExpected;
             break;
           }
         case state.startRowExpected:
           {
-            startRow = data[0];
+            startRow = data;
             currentState = state.endRowExpected;
             break;
           }
         case state.endRowExpected:
           {
-            endRow = data[0];
+            endRow = data;
             currentState = state.commandExpected;
             break;
           }
@@ -70,8 +70,8 @@ class GroveVirtualOled {
           }
       }
     } else {
-      currentState = sm[command];
-      commandStack.add(command);
+      currentState = sm[data];
+      commandStack.add(data);
     }
   }
 }

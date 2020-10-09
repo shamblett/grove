@@ -42,10 +42,12 @@ class GroveOledSsd1327 {
   /// The initialised I2C context
   final Pointer<MraaI2cContext> _context;
 
+  @protected
   bool _initialised = false;
 
-  /// Initialised.
+  /// Initialised. Use the setter with caution, intended only for testing.
   bool get initialised => _initialised;
+  set initialised(bool state) => _initialised = state;
 
   final _monitor = GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
 
@@ -123,7 +125,8 @@ class GroveOledSsd1327 {
     return error;
   }
 
-  /// Sets the cursor to specified coordinates.
+  /// Sets the cursor to the specified coordinates.
+  /// The text display is a 12 * 12 display of characters.
   MraaReturnCode setCursor(int row, int column) {
     var error = MraaReturnCode.success;
     // Column Address
@@ -155,13 +158,12 @@ class GroveOledSsd1327 {
   /// Clears the display of all characters.
   MraaReturnCode clear() {
     var error = MraaReturnCode.success;
-    int columnIdx, rowIdx;
-    for (rowIdx = GroveOledSsd1327Definitions.textRowStart;
+    for (var rowIdx = GroveOledSsd1327Definitions.textRowStart;
         rowIdx < GroveOledSsd1327Definitions.textRowEnd;
         rowIdx++) {
       setCursor(rowIdx, 0);
       // Clear all columns
-      for (columnIdx = GroveOledSsd1327Definitions.textColumnStart;
+      for (var columnIdx = GroveOledSsd1327Definitions.textColumnStart;
           columnIdx < GroveOledSsd1327Definitions.textColumnEnd;
           columnIdx++) {
         error = _writeChar(' '.codeUnitAt(0));

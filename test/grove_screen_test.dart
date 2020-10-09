@@ -12,6 +12,7 @@ import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
 import 'support/grove_virtual_oled.dart';
+import 'support/grove_test_oled_ssd1327.dart';
 
 @TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
@@ -68,20 +69,20 @@ int main() {
         expect(oled.grayLevel, 0);
       });
       test('Set Cursor - home', () {
-        final oled = GroveOledSsd1327(mraa, context);
-        when(mraaI2c.writeByteData(context, any, any))
-            .thenReturn(MraaReturnCode.success);
+        final oled = GroveTestOledSsd1327(mraa, context);
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any, any))
-        .thenAnswer((invocation){
+        when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
           virt.writeByteData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
-        oled.home;
-        expect(virt.startColumn, 0);
+        oled.home();
+        expect(virt.startColumn, 8);
+        expect(virt.endColumn, 55);
+        expect(virt.startRow, 0);
+        expect(virt.endRow, 7);
       });
     });
   });
