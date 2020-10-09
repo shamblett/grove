@@ -11,6 +11,8 @@ import 'package:mockito/mockito.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
+import 'support/grove_virtual_oled.dart';
+
 @TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
 
@@ -56,7 +58,7 @@ int main() {
         expect(oled.monitored.failureValues[1],
             MraaReturnCode.errorFeatureNotImplemented);
       });
-      test('Gray level', () {
+      test('Gray Level', () {
         final oled = GroveOledSsd1327(mraa, context);
         oled.grayLevel = 12;
         expect(oled.grayLevel, 12);
@@ -64,6 +66,22 @@ int main() {
         expect(oled.grayLevel, 4);
         oled.grayLevel = -7;
         expect(oled.grayLevel, 0);
+      });
+      test('Set Cursor - home', () {
+        final oled = GroveOledSsd1327(mraa, context);
+        when(mraaI2c.writeByteData(context, any, any))
+            .thenReturn(MraaReturnCode.success);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        final virt = GroveVirtualOled();
+        when(mraaI2c.writeByteData(context, any, any))
+        .thenAnswer((invocation){
+          virt.writeByteData(invocation.positionalArguments[2],
+              invocation.positionalArguments[1]);
+          return MraaReturnCode.success;
+        });
+        oled.home;
+        expect(virt.startColumn, 0);
       });
     });
   });
