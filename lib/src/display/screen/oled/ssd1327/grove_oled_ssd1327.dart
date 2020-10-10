@@ -85,36 +85,10 @@ class GroveOledSsd1327 {
       _initialised = true;
       // Initialize the screen
       grayLevel = GroveOledSsd1327Definitions.defaultGrayLevel;
-    //  clear();
+      clear();
       return true;
     }
     return false;
-  }
-
-  /// Draws an image.
-  ///
-  /// Pixels are arranged in one byte for 8 vertical pixels and not
-  /// addressed individually.
-  /// If bytes to draw is not supplied then all the bytes are drawn.
-  MraaReturnCode draw(Uint8List data, [int bytesToDraw]) {
-    var error = MraaReturnCode.success;
-    _setHorizontalMode();
-    final bytes = bytesToDraw ?? data.length;
-    for (var row = 0; row < bytes; row++) {
-      for (var col = 0; col < 8; col += 2) {
-        var value = 0x0;
-
-        final bitOne = (data[row] << col) & 0x80;
-        final bitTwo = (data[row] << (col + 1)) & 0x80;
-
-        value |= (bitOne != 0) ? _grayHigh : 0x00;
-        value |= (bitTwo != 0) ? _grayLow : 0x00;
-
-        error = _writeReg(GroveOledSsd1327Definitions.oledData, <int>[value]);
-        sleep(cmdSleep);
-      }
-    }
-    return error;
   }
 
   /// Writes a string to the OLED.
@@ -197,6 +171,36 @@ class GroveOledSsd1327 {
         c |= (bit1 == 0) ? _grayHigh : 0x00;
         c |= (bit2 == 0) ? _grayLow : 0x00;
         error = _writeReg(GroveOledSsd1327Definitions.oledData, <int>[c]);
+      }
+    }
+    if (wasVertical) {
+      error = _setVerticalMode();
+    }
+    return error;
+  }
+
+  /// Draws an image.
+  ///
+  /// Pixels are arranged in one byte for 8 vertical pixels and not
+  /// addressed individually.
+  /// If bytes to draw is not supplied then all the bytes are drawn.
+  MraaReturnCode draw(Uint8List data, [int bytesToDraw]) {
+    var error = MraaReturnCode.success;
+    final wasVertical = _isVerticalMode;
+    _setHorizontalMode();
+    final bytes = bytesToDraw ?? data.length;
+    for (var row = 0; row < bytes; row++) {
+      for (var col = 0; col < 8; col += 2) {
+        var value = 0x0;
+
+        final bitOne = (data[row] << col) & 0x80;
+        final bitTwo = (data[row] << (col + 1)) & 0x80;
+
+        value |= (bitOne == 0) ? _grayHigh : 0x00;
+        value |= (bitTwo == 0) ? _grayLow : 0x00;
+
+        error = _writeReg(GroveOledSsd1327Definitions.oledData, <int>[value]);
+        sleep(cmdSleep);
       }
     }
     if (wasVertical) {
