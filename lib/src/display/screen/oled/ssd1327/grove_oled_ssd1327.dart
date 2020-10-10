@@ -146,8 +146,15 @@ class GroveOledSsd1327 {
   /// Clears the display of all characters.
   MraaReturnCode clear() {
     var error = MraaReturnCode.success;
+    final wasVertical = _isVerticalMode;
+    final gray = grayLevel;
+    grayLevel = 0;
     final byteData = Uint8List(1152)..fillRange(0, 1151, 1);
     error = draw(byteData);
+    if (wasVertical) {
+      error = _setVerticalMode();
+    }
+    grayLevel = gray;
     return error;
   }
 
@@ -157,21 +164,9 @@ class GroveOledSsd1327 {
   /// Draws a bitmap.
   MraaReturnCode drawBitMap(List<int> bitmap, int bytes) {
     var error = MraaReturnCode.success;
-    // Set horizontal mode for drawing
     final wasVertical = _isVerticalMode;
-    _setHorizontalMode();
-
-    for (var i = 0; i < bytes; i++) {
-      for (var j = 0; j < 8; j = j + 2) {
-        var c = 0x00;
-        final bit1 = bitmap[i] << j & 0x80;
-        final bit2 = bitmap[i] << (j + 1) & 0x80;
-        // Each bit is changed to a nibble
-        c |= (bit1 == 0) ? _grayHigh : 0x00;
-        c |= (bit2 == 0) ? _grayLow : 0x00;
-        error = _writeReg(GroveOledSsd1327Definitions.oledData, <int>[c]);
-      }
-    }
+    final data = Uint8List.fromList(bitmap);
+    draw(data);
     if (wasVertical) {
       error = _setVerticalMode();
     }
@@ -185,9 +180,7 @@ class GroveOledSsd1327 {
   /// If bytes to draw is not supplied then all the bytes are drawn.
   MraaReturnCode draw(Uint8List data, [int bytesToDraw]) {
     var error = MraaReturnCode.success;
-    final wasVertical = _isVerticalMode;
-    final gray = grayLevel;
-    grayLevel = 0;
+    // Set horizontal mode for drawing
     _setHorizontalMode();
     final bytes = bytesToDraw ?? data.length;
     for (var row = 0; row < bytes; row++) {
@@ -204,10 +197,6 @@ class GroveOledSsd1327 {
         sleep(cmdSleep);
       }
     }
-    if (wasVertical) {
-      error = _setVerticalMode();
-    }
-    grayLevel = gray;
     return error;
   }
 
