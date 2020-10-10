@@ -62,6 +62,9 @@ class GroveOledSsd1327Definitions {
   static const secondPrechargeAndVSL = 0X62;
   static const horizontalMode = 0x42;
 
+  /// Display defaults
+  static const maxPixels = 12 * 96; // Rows * pixels per line
+
   /// A basic font implementation
   static const List<List<int>> basicFont = <List<int>>[
     <int>[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],

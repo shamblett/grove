@@ -67,7 +67,7 @@ int main() {
   oled.home();
   oled.clear();
   print('Now lets draw a logo.....');
-  oled.drawBitMap(seeedLogo96x96, seeedLogo96x96.length);
+  oled.drawImage(seeedLogo96x96);
   print('Press a key to clear the display and exit .....');
   stdin.readByteSync();
   oled.home();

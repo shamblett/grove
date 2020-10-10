@@ -149,8 +149,9 @@ class GroveOledSsd1327 {
     final wasVertical = _isVerticalMode;
     final gray = grayLevel;
     grayLevel = 0;
-    final byteData = Uint8List(1152)..fillRange(0, 1151, 1);
-    error = draw(byteData);
+    final byteData = Uint8List(GroveOledSsd1327Definitions.maxPixels)
+      ..fillRange(0, GroveOledSsd1327Definitions.maxPixels - 1, 1);
+    error = _draw(byteData);
     if (wasVertical) {
       error = _setVerticalMode();
     }
@@ -161,24 +162,24 @@ class GroveOledSsd1327 {
   /// Returns to the original coordinates (0,0).
   MraaReturnCode home() => setCursor(0, 0);
 
-  /// Draws a bitmap.
-  MraaReturnCode drawBitMap(List<int> bitmap, int bytes) {
+  /// Draws an image.
+  ///
+  /// Pixels are arranged in one byte for 8 vertical pixels and not
+  /// addressed individually.
+  /// If bytes to draw is not supplied then all the bytes are drawn.
+  /// Vertical mode is preserved.
+  MraaReturnCode drawImage(List<int> bitmap, [int bytesToDraw]) {
     var error = MraaReturnCode.success;
     final wasVertical = _isVerticalMode;
     final data = Uint8List.fromList(bitmap);
-    draw(data);
+    _draw(data, bytesToDraw);
     if (wasVertical) {
       error = _setVerticalMode();
     }
     return error;
   }
 
-  /// Draws an image.
-  ///
-  /// Pixels are arranged in one byte for 8 vertical pixels and not
-  /// addressed individually.
-  /// If bytes to draw is not supplied then all the bytes are drawn.
-  MraaReturnCode draw(Uint8List data, [int bytesToDraw]) {
+  MraaReturnCode _draw(Uint8List data, [int bytesToDraw]) {
     var error = MraaReturnCode.success;
     // Set horizontal mode for drawing
     _setHorizontalMode();
