@@ -52,6 +52,7 @@ class GroveTemperatureV12 {
     values.raw = raw;
     final r = (1023.0 - values.raw) * (r0 / values.raw);
     values.celsius = 1.0 / (log(r / r0) / b + 1.0 / 298.15) - 273.15;
+    values.validAt = DateTime.now();
     return values;
   }
 }
