@@ -146,8 +146,7 @@ class GroveOledSsd1327 {
   /// Clears the display of all characters.
   MraaReturnCode clear() {
     var error = MraaReturnCode.success;
-    final byteData = Uint8List(1152)
-      ..fillRange(0, 1151, 1);
+    final byteData = Uint8List(1152)..fillRange(0, 1151, 1);
     error = draw(byteData);
     return error;
   }
@@ -187,6 +186,8 @@ class GroveOledSsd1327 {
   MraaReturnCode draw(Uint8List data, [int bytesToDraw]) {
     var error = MraaReturnCode.success;
     final wasVertical = _isVerticalMode;
+    final gray = grayLevel;
+    grayLevel = 0;
     _setHorizontalMode();
     final bytes = bytesToDraw ?? data.length;
     for (var row = 0; row < bytes; row++) {
@@ -206,6 +207,7 @@ class GroveOledSsd1327 {
     if (wasVertical) {
       error = _setVerticalMode();
     }
+    grayLevel = gray;
     return error;
   }
 
