@@ -84,6 +84,38 @@ int main() {
         expect(virt.startRow, 0);
         expect(virt.endRow, 7);
       });
+      test('Set Cursor - middle', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        final virt = GroveVirtualOled();
+        when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
+          virt.writeByteData(invocation.positionalArguments[2],
+              invocation.positionalArguments[1]);
+          return MraaReturnCode.success;
+        });
+        oled.setCursor(6, 6);
+        expect(virt.startColumn, 32);
+        expect(virt.endColumn, 55);
+        expect(virt.startRow, 48);
+        expect(virt.endRow, 55);
+      });
+      test('Set Cursor - constrained', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        final virt = GroveVirtualOled();
+        when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
+          virt.writeByteData(invocation.positionalArguments[2],
+              invocation.positionalArguments[1]);
+          return MraaReturnCode.success;
+        });
+        oled.setCursor(20, -6);
+        expect(virt.startColumn, 8);
+        expect(virt.endColumn, 55);
+        expect(virt.startRow, 88);
+        expect(virt.endRow, 95);
+      });
     });
   });
 

@@ -126,9 +126,21 @@ class GroveOledSsd1327 {
   }
 
   /// Sets the cursor to the specified coordinates.
-  /// The text display is a 12 * 12 display of characters.
-  MraaReturnCode setCursor(int row, int column) {
+  ///
+  /// The text display is a 12 * 12 display of characters giving
+  /// cursor parameters of 0..11 to which they are constrained.
+  MraaReturnCode setCursor(int pRow, int pColumn) {
     var error = MraaReturnCode.success;
+    final row = pRow.isNegative
+        ? 0
+        : pRow >= GroveOledSsd1327Definitions.textRowEnd - 1
+            ? GroveOledSsd1327Definitions.textRowEnd - 1
+            : pRow;
+    final column = pColumn.isNegative
+        ? 0
+        : pColumn >= GroveOledSsd1327Definitions.textColumnEnd - 1
+            ? GroveOledSsd1327Definitions.textColumnEnd - 1
+            : pColumn;
     // Column Address
     error = _writeReg(GroveOledSsd1327Definitions.oledCmd,
         <int>[GroveOledSsd1327Definitions.setColumnAddress]);
