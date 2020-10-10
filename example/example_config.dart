@@ -26,7 +26,7 @@ bool dumpBitMap = false;
 // Device configuration
 
 // The I2C bus id for the OLED display.
-const int i2cBusId = 1;
+const int i2cBusId = 0;
 
 // The GPIO pins for the Grove Led bar, set as needed.
 const int clockGPIOPin = 59;

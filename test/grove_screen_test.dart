@@ -13,6 +13,7 @@ import 'package:test/test.dart';
 
 import 'support/grove_virtual_oled.dart';
 import 'support/grove_test_oled_ssd1327.dart';
+import 'support/images/grove_seeed_logo.dart';
 
 @TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
@@ -74,7 +75,7 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
-          virt.writeByteData(invocation.positionalArguments[2],
+          virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
@@ -90,7 +91,7 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
-          virt.writeByteData(invocation.positionalArguments[2],
+          virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
@@ -106,7 +107,7 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
-          virt.writeByteData(invocation.positionalArguments[2],
+          virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
@@ -115,6 +116,46 @@ int main() {
         expect(virt.endColumn, 55);
         expect(virt.startRow, 88);
         expect(virt.endRow, 95);
+      });
+      test('Clear', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        final virt = GroveVirtualOled();
+        when(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledData))
+            .thenAnswer((invocation) {
+          virt.writeDataData(invocation.positionalArguments[1]);
+          return MraaReturnCode.success;
+        });
+        when(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.clear();
+        verify(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledData))
+            .called(4608);
+        expect(virt.dataDataStack.length, 4608);
+      });
+      test('Draw Image', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        final virt = GroveVirtualOled();
+        when(mraaI2c.writeByteData(
+            context, any, GroveOledSsd1327Definitions.oledData))
+            .thenAnswer((invocation) {
+          virt.writeDataData(invocation.positionalArguments[1]);
+          return MraaReturnCode.success;
+        });
+        when(mraaI2c.writeByteData(
+            context, any, GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.drawImage(seeedLogo96x96);
+        verify(mraaI2c.writeByteData(
+            context, any, GroveOledSsd1327Definitions.oledData))
+            .called(4608);
+        expect(virt.dataDataStack.length, 4608);
       });
     });
   });

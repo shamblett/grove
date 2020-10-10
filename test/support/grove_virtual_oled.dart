@@ -32,13 +32,14 @@ class GroveVirtualOled {
   int endRow = -1;
 
   final commandStack = <int>[];
-  final dataStack = <int>[];
+  final commandDataStack = <int>[];
+  final dataDataStack = <int>[];
 
   state currentState = state.commandExpected;
 
-  void writeByteData(int command, int data) {
+  void writeCommandData(int command, int data) {
     if (currentState != state.commandExpected) {
-      dataStack.add(data);
+      commandDataStack.add(data);
       switch (currentState) {
         case state.startColumnExpected:
           {
@@ -73,5 +74,9 @@ class GroveVirtualOled {
       currentState = sm[data];
       commandStack.add(data);
     }
+  }
+
+  void writeDataData(int value) {
+    dataDataStack.add(value);
   }
 }
