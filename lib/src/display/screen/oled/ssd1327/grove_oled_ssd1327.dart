@@ -85,7 +85,7 @@ class GroveOledSsd1327 {
       _initialised = true;
       // Initialize the screen
       grayLevel = GroveOledSsd1327Definitions.defaultGrayLevel;
-      clear();
+    //  clear();
       return true;
     }
     return false;
