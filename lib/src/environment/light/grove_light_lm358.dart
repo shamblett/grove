@@ -41,6 +41,7 @@ class GroveLightLM358 {
     values.raw = raw;
     values.lux = 10000.0 /
         pow(((maxAdc - values.raw) * 10.0 / values.raw) * 15.0, 4.0 / 3.0);
+    values.validAt = DateTime.now();
     return values;
   }
 }
