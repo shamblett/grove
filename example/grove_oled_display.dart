@@ -53,6 +53,8 @@ int main() {
   oled.write('Hello from');
   oled.setCursor(5, 0);
   oled.write('the Dart VM');
+  oled.setCursor(6, 0);
+  oled.write(' ');
   oled.setCursor(7, 0);
   oled.write('Brought to');
   oled.setCursor(8, 0);
