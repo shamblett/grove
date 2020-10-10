@@ -95,9 +95,11 @@ class GroveOledSsd1327 {
   ///
   /// Pixels are arranged in one byte for 8 vertical pixels and not
   /// addressed individually.
-  MraaReturnCode draw(Uint8List data, int bytes) {
+  /// If bytes to draw is not supplied then all the bytes are drawn.
+  MraaReturnCode draw(Uint8List data, [int bytesToDraw]) {
     var error = MraaReturnCode.success;
     _setHorizontalMode();
+    final bytes = bytesToDraw ?? data.length;
     for (var row = 0; row < bytes; row++) {
       for (var col = 0; col < 8; col += 2) {
         var value = 0x0;
@@ -109,7 +111,7 @@ class GroveOledSsd1327 {
         value |= (bitTwo != 0) ? _grayLow : 0x00;
 
         error = _writeReg(GroveOledSsd1327Definitions.oledData, <int>[value]);
-        sleep(cmdSleep - const Duration(milliseconds: 2));
+        sleep(cmdSleep);
       }
     }
     return error;
@@ -170,17 +172,9 @@ class GroveOledSsd1327 {
   /// Clears the display of all characters.
   MraaReturnCode clear() {
     var error = MraaReturnCode.success;
-    for (var rowIdx = GroveOledSsd1327Definitions.textRowStart;
-        rowIdx < GroveOledSsd1327Definitions.textRowEnd;
-        rowIdx++) {
-      setCursor(rowIdx, 0);
-      // Clear all columns
-      for (var columnIdx = GroveOledSsd1327Definitions.textColumnStart;
-          columnIdx < GroveOledSsd1327Definitions.textColumnEnd;
-          columnIdx++) {
-        error = _writeChar(' '.codeUnitAt(0));
-      }
-    }
+    final byteData = Uint8List(GroveOledSsd1327Definitions.endRowAddress)
+      ..fillRange(0, GroveOledSsd1327Definitions.endRowAddress, 0);
+    error = draw(byteData);
     return error;
   }
 
