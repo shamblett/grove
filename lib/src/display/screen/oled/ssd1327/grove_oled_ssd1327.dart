@@ -147,7 +147,7 @@ class GroveOledSsd1327 {
   MraaReturnCode clear() {
     var error = MraaReturnCode.success;
     final byteData = Uint8List(1152)
-      ..fillRange(0, 1152, 1);
+      ..fillRange(0, 1151, 1);
     error = draw(byteData);
     return error;
   }
