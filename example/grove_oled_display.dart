@@ -53,13 +53,13 @@ int main() {
   oled.write('Hello from');
   oled.setCursor(5, 0);
   oled.write('the Dart VM');
-  oled.setCursor(6, 0);
-  oled.write('Brought to');
   oled.setCursor(7, 0);
-  oled.write('you by FFI');
+  oled.write('Brought to');
   oled.setCursor(8, 0);
-  oled.write('and Intel\'s');
+  oled.write('you by FFI');
   oled.setCursor(9, 0);
+  oled.write('and Intel\'s');
+  oled.setCursor(10, 0);
   oled.write('MRAA library');
 
   print('Press a key to clear the display and continue.....');
