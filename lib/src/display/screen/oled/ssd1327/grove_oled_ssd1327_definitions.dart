@@ -34,6 +34,10 @@ class GroveOledSsd1327Definitions {
   static const setNormalDisplay = 0xa4;
   static const deactivateScroll = 0x2e;
   static const setRowAddress = 0x75;
+  static const displayModeInvert = 0xa7;
+  static const displayModeOn = 0xa5;
+  static const displayModeOff = 0xa6;
+  static const displayModeNormal = 0xa4;
 
   /// Setting defaults
   static const startColumn = 8;
