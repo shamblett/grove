@@ -239,12 +239,10 @@ class GroveOledSsd1327 {
       GroveOledSsd1327Definitions.displayModeNormal);
 
   /// Turn the display on in normal mode.
-  ///
   void turnOn() => _writeReg(GroveOledSsd1327Definitions.oledCmd,
       GroveOledSsd1327Definitions.setDisplayOn);
 
   /// Turn the display off(sleep) mode.
-  ///
   void turnOff() => _writeReg(GroveOledSsd1327Definitions.oledCmd,
       GroveOledSsd1327Definitions.setDisplayOff);
 
