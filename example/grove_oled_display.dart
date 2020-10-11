@@ -87,8 +87,9 @@ int main() {
   sleep(Duration(seconds: 2));
   print('Press a key to clear the display and exit .....');
   stdin.readByteSync();
+  oled.displayNormal();
   oled.home();
   oled.clear();
-
+  oled.turnOff();
   return 0;
 }
