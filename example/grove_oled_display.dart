@@ -89,6 +89,7 @@ int main() {
   sleep(Duration(seconds: 2));
   print('Now lets draw the Dart logo.....');
   oled.displayNormal();
+  oled.clear();
   oled.drawImage(dartLogo96x96);
   sleep(Duration(seconds: 5));
   print('Press a key to clear the display and exit .....');
