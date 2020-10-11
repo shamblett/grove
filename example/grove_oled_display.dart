@@ -10,6 +10,7 @@ import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 import 'example_config.dart';
 import 'images/grove_seeed_logo.dart';
+import 'images/grove_dart_logo.dart';
 
 /// Output to the Grove OLED display.
 int main() {
@@ -69,7 +70,7 @@ int main() {
   stdin.readByteSync();
   oled.home();
   oled.clear();
-  print('Now lets draw a logo.....');
+  print('Now lets draw the Seeed logo.....');
   oled.drawImage(seeedLogo96x96);
   sleep(Duration(seconds: 5));
   print('Flash it');
@@ -86,6 +87,10 @@ int main() {
   sleep(Duration(seconds: 2));
   oled.invertDisplay();
   sleep(Duration(seconds: 2));
+  print('Now lets draw the Dart logo.....');
+  oled.displayNormal();
+  oled.drawImage(dartLogo96x96);
+  sleep(Duration(seconds: 5));
   print('Press a key to clear the display and exit .....');
   stdin.readByteSync();
   oled.displayNormal();
