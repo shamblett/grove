@@ -143,19 +143,20 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(
-            context, any, GroveOledSsd1327Definitions.oledData))
+                context, any, GroveOledSsd1327Definitions.oledData))
             .thenAnswer((invocation) {
           virt.writeDataData(invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
         when(mraaI2c.writeByteData(
-            context, any, GroveOledSsd1327Definitions.oledCmd))
+                context, any, GroveOledSsd1327Definitions.oledCmd))
             .thenReturn(MraaReturnCode.success);
         oled.drawImage(seeedLogo96x96);
         verify(mraaI2c.writeByteData(
-            context, any, GroveOledSsd1327Definitions.oledData))
+                context, any, GroveOledSsd1327Definitions.oledData))
             .called(4608);
         expect(virt.dataDataStack.length, 4608);
+        print(groveList2Hex(virt.dataDataStack, lineLength: 4));
       });
     });
   });

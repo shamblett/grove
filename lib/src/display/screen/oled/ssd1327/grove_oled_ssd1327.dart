@@ -104,7 +104,9 @@ class GroveOledSsd1327 {
   /// Switches on display.
   /// Sets the row address.
   /// Sets the column address.
-  bool initialise() {
+  /// Sets the default gray level
+  /// Optionally clears the display
+  bool initialise({bool clearDisplay = false}) {
     _monitor.reset();
     _initialisationState = GroveDeveiceInitialisationState.initialising;
     _initialise(_monitor);
@@ -112,8 +114,10 @@ class GroveOledSsd1327 {
       _initialisationState = GroveDeveiceInitialisationState.initialised;
       // Initialize the screen
       grayLevel = GroveOledSsd1327Definitions.defaultGrayLevel;
-      clear();
-      return true;
+      if ( clearDisplay ) {
+        clear();
+      }
+        return true;
     }
     _initialisationState = GroveDeveiceInitialisationState.notInitialised;
     return false;

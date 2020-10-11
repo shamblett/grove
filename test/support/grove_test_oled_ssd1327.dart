@@ -15,7 +15,7 @@ class GroveTestOledSsd1327 extends GroveOledSsd1327 {
       : super(mraa, context);
 
   @override
-  bool initialise() {
+  bool initialise({ bool clearDisplay = false}) {
     super.initialised = true;
     grayLevel = GroveOledSsd1327Definitions.defaultGrayLevel;
     return true;
