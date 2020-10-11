@@ -70,8 +70,9 @@ int main() {
   oled.clear();
   print('Now lets draw a logo.....');
   oled.drawImage(seeedLogo96x96);
-  sleep(Duration(seconds: 2));
+  sleep(Duration(seconds: 5));
   print('Flash it');
+  sleep(Duration(seconds: 2));
   oled.turnOff();
   sleep(Duration(seconds: 1));
   oled.turnOn();
@@ -81,6 +82,7 @@ int main() {
   oled.turnOn();
   sleep(Duration(seconds: 1));
   print('Invert it');
+  sleep(Duration(seconds: 2));
   oled.invertDisplay();
   sleep(Duration(seconds: 2));
   print('Press a key to clear the display and exit .....');
