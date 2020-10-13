@@ -13,6 +13,7 @@ import 'package:test/test.dart';
 
 import 'support/grove_virtual_oled.dart';
 import 'support/grove_test_oled_ssd1327.dart';
+import 'support/images/grove_seeed_logo.dart';
 
 @TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
@@ -144,6 +145,7 @@ int main() {
         when(mraaI2c.writeByteData(
                 context, any, GroveOledSsd1327Definitions.oledData))
             .thenAnswer((invocation) {
+          virt.grayLevel = oled.grayLevel;
           virt.writeDataData(invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
@@ -165,14 +167,35 @@ int main() {
           0x0b,
           0x0c,
           0x0d,
-          0x0e,
           0x0f
         ]);
         verify(mraaI2c.writeByteData(
                 context, any, GroveOledSsd1327Definitions.oledData))
-            .called(64);
-        expect(virt.dataDataStack.length, 64);
-        print(groveList2Hex(virt.dataDataStack, lineLength: 4));
+            .called(60);
+        expect(virt.dataDataStack.length, 60);
+        print(virt.asciiArt());
+      });
+      test('Draw Image - Seeed logo', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        final virt = GroveVirtualOled();
+        when(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledData))
+            .thenAnswer((invocation) {
+          virt.grayLevel = oled.grayLevel;
+          virt.writeDataData(invocation.positionalArguments[1]);
+          return MraaReturnCode.success;
+        });
+        when(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.drawImage(seeedLogo96x96);
+        verify(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledData))
+            .called(4608);
+        expect(virt.dataDataStack.length, 4608);
+        print(virt.asciiArt());
       });
     });
   });

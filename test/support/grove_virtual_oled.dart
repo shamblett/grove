@@ -35,6 +35,21 @@ class GroveVirtualOled {
   final commandDataStack = <int>[];
   final dataDataStack = <int>[];
 
+  int _grayHigh = 0;
+  int _grayLow = 0;
+
+  /// The gray level for the OLED panel.
+  /// Values are constrained to range 0 - 15.
+  set grayLevel(int level) {
+    if (level < 0) {
+      _grayHigh = 0;
+      _grayLow = 0;
+      return;
+    }
+    _grayHigh = (level << 4) & 0xF0;
+    _grayLow = level & 0x0F;
+  }
+
   state currentState = state.commandExpected;
 
   void writeCommandData(int command, int data) {
@@ -78,5 +93,26 @@ class GroveVirtualOled {
 
   void writeDataData(int value) {
     dataDataStack.add(value);
+  }
+
+  String asciiArt() {
+    final sb = StringBuffer();
+    sb.writeln();
+    sb.writeln('Data stack length is ${dataDataStack.length}');
+    sb.writeln();
+    var count = 0;
+    dataDataStack.forEach((pixel) {
+      if (pixel == _grayHigh + _grayLow) {
+        sb.write('#');
+      } else {
+        sb.write('.');
+      }
+      count++;
+      if (count == 48) {
+        count = 0;
+        sb.writeln();
+      }
+    });
+    return sb.toString();
   }
 }
