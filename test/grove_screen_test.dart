@@ -175,28 +175,6 @@ int main() {
         expect(virt.dataDataStack.length, 60);
         print(virt.asciiArt());
       });
-      test('Draw Image - Seeed logo', () {
-        final oled = GroveTestOledSsd1327(mraa, context);
-        final ret = oled.initialise();
-        expect(ret, isTrue);
-        final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
-            .thenAnswer((invocation) {
-          virt.grayLevel = oled.grayLevel;
-          virt.writeDataData(invocation.positionalArguments[1]);
-          return MraaReturnCode.success;
-        });
-        when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
-            .thenReturn(MraaReturnCode.success);
-        oled.drawImage(seeedLogo96x96);
-        verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
-            .called(4608);
-        expect(virt.dataDataStack.length, 4608);
-        print(virt.asciiArt());
-      });
       test('Draw Image - Dart logo', () {
         final oled = GroveTestOledSsd1327(mraa, context);
         final ret = oled.initialise();
@@ -217,29 +195,6 @@ int main() {
                 context, any, GroveOledSsd1327Definitions.oledData))
             .called(4608);
         expect(virt.dataDataStack.length, 4608);
-        print(virt.asciiArt());
-      });
-      test('Draw Image - U8G2 logo', () {
-        final oled = GroveTestOledSsd1327(mraa, context);
-        final ret = oled.initialise();
-        expect(ret, isTrue);
-        final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
-            .thenAnswer((invocation) {
-          virt.grayLevel = oled.grayLevel;
-          virt.writeDataData(invocation.positionalArguments[1]);
-          return MraaReturnCode.success;
-        });
-        when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
-            .thenReturn(MraaReturnCode.success);
-        oled.drawImage(u8g2Logo96x96);
-        verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
-            .called(2652);
-        expect(virt.dataDataStack.length, 2652);
-        print(virt.asciiArt());
       });
     });
   });

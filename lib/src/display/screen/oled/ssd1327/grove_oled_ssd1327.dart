@@ -114,10 +114,10 @@ class GroveOledSsd1327 {
       _initialisationState = GroveDeveiceInitialisationState.initialised;
       // Initialize the screen
       grayLevel = GroveOledSsd1327Definitions.defaultGrayLevel;
-      if ( clearDisplay ) {
+      if (clearDisplay) {
         clear();
       }
-        return true;
+      return true;
     }
     _initialisationState = GroveDeveiceInitialisationState.notInitialised;
     return false;

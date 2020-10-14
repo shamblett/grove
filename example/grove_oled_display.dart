@@ -42,7 +42,7 @@ int main() {
   final oled = GroveOledSsd1327(mraa, context);
 
   /// Initialise before use, optionally clear the display
-  final result = oled.initialise(clearDisplay : true);
+  final result = oled.initialise(clearDisplay: true);
   if (!result) {
     print('ERROR - failed to initialise the OLED display');
     print(oled.monitored.failureValues);
