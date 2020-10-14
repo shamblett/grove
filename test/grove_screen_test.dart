@@ -247,6 +247,7 @@ int main() {
         final oled = GroveTestOledSsd1327(mraa, context);
         final ret = oled.initialise();
         expect(ret, isTrue);
+        reset(mraaI2c);
         when(mraaI2c.writeByteData(
                 context,
                 GroveOledSsd1327Definitions.displayModeNormal,
