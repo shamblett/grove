@@ -6,7 +6,6 @@
  */
 
 import 'package:grove/grove.dart';
-import 'package:mraa/mraa.dart';
 
 /// Device states
 enum state {

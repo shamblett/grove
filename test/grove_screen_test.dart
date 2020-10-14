@@ -173,7 +173,6 @@ int main() {
                 context, any, GroveOledSsd1327Definitions.oledData))
             .called(60);
         expect(virt.dataDataStack.length, 60);
-        print(virt.asciiArt());
       });
       test('Draw Image - Dart logo', () {
         final oled = GroveTestOledSsd1327(mraa, context);
@@ -195,6 +194,88 @@ int main() {
                 context, any, GroveOledSsd1327Definitions.oledData))
             .called(4608);
         expect(virt.dataDataStack.length, 4608);
+      });
+      test('Display Mode On', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        when(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeOn,
+                GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.displayOn();
+        verify(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeOn,
+                GroveOledSsd1327Definitions.oledCmd))
+            .called(1);
+      });
+      test('Display Mode Off', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        when(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeOff,
+                GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.displayOff();
+        verify(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeOff,
+                GroveOledSsd1327Definitions.oledCmd))
+            .called(1);
+      });
+      test('Display Invert', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        when(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeInvert,
+                GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.invertDisplay();
+        verify(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeInvert,
+                GroveOledSsd1327Definitions.oledCmd))
+            .called(1);
+      });
+      test('Display Mode Normal', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        when(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeNormal,
+                GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        oled.displayNormal();
+        verify(mraaI2c.writeByteData(
+                context,
+                GroveOledSsd1327Definitions.displayModeNormal,
+                GroveOledSsd1327Definitions.oledCmd))
+            .called(1);
+      });
+      test('Write', () {
+        final oled = GroveTestOledSsd1327(mraa, context);
+        final ret = oled.initialise();
+        expect(ret, isTrue);
+        when(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledCmd))
+            .thenReturn(MraaReturnCode.success);
+        when(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledData))
+            .thenReturn(MraaReturnCode.success);
+        oled.write('Hello');
+        verify(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledData))
+            .called(160);
+        verify(mraaI2c.writeByteData(
+                context, any, GroveOledSsd1327Definitions.oledCmd))
+            .called(2);
       });
     });
   });
