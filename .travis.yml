@@ -12,6 +12,7 @@ script:
   pub run test test/grove_pir_test.dart
   pub run test test/grove_sound_test.dart
   pub run test test/grove_led_test.dart
+  pub run test test/grove_screen_test.dart
 
 branches:
     only:
