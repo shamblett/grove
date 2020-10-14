@@ -9,8 +9,7 @@ import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 import 'example_config.dart';
-import 'images/grove_seeed_logo.dart';
-import 'images/grove_dart_logo.dart';
+import 'images/grove_logos.dart';
 
 /// Output to the Grove OLED display.
 int main() {
