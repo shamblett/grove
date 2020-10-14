@@ -8,16 +8,13 @@
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
-
-// The AIO pin for the sound sensor, set as needed.
-const int soundSensorAIOPin = 4;
+import 'example_config.dart';
 
 /// Read the sound level from the sound sensor
 int main() {
-  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
-  // Please change this for your platform.
-  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
-    ..noJsonLoading = true
+  final mraa = Mraa.fromLib(mraaLibraryPath)
+    ..noJsonLoading = noJsonLoading
+    ..useGrovePi = useGrovePi
     ..initialise();
 
   // Version
@@ -40,11 +37,12 @@ int main() {
   final context = mraa.aio.initialise(soundSensorAIOPin);
 
   print('Reading the sound sensor values');
-  final sound = GroveSound(mraa, context);
+  final sound = GroveSoundLM386(mraa, context);
   for (var i = 1; i <= 100; i++) {
-    print('Current raw sound value is : ${sound.rawValue()}');
-    print('Current smoothed sound value is : ${sound.value()}');
-    print('Current scaled value is ${sound.scaledValue()}');
+    print('Current raw sound value is : ${sound.value}');
+    print('Current smoothed sound value is : ${sound.smoothed}');
+    print('Current scaled value is ${sound.scaled}');
+    print('Current smooth scaled value is ${sound.smoothScaled}');
     sleep(const Duration(milliseconds: 200));
   }
 

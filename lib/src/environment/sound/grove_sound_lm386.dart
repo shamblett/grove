@@ -12,9 +12,18 @@ part of grove;
 /// The main component of the module is a simple microphone, which is based
 /// on the LM386 amplifier and an electret microphone. This module's output
 /// is analogue.
-class GroveSound {
-  /// Construction
-  GroveSound(this._mraa, this._context, [this.sampleCount = 5]);
+class GroveSoundLM386 {
+  /// Sample count can be anything in the range 5..500, values outside this range assume
+  /// 5 or 500 as appropriate.
+  GroveSoundLM386(this._mraa, this._context, [int sampleCount = 5]) {
+    if (sampleCount < 5) {
+      _sampleCount = 5;
+    } else if (sampleCount > 500) {
+      _sampleCount = 500;
+    } else {
+      _sampleCount = sampleCount;
+    }
+  }
 
   /// The initialised MRAA library
   final Mraa _mraa;
@@ -22,22 +31,26 @@ class GroveSound {
   /// The initialised device context
   final Pointer<MraaAioContext> _context;
 
+  int _sampleCount = 0;
+
   /// The sample count
-  final int sampleCount;
+  int get sampleCount => _sampleCount;
 
   /// Get a raw value directly from the sound sensor
-  int rawValue() => _mraa.aio.read(_context);
+  int get value => _mraa.aio.read(_context);
 
   /// Get a smoothed value averaged over [sampleCount] samples
-  int value() {
+  int get smoothed {
     var retValue = 0;
     for (var i = 0; i < sampleCount; i++) {
-      retValue += rawValue();
-      sleep(const Duration(milliseconds: 10));
+      retValue += value;
     }
     return retValue ~/ sampleCount;
   }
 
-  /// Gat a scaled value from 1..10, i.e for driving a led bar
-  int scaledValue() => value() ~/ 100;
+  /// Gat a scaled raw value from 1..10, i.e for driving a led bar
+  int get scaled => value ~/ 100;
+
+  /// Gat a scaled smooth value from 1..10, i.e for driving a led bar
+  int get smoothScaled => smoothed ~/ 100;
 }

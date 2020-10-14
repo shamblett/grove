@@ -1,6 +1,6 @@
 name: grove
 description: A Dart library package for interfacing to the Grove range of devices
-version: 1.0.2
+version: 2.0.0
 homepage: https://github.com/shamblett/grove
 
 environment:
@@ -9,6 +9,7 @@ environment:
 dependencies:
  ffi: '^0.1.3'
  mraa: '^1.1.2'
+ meta: '^1.2.3'
 
 dev_dependencies:
  test: "^1.14.2"

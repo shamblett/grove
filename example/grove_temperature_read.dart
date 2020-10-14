@@ -8,17 +8,14 @@
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
-
-// The AIO pin for the temperature sensor, set as needed.
-const int temperatureSensorAIOPin = 2;
+import 'example_config.dart';
 
 /// Read the current temperature value using AIO from the Grove
-/// temperature sensor
+/// temperature sensor.
 int main() {
-  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
-  // Please change this for your platform.
-  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
-    ..noJsonLoading = true
+  final mraa = Mraa.fromLib(mraaLibraryPath)
+    ..noJsonLoading = noJsonLoading
+    ..useGrovePi = useGrovePi
     ..initialise();
 
   // Version
@@ -41,9 +38,9 @@ int main() {
   final context = mraa.aio.initialise(temperatureSensorAIOPin);
 
   print('Reading the temperature sensor values');
-  final temperature = GroveTemperature(mraa, context);
+  final temperature = GroveTemperatureV12(mraa, context);
   for (var i = 1; i <= 100; i++) {
-    final values = temperature.getValues();
+    final values = temperature.values;
     print(values);
     sleep(const Duration(milliseconds: 2000));
   }

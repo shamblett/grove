@@ -16,7 +16,7 @@ class My9221Context {
   Pointer<MraaGpioContext> gpioData;
 
   /// Auto refresh state
-  bool autoRefresh = true;
+  bool autoRefresh = false;
 
   /// Low intensity level
   int lowIntensity;
@@ -38,19 +38,25 @@ class My9221Context {
   int commandWord;
 
   /// Initialise status
-  bool initialized;
+  bool initialized = false;
 }
 
-/// The Grove LED Bar is comprised of a 10 segment LED gauge bar and an MY9221
+/// The Grove LED Bar MY9221 is comprised of a 10 segment LED gauge bar and an MY9221
 /// LED controlling chip.
 ///
 /// It can be used as an indicator for remaining battery life, voltage,
 /// water level, music volume or other values that require a gradient display.
+///
 /// There are 10 LED bars in the LED bar graph: one red, one yellow,
 /// one light green, and seven green bars.
-class GroveLedBar {
+///
+/// An individual led is on or off dependent on its intensity value, initially
+/// values of 0 and 0xff are used for low and high intensity values. These can
+/// be set as you wish, with a high intensity value 0x7f being half the intensity of
+/// a 0xff value.
+class GroveLedBarMy9221 {
   /// Construction
-  GroveLedBar(Mraa mraa, Pointer<MraaGpioContext> clockPin,
+  GroveLedBarMy9221(Mraa mraa, Pointer<MraaGpioContext> clockPin,
       Pointer<MraaGpioContext> dataPin) {
     _dev = My9221Context();
     _dev.gpioClk = clockPin;
@@ -58,41 +64,34 @@ class GroveLedBar {
     _mraa = mraa;
   }
 
-  /// Led bars per instance + 2 for intensity settings
-  static const int ledPerInstance = 12;
+  /// Led bars per instance
+  static const int ledPerInstance = 10;
+
+  My9221Context _dev;
 
   /// The My9221 context
-  My9221Context _dev;
+  My9221Context get deviceContext => _dev;
 
   /// The initialised MRAA library
   Mraa _mraa;
 
-  /// Initialise - must be called before use
-  MraaReturnCode initialise() {
-    var ret = MraaReturnCode.success;
-    // Set the clock and data pin directions
-    ret = _mraa.gpio.direction(_dev.gpioClk, MraaGpioDirection.out);
-    if (ret != MraaReturnCode.success) {
-      print('initialise - Failed to set direction for clock pin, state is '
-          '${returnCode.asString(ret)}');
-      return ret;
+  final _monitor = GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
+
+  /// Last monitored sequence status
+  GroveSequenceMonitor<MraaReturnCode> get monitored => _monitor;
+
+  /// Initialise - must be called before use otherwise
+  /// no commands will be sent to the device.
+  /// Returns true if initialisation succeeded and is a
+  /// monitored sequence.
+  bool initialise() {
+    _monitor.reset();
+    _initialise(_monitor);
+    if (_monitor.isOk) {
+      _dev.initialized = true;
+      return true;
     }
-    ret = _mraa.gpio.direction(_dev.gpioData, MraaGpioDirection.out);
-    if (ret != MraaReturnCode.success) {
-      print('initialise - Failed to set direction for data pin, state is '
-          '${returnCode.asString(ret)}');
-      return ret;
-    }
-    setLowIntensityValue(0x00);
-    setHighIntensityValue(0xFF);
-    _dev.commandWord = 0x0000; // all defaults
-    _dev.instances = 1;
-    _dev.bitStates = Uint16List(ledPerInstance);
-    autoRefresh = true;
-    _dev.maxLed = ledPerInstance;
-    clearAll();
-    _dev.initialized = true;
-    return ret;
+    return false;
   }
 
   /// Close the GPIO pin contexts and
@@ -117,12 +116,12 @@ class GroveLedBar {
     if (level <= 0) {
       return;
     }
-    if (level >= 10) {
+    if (level >= ledPerInstance - 2) {
       setAll();
       return;
     }
     for (var i = 0; i < level; i++) {
-      _dev.bitStates[i] = 1;
+      _dev.bitStates[i] = _dev.highIntensity;
     }
     if (_dev.autoRefresh) {
       refresh();
@@ -131,7 +130,7 @@ class GroveLedBar {
 
   /// Set and individual led on or off, note this will
   /// auto scale to the led range.
-  void setLed(int led, {bool on}) {
+  void setLed(int led, {bool on = false}) {
     final maxLed = _dev.maxLed - 1;
     var localLed = led;
 
@@ -148,16 +147,14 @@ class GroveLedBar {
   }
 
   /// Set low intensity
-  void setLowIntensityValue(int intensity) =>
-      _dev.lowIntensity = intensity & 0xff;
+  set lowIntensity(int intensity) => _dev.lowIntensity = intensity & 0xff;
 
   /// Set high intensity
-  void setHighIntensityValue(int intensity) =>
-      _dev.highIntensity = intensity & 0xff;
+  set highIntensity(int intensity) => _dev.highIntensity = intensity & 0xff;
 
   /// Set all Led's on
   void setAll() {
-    for (var i = 0; i < _dev.maxLed; i++) {
+    for (var i = 0; i < maxLed; i++) {
       _dev.bitStates[i] = _dev.highIntensity;
     }
     if (_dev.autoRefresh) {
@@ -167,7 +164,7 @@ class GroveLedBar {
 
   /// Clear all Led's
   void clearAll() {
-    for (var i = 0; i < _dev.maxLed; i++) {
+    for (var i = 0; i < maxLed; i++) {
       _dev.bitStates[i] = _dev.lowIntensity;
     }
     if (_dev.autoRefresh) {
@@ -175,16 +172,26 @@ class GroveLedBar {
     }
   }
 
-  /// Auto refresh state
+  /// Auto refresh
+  ///
+  /// If true then any updates to the state of the led bar will be
+  /// automatically sent to the device. If false the user must do this
+  /// themselves.
+  /// Defaults to false.
   set autoRefresh(bool enable) => _dev.autoRefresh = enable;
 
   /// Max led bars
   int get maxLed => _dev.maxLed;
 
-  /// Refresh the display
+  /// Refresh the display.
+  /// This can be done automatically see [autoRefresh].
+  /// The device must be initialised.
   void refresh() {
+    if (!_dev.initialized) {
+      return;
+    }
     _send16BitBlock(_dev.commandWord);
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < maxLed; i++) {
       _send16BitBlock(_dev.bitStates[i]);
     }
     // Send two extra empty bits for padding the command to the correct length.
@@ -238,5 +245,18 @@ class GroveLedBar {
       }
       localData <<= 1;
     }
+  }
+
+  void _initialise(GroveSequenceMonitor<MraaReturnCode> monitor) {
+    // Set the clock and data pin directions
+    monitor + _mraa.gpio.direction(_dev.gpioClk, MraaGpioDirection.out);
+    monitor + _mraa.gpio.direction(_dev.gpioData, MraaGpioDirection.out);
+    lowIntensity = 0x00;
+    highIntensity = 0xff;
+    _dev.commandWord = 0x0000;
+    _dev.instances = 1;
+    _dev.bitStates = Uint16List(ledPerInstance);
+    _dev.maxLed = ledPerInstance;
+    clearAll();
   }
 }

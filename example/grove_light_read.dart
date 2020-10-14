@@ -8,16 +8,13 @@
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
-
-// The AIO pin for the light sensor, set as needed.
-const int lightSensorAIOPin = 0;
+import 'example_config.dart';
 
 /// Read the current light values using AIO from the Grove light sensor
 int main() {
-  // Initialise from our Beaglebone Mraa lib version 2.0.0 with no JSON loading.
-  // Please change this for your platform.
-  final mraa = Mraa.fromLib('lib/libmraa.so.2.0.0')
-    ..noJsonLoading = true
+  final mraa = Mraa.fromLib(mraaLibraryPath)
+    ..noJsonLoading = noJsonLoading
+    ..useGrovePi = useGrovePi
     ..initialise();
 
   // Version
@@ -40,9 +37,9 @@ int main() {
   final context = mraa.aio.initialise(lightSensorAIOPin);
 
   print('Reading the light sensor values');
-  final light = GroveLight(mraa, context);
+  final light = GroveLightLM358(mraa, context);
   for (var i = 1; i <= 100; i++) {
-    final values = light.getValues();
+    final values = light.values;
     print(values);
     sleep(const Duration(milliseconds: 2000));
   }

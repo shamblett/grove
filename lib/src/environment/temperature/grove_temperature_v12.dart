@@ -7,39 +7,20 @@
 
 part of grove;
 
-/// The values class for the Grove temperature class
-class GroveTemperatureValues {
-  /// Construction
-  GroveTemperatureValues() {
-    validAt = DateTime.now();
-  }
-
-  /// Raw value
-  int raw;
-
-  /// Celsius
-  double celsius;
-
-  /// Timestamp
-  DateTime validAt;
-
-  @override
-  String toString() => 'Temperature values at $validAt :: Raw : $raw : Celsius '
-      '${celsius.toStringAsFixed(2)}';
-}
-
 /// The Grove temperature sensor.
 ///
-/// The Grove temperature Sensor(V1.2) uses a Thermistor to detect the ambient
+/// The Grove Temperature Sensor(V1.2) uses a Thermistor to detect the ambient
 /// temperature.
+///
 /// The resistance of a thermistor will increase when the ambient
-/// temperature decreases.
-/// It's this characteristic that we use to calculate the ambient temperature.
+/// temperature decreases. It's this characteristic that we use to calculate
+/// the ambient temperature.
+///
 /// The detectable range of this sensor is -40 - 125ºC, and the
 /// accuracy is ±1.5ºC
-class GroveTemperature {
+class GroveTemperatureV12 {
   /// Construction
-  GroveTemperature(this._mraa, this._context);
+  GroveTemperatureV12(this._mraa, this._context);
 
   /// Scaling factor for raw analog value from the ADC, useful for mixed
   /// 3.3V/5V boards, default 1.0
@@ -60,22 +41,18 @@ class GroveTemperature {
   final Pointer<MraaAioContext> _context;
 
   /// Get the raw and Celsius temperature values and timestamp them.
-  GroveTemperatureValues getValues() {
+  GroveTemperatureValues get values {
     final raw = _mraa.aio.read(_context);
-    return calculateCelsius(raw);
-  }
-
-  /// Calculates a celsius value from a raw value.
-  GroveTemperatureValues calculateCelsius(int rawValue) {
     final values = GroveTemperatureValues();
-    if (rawValue == Mraa.generalError) {
+    if (raw == Mraa.generalError) {
       values.celsius = -1.0;
       values.raw = -1;
       return values;
     }
-    values.raw = rawValue;
+    values.raw = raw;
     final r = (1023.0 - values.raw) * (r0 / values.raw);
     values.celsius = 1.0 / (log(r / r0) / b + 1.0 / 298.15) - 273.15;
+    values.validAt = DateTime.now();
     return values;
   }
 }
