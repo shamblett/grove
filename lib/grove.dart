@@ -26,3 +26,4 @@ part 'src/environment/temperature/grove_temperature_values.dart';
 part 'src/utilities/grove_sequence_monitor.dart';
 part 'src/utilities/grove_hex_conversions.dart';
 part 'src/grove_initialisation_states.dart';
+part 'src/communications/nfc/pn532/grove_nfc_pn532_definitions.dart';
