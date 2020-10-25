@@ -7,6 +7,9 @@
 
 part of grove;
 
+/// Command status
+enum CommandStatus { ok, failed }
+
 /// Command, data and font definitions for the Grove NFC PN532 based reader.
 class GroveNfcPn532Definitions {
   /// Command codes
@@ -24,4 +27,9 @@ class GroveNfcPn532Definitions {
   static const timeout = -2;
   static const invalidFrame = -3;
   static const noSpace = -4;
+
+  /// Uart
+  static const uartDefaultDevice = '/dev/ttyS0';
+  static const maxTimeToWait = 1000; // ms
+  static const baudRate = 115200;
 }
