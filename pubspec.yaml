@@ -11,6 +11,7 @@ dependencies:
  mraa:
   git: https://github.com/shamblett/mraa.git
  meta: '^1.2.3'
+ collection: '^1.14.13'
 
 dev_dependencies:
  test: "^1.14.2"

@@ -7,6 +7,8 @@
 
 part of grove;
 
+Function eq = const ListEquality().equals;
+
 /// Communications interface to the PN532 High Speed Uart(HSU) interface.
 abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   /// Construction
@@ -18,6 +20,7 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   final _mraaUart;
   String _uartDevice;
   Pointer<MraaUartContext> _context;
+  int _commandAwaitingResponse = 0;
 
   /// Initialise the interface
   @override
@@ -60,24 +63,82 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     final ret = _mraaUart.writeBytes(_context, buff, buff.byteLength);
     if (ret != buff.byteLength) {
       print(
-          'GroveNfcPn532Hsu::wakeup - failed to write wakeup to UART, return code is ${returnCode.asString(ret)}');
+          'GroveNfcPn532Hsu::wakeup - failed to write wakeup to UART, return value is $ret}');
     }
   }
 
   /// Write a command to the PN532 and check the acknowledgement.
   @override
-  CommandStatus writeCommand(Uint8List header, Uint8List body) {
-    return CommandStatus.ok;
+  CommandStatus writeCommand(List<int> header, List<int> body) {
+    _commandAwaitingResponse = header[0];
+    final sequence = <int>[];
+
+    // Preamble
+    sequence.add(GroveNfcPn532Definitions.preamble);
+    sequence.add(GroveNfcPn532Definitions.startcode1);
+    sequence.add(GroveNfcPn532Definitions.startcode2);
+    // Length of the data field: TFI + DATA
+    final length = header.length + body.length + 1;
+    sequence.add(length);
+    // Checksum of the data field length
+    sequence.add(~length + 1);
+    sequence.add(GroveNfcPn532Definitions.hostToPn532);
+    var sum = GroveNfcPn532Definitions.hostToPn532;
+    sequence.addAll(header);
+    header.forEach((int e) {
+      sum += e;
+    });
+    sequence.addAll(body);
+    body.forEach((int e) {
+      sum += e;
+    });
+    // checksum of TFI + DATA
+    final checksum = ~sum + 1;
+    sequence.add(checksum);
+    sequence.add(GroveNfcPn532Definitions.postamble);
+
+    // Send to the device
+    final buff = MraaUartBuffer();
+    buff.byteData = Uint8List.fromList(sequence);
+    final ret = _mraaUart.writeBytes(_context, buff, buff.byteLength);
+    if (ret != buff.byteLength) {
+      print(
+          'GroveNfcPn532Hsu::writeCommand - failed to write command to UART, return value is $ret,'
+          'command is $_commandAwaitingResponse');
+      return CommandStatus.failed;
+    }
+    // Get the acknowledge
+    return _readAcknowledgement() ? CommandStatus.ok : CommandStatus.failed;
   }
 
   ///  Read the response of a command, strip prefix and suffix.
   ///  Maximum time to wait is in milliseconds.
   ///  Always returns a result, a length of 0 indicates failure.
   @override
-  Uint8List readResponse(
+  List<int> readResponse(
       {int maxTimeToWait = GroveNfcPn532Definitions.maxTimeToWait}) {
     final buffer = Uint8List(0);
 
     return buffer;
+  }
+
+  /// Read an acknowledge from the device
+  /// True indicates the acknowledge is OK.
+  bool _readAcknowledgement() {
+    final buff = MraaUartBuffer();
+    final ret = _mraaUart.readBytes(
+        _context, buff, GroveNfcPn532Definitions.acknowledge.length);
+    if (ret != buff.byteLength) {
+      print(
+          'GroveNfcPn532Hsu::_readAcknowledgement - failed to read acknowledgement from device return value is $ret');
+      return false;
+    }
+    // Check the acknowledgement
+    var isEqual = eq(GroveNfcPn532Definitions.acknowledge, buff.byteData);
+    if (!isEqual) {
+      print(
+          'GroveNfcPn532Hsu::_readAcknowledgement - invalid acknowledge sequence received from device, ${buff.byteData.toString()}');
+    }
+    return true;
   }
 }

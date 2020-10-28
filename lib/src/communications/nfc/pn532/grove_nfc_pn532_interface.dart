@@ -17,10 +17,10 @@ abstract class GroveNfcPn532Interface {
   void wakeup();
 
   /// Write a command to the PN532 and check the acknowledgement.
-  CommandStatus writeCommand(Uint8List header, Uint8List body);
+  CommandStatus writeCommand(List<int> header, List<int> body);
 
   ///  Read the response of a command, strip prefix and suffix.
   ///  Maximun time to wait is in milliseconds.
   ///  Always returns a result, a length of 0 indicates failure.
-  Uint8List readResponse({int maxTimeToWait = 1000});
+  List<int> readResponse({int maxTimeToWait = 1000});
 }
