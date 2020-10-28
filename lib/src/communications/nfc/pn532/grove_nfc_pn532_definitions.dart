@@ -31,6 +31,7 @@ class GroveNfcPn532Definitions {
   /// Command sequences
   static const wakeupSequence = <int>[wakeup, wakeup, 0x00, 0x00, 0x00];
   static const acknowledge = <int>[0x00, 0x00, 0xff, 0x00, 0xff, 0x00];
+  static const preambleAndStartCodes = <int>[preamble, startcode1, startcode2];
 
   /// Uart
   static const uartDefaultDevice = '/dev/ttyS0';

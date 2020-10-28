@@ -73,10 +73,8 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     _commandAwaitingResponse = header[0];
     final sequence = <int>[];
 
-    // Preamble
-    sequence.add(GroveNfcPn532Definitions.preamble);
-    sequence.add(GroveNfcPn532Definitions.startcode1);
-    sequence.add(GroveNfcPn532Definitions.startcode2);
+    // Preamble and start codes
+    sequence.addAll(GroveNfcPn532Definitions.preambleAndStartCodes);
     // Length of the data field: TFI + DATA
     final length = header.length + body.length + 1;
     sequence.add(length);
@@ -115,30 +113,40 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   ///  Maximum time to wait is in milliseconds.
   ///  Always returns a result, a length of 0 indicates failure.
   @override
-  List<int> readResponse(
-      {int maxTimeToWait = GroveNfcPn532Definitions.maxTimeToWait}) {
+  List<int> readResponse({int maxTimeToWait}) {
+    if (maxTimeToWait != null) {
+      _mraaUart.timeout(_context, maxTimeToWait, 0, 0);
+    }
     final buffer = Uint8List(0);
 
+    if (maxTimeToWait != null) {
+      _mraaUart.timeout(_context, GroveNfcPn532Definitions.maxTimeToWait, 0, 0);
+    }
     return buffer;
   }
 
   /// Read an acknowledge from the device
   /// True indicates the acknowledge is OK.
   bool _readAcknowledgement() {
+    var readOk = false;
+    var ackCheck = false;
+    _mraaUart.timeout(_context, GroveNfcPn532Definitions.ackWaitTime, 0, 0);
     final buff = MraaUartBuffer();
     final ret = _mraaUart.readBytes(
         _context, buff, GroveNfcPn532Definitions.acknowledge.length);
     if (ret != buff.byteLength) {
       print(
           'GroveNfcPn532Hsu::_readAcknowledgement - failed to read acknowledgement from device return value is $ret');
-      return false;
+      readOk = true;
     }
     // Check the acknowledgement
     var isEqual = eq(GroveNfcPn532Definitions.acknowledge, buff.byteData);
     if (!isEqual) {
       print(
           'GroveNfcPn532Hsu::_readAcknowledgement - invalid acknowledge sequence received from device, ${buff.byteData.toString()}');
+      ackCheck = true;
     }
-    return true;
+    _mraaUart.timeout(_context, GroveNfcPn532Definitions.maxTimeToWait, 0, 0);
+    return readOk && ackCheck;
   }
 }
