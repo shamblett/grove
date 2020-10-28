@@ -15,6 +15,9 @@ class GroveNfcPn532Definitions {
   /// Command codes
   static const wakeup = 0x55;
 
+  /// Command sequences
+  static const wakeupSequence = <int>[wakeup, wakeup, 0x00, 0x00, 0x00];
+
   /// Control codes
   static const preamble = 0x00;
   static const startcode1 = 0x00;

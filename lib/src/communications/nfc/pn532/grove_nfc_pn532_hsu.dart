@@ -44,7 +44,7 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       return false;
     }
     // Mode 8N1
-    ret = _mraaUart.mode(_context, 8, MraaUartParity.none , 1);
+    ret = _mraaUart.mode(_context, 8, MraaUartParity.none, 1);
     if (ret != MraaReturnCode.success) {
       return false;
     }
@@ -55,13 +55,18 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   /// Wake up the PN532 before communicating with it.
   @override
   void wakeup() {
-
+    final buff = MraaUartBuffer();
+    buff.byteData = Uint8List.fromList(GroveNfcPn532Definitions.wakeupSequence);
+    final ret = _mraaUart.writeBytes(_context, buff, buff.byteLength);
+    if (ret != buff.byteLength) {
+      print(
+          'GroveNfcPn532Hsu::wakeup - failed to write wakeup to UART, return code is ${returnCode.asString(ret)}');
+    }
   }
 
   /// Write a command to the PN532 and check the acknowledgement.
   @override
   CommandStatus writeCommand(Uint8List header, Uint8List body) {
-
     return CommandStatus.ok;
   }
 

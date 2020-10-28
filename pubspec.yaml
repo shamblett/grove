@@ -8,7 +8,8 @@ environment:
 
 dependencies:
  ffi: '^0.1.3'
- mraa: '^1.1.2'
+ mraa:
+  git: https://github.com/shamblett/mraa.git
  meta: '^1.2.3'
 
 dev_dependencies:
