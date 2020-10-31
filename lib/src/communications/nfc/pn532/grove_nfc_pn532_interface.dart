@@ -21,6 +21,6 @@ abstract class GroveNfcPn532Interface {
 
   ///  Read the response of a command, strip prefix and suffix.
   ///  Maximum time to wait is in milliseconds, defaults to [GroveNfcPn532Definitions.maxTimeToWait]
-  ///  Always returns a result, a length of 0 indicates failure.
-  List<int> readResponse({int maxTimeToWait});
+  ///  Always returns a result, 0 indicates failure.
+  int readResponse(int length, {int maxTimeToWait});
 }

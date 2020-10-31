@@ -27,6 +27,10 @@ class GroveNfcPn532Definitions {
   static const timeout = -2;
   static const invalidFrame = -3;
   static const noSpace = -4;
+  static const readResponseLength = 2;
+  static const commandByteLength= 2;
+  static const postambleChecksumlength = 2;
+
 
   /// Command sequences
   static const wakeupSequence = <int>[wakeup, wakeup, 0x00, 0x00, 0x00];
