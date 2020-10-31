@@ -50,7 +50,7 @@ class GroveNfcPn532 {
   /// Checks the firmware version of the PN532 chip
   /// Returns the chip's firmware version and ID.
   /// A response of zero indicates failure.
-  int getFirmwareVersion() {
+  int firmwareVersion() {
     if (!_prepareCommand()) {
       return 0;
     }
