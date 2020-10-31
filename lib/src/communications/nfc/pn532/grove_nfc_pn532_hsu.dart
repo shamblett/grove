@@ -10,7 +10,7 @@ part of grove;
 Function eq = const ListEquality().equals;
 
 /// Communications interface to the PN532 High Speed Uart(HSU) interface.
-abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
+class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   /// Construction
   GroveNfcPn532Hsu(this._mraaUart,
       {String uartDevice = GroveNfcPn532Definitions.uartDefaultDevice}) {
@@ -57,26 +57,31 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
 
   /// Wake up the PN532 before communicating with it.
   @override
-  void wakeup() {
+  bool wakeup() {
     final buff = MraaUartBuffer();
     buff.byteData = Uint8List.fromList(GroveNfcPn532Definitions.wakeupSequence);
     final ret = _mraaUart.writeBytes(_context, buff, buff.byteLength);
     if (ret != buff.byteLength) {
       print(
           'GroveNfcPn532Hsu::wakeup - failed to write wakeup to UART, return value is $ret}');
+      return false;
     }
+    return true;
   }
 
   /// Write a command to the PN532 and check the acknowledgement.
   @override
-  CommandStatus writeCommand(List<int> header, List<int> body) {
+  CommandStatus writeCommand(List<int> header, {List<int> body}) {
     _commandAwaitingResponse = header[0];
     final sequence = <int>[];
 
     // Preamble and start codes
     sequence.addAll(GroveNfcPn532Definitions.preambleAndStartCodes);
     // Length of the data field: TFI + DATA
-    final length = header.length + body.length + 1;
+    var length = header.length + 1;
+    if (body != null) {
+      length += body.length;
+    }
     sequence.add(length);
     // Checksum of the data field length
     sequence.add(~length + 1);
@@ -86,10 +91,12 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     header.forEach((int e) {
       sum += e;
     });
-    sequence.addAll(body);
-    body.forEach((int e) {
-      sum += e;
-    });
+    if (body != null) {
+      sequence.addAll(body);
+      body.forEach((int e) {
+        sum += e;
+      });
+    }
     // checksum of TFI + DATA
     final checksum = ~sum + 1;
     sequence.add(checksum);
@@ -113,7 +120,7 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   ///  Maximum time to wait is in milliseconds.
   ///  Always returns a result, a length of 0 indicates failure.
   @override
-  int readResponse(int length, {int maxTimeToWait}) {
+  int readResponse(List<int> rBuffer, int length, {int maxTimeToWait}) {
     final result = 0;
     if (maxTimeToWait != null) {
       _mraaUart.timeout(_context, maxTimeToWait, 0, 0);
@@ -194,6 +201,7 @@ abstract class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     if (maxTimeToWait != null) {
       _mraaUart.timeout(_context, GroveNfcPn532Definitions.maxTimeToWait, 0, 0);
     }
+    rBuffer.addAll(buffer.byteData);
     return rxLength;
   }
 

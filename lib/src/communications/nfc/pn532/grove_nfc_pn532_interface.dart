@@ -14,13 +14,14 @@ abstract class GroveNfcPn532Interface {
   bool initialise();
 
   /// Wake up the PN532 before communicating with it.
-  void wakeup();
+  /// Returns true if the wkeup succeeded.
+  bool wakeup();
 
   /// Write a command to the PN532 and check the acknowledgement.
-  CommandStatus writeCommand(List<int> header, List<int> body);
+  CommandStatus writeCommand(List<int> header, {List<int> body});
 
   ///  Read the response of a command, strip prefix and suffix.
   ///  Maximum time to wait is in milliseconds, defaults to [GroveNfcPn532Definitions.maxTimeToWait]
   ///  Always returns a result, 0 indicates failure.
-  int readResponse(int length, {int maxTimeToWait});
+  int readResponse(List<int> rBuffer, int length, {int maxTimeToWait});
 }
