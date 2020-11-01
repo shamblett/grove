@@ -53,7 +53,7 @@ int main() {
     print('Failed to write string to UART, return is $lret');
     return -1;
   }
-  mraa.uart.flush(context);
+  //mraa.uart.flush(context);
 
   // Read the response
   print('Reading the test string from the UART');
