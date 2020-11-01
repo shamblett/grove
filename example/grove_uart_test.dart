@@ -20,7 +20,7 @@ int main() {
   print('Mraa version is : $mraaVersion');
 
   print('Initialising MRAA');
-  final ret = mraa.common.initialise();
+  var ret = mraa.common.initialise();
   if (ret != MraaReturnCode.success) {
     print('Failed to initialise MRAA, return code is '
         '${returnCode.asString(ret)}');
@@ -38,6 +38,11 @@ int main() {
     print('Failed to initialise UART - no context');
     return -1;
   }
+  ret = mraa.uart.flowControl(context, true, false);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set flow control on UART');
+    return -1;
+  }
 
   // Send a string.
   print('Sending the test string to the UART');
@@ -48,6 +53,7 @@ int main() {
     print('Failed to write string to UART, return is $lret');
     return -1;
   }
+  mraa.uart.flush(context);
 
   // Read the response
   print('Reading the test string from the UART');
