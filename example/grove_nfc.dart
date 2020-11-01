@@ -34,6 +34,7 @@ int main() {
   print('The platform name is : $platformName');
 
   // Initialise the NFC device
+  print('Initialising the NFC device');
   final nfc = GroveNfcPn532(mraa, tty: defaultUart);
   final ok = nfc.initialise();
   if (!ok) {
@@ -42,6 +43,7 @@ int main() {
   }
 
   // Get the firmware version
+  print('Getting the NFC firmware version');
   final firmware = nfc.firmwareVersion();
   if (firmware == 0) {
     print('Failed to get the firmware version');
