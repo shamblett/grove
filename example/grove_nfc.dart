@@ -34,7 +34,7 @@ int main() {
   print('The platform name is : $platformName');
 
   // Initialise the NFC device
-  print('Initialising the NFC device');
+  print('Initialising the NFC device on tty $defaultUart');
   final nfc = GroveNfcPn532(mraa, tty: defaultUart);
   final ok = nfc.initialise();
   if (!ok) {
