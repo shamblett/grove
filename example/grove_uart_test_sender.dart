@@ -72,6 +72,7 @@ int main() {
     return -1;
   }
 
+  mraa.uart.flush(context);
   print('UART send test completed successfully');
   return 0;
 }
