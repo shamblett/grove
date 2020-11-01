@@ -5,10 +5,11 @@
  * Copyright :  S.Hamblett
  */
 
+import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'example_config.dart';
 
-/// A loopback test of the UART device, please ensure you have TX/RX looped back.
+/// The sender part of loopback test of the UART device, please ensure you have TX/RX looped back.
 int main() {
   final mraa = Mraa.fromLib(mraaLibraryPath)
     ..noJsonLoading = noJsonLoading
@@ -60,30 +61,18 @@ int main() {
   }
 
   // Send a string.
-  print('Sending the test string to the UART');
+  print(
+      'Press a key to send the test string, ensure the receiver is running.....');
+  stdin.readByteSync();
   final buffer = MraaUartBuffer();
   buffer.utf8Data = 'Hello World!';
   var lret = mraa.uart.writeUtf8(context, buffer, buffer.utf8Length);
   if (lret != 12) {
     print('Failed to write string to UART, return is $lret');
     return -1;
-  } else {
-    // Read the response
-    print('Reading the test string from the UART');
-    buffer.utf8Data = '';
-    if (mraa.uart.dataAvailable(context, 100)) {
-      lret = mraa.uart.readUtf8(context, buffer, 12);
-      if (lret != 12) {
-        print('Failed to read string from UART, return is $lret');
-        return -1;
-      }
-      print('We have received ${buffer.utf8Data}');
-    } else {
-      print('Failed to read UART data, no data available');
-      return -1;
-    }
   }
 
-  print('UART test completed successfully');
+  mraa.uart.flush(context);
+  print('UART send test completed successfully');
   return 0;
 }
