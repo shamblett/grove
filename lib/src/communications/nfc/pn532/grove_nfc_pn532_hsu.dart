@@ -52,6 +52,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       return false;
     }
 
+    _mraaUart.flush(_context);
     return true;
   }
 
@@ -66,6 +67,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
           'GroveNfcPn532Hsu::wakeup - failed to write wakeup to UART, return value is $ret}');
       return false;
     }
+    _mraaUart.flush(_context);
     return true;
   }
 
@@ -112,6 +114,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
           'command is $_commandAwaitingResponse');
       return CommandStatus.failed;
     }
+    _mraaUart.flush(_context);
     // Get the acknowledge
     return _readAcknowledgement() ? CommandStatus.ok : CommandStatus.failed;
   }
