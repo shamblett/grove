@@ -58,12 +58,17 @@ int main() {
   // Read the response
   print('Reading the test string from the UART');
   buffer.utf8Data = '';
-  lret = mraa.uart.readUtf8(context, buffer, 12);
-  if (lret != 12) {
-    print('Failed to read string from UART, return is $lret');
+  if (mraa.uart.dataAvailable(context, 10)) {
+    lret = mraa.uart.readUtf8(context, buffer, 12);
+    if (lret != 12) {
+      print('Failed to read string from UART, return is $lret');
+      return -1;
+    }
+    print('We have received ${buffer.utf8Data}');
+  } else {
+    print('Failed to read UART data, no data available');
     return -1;
   }
-  print('We have received ${buffer.utf8Data}');
 
   print('UART test completed successfully');
   return 0;
