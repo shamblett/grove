@@ -62,8 +62,10 @@ int main() {
 
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
+  final buffer = MraaUartBuffer();
+  // Read the break
+  mraa.uart.readBytes(context, buffer, 1);
   if (mraa.uart.dataAvailable(context, 10000)) {
-    final buffer = MraaUartBuffer();
     final lret = mraa.uart.readUtf8(context, buffer, 12);
     if (lret != 12) {
       print('Failed to read string from UART, return is $lret');
