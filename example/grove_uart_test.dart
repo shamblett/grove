@@ -57,6 +57,7 @@ int main() {
     print('Failed to read string from UART, return is $lret');
     return -1;
   }
+  print('We have received ${buffer.utf8Data}');
 
   print('UART test completed successfully');
   return 0;
