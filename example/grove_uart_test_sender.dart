@@ -64,7 +64,6 @@ int main() {
   print(
       'Press a key to send the test string, ensure the receiver is running.....');
   stdin.readByteSync();
-  mraa.uart.sendBreak(context, 0);
   final buffer = MraaUartBuffer();
   buffer.utf8Data = 'Hello World!';
   var lret = mraa.uart.writeUtf8(context, buffer, buffer.utf8Length);
@@ -73,7 +72,6 @@ int main() {
     return -1;
   }
 
-  mraa.uart.flush(context);
   print('UART send test completed successfully');
   return 0;
 }
