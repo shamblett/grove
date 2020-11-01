@@ -38,9 +38,24 @@ int main() {
     print('Failed to initialise UART - no context');
     return -1;
   }
+
+  // Flow control
   ret = mraa.uart.flowControl(context, true, false);
   if (ret != MraaReturnCode.success) {
     print('Unable to set flow control on UART');
+    return -1;
+  }
+
+  // Baud rate
+  ret = mraa.uart.baudRate(context, 115200);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set baud rate on UART');
+    return -1;
+  }
+  // Mode 8N1
+  ret = mraa.uart.mode(context, 8, MraaUartParity.none, 1);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set mode on UART');
     return -1;
   }
 
@@ -53,7 +68,6 @@ int main() {
     print('Failed to write string to UART, return is $lret');
     return -1;
   }
-  //mraa.uart.flush(context);
 
   // Read the response
   print('Reading the test string from the UART');
