@@ -65,7 +65,7 @@ int main() {
       'Press a key to send the test string, ensure the receiver is running.....');
   stdin.readByteSync();
   final buffer = MraaUartBuffer();
-  buffer.utf8Data = 'Hello World!';
+  buffer.utf8Data = uartTestMessage;
   var lret = mraa.uart.writeUtf8(context, buffer, buffer.utf8Length);
   if (lret != 12) {
     print('Failed to write string to UART, return is $lret');

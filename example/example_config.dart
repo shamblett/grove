@@ -46,3 +46,6 @@ const int temperatureSensorAIOPin = 2;
 
 // Default UART tty device
 const String defaultUart = '/dev/ttyS0';
+
+// UART test message
+const String uartTestMessage = 'Hello World!';

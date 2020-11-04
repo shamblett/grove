@@ -5,6 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
+import 'dart:async';
 import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'example_config.dart';
@@ -62,18 +63,48 @@ int main() {
 
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
-  final buffer = MraaUartBuffer();
-  mraa.uart.readBytes(context, buffer, 1);
-  if (mraa.uart.dataAvailable(context, 10000)) {
-    final lret = mraa.uart.readUtf8(context, buffer, 12);
-    if (lret != 12) {
-      print('Failed to read string from UART, return is $lret');
-      return -1;
+  var stop = false;
+  var message = '';
+  void tc() {
+    print('Read loop timer invoked - stopping');
+    stop = true;
+  }
+
+  final timer = Timer(Duration(seconds: 10), tc);
+  while (!stop) {
+    if (mraa.uart.dataAvailable(context, 10)) {
+      final buffer = MraaUartBuffer();
+      final ret = mraa.uart.readUtf8(context, buffer, uartTestMessage.length);
+      if (ret == Mraa.generalError) {
+        continue;
+      } else if (ret < uartTestMessage.length) {
+        message = '$message${buffer.utf8Data}';
+        if (message.length == uartTestMessage.length) {
+          print('Test message received - stopping');
+          timer.cancel();
+          stop = true;
+        }
+      } else if (ret == uartTestMessage.length) {
+        message = buffer.utf8Data;
+        print('Test message received in one read - stopping');
+        stop = true;
+        timer.cancel();
+      } else {
+        print('Unrecognised return value - $ret');
+      }
+    } else {
+      sleep(Duration(milliseconds: 1));
     }
-    print('We have received ${buffer.utf8Data}');
+  }
+
+  if (message.length == uartTestMessage.length) {
+    if (message == uartTestMessage) {
+      print('The message has been successfully received');
+      print('The received message is $message');
+    }
   } else {
-    print('Failed to read UART data, no data available');
-    return -1;
+    print('The message has NOT been successfully received');
+    print('The partially received message at timeout is $message');
   }
 
   print('UART receiver test completed successfully');
