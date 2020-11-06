@@ -64,7 +64,7 @@ int main() {
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
   var stop = false;
-  var message = '';
+  var message = <int>[];
   void tc() {
     print('Read loop timer invoked - stopping');
     stop = true;
@@ -76,19 +76,19 @@ int main() {
     if (mraa.uart.dataAvailable(context, 10)) {
       print('Data is available');
       final buffer = MraaUartBuffer();
-      final ret = mraa.uart.readUtf8(context, buffer, uartTestMessage.length);
+      final ret = mraa.uart.readBytes(context, buffer, uartTestMessage.length);
       if (ret == Mraa.generalError) {
         print('Received general error - continuing');
         continue;
       } else if (ret < uartTestMessage.length) {
-        message = '$message${buffer.utf8Data}';
+        message.addAll(buffer.byteData);
         if (message.length == uartTestMessage.length) {
           print('Test message received - stopping');
           timer.cancel();
           stop = true;
         }
       } else if (ret == uartTestMessage.length) {
-        message = buffer.utf8Data;
+        message.addAll(buffer.byteData);
         print('Test message received in one read - stopping');
         stop = true;
         timer.cancel();
@@ -100,14 +100,16 @@ int main() {
     }
   }
 
+  var str;
   if (message.length == uartTestMessage.length) {
-    if (message == uartTestMessage) {
+    str = String.fromCharCodes(message);
+    if (str == uartTestMessage) {
       print('The message has been successfully received');
-      print('The received message is $message');
+      print('The received message is $str');
     }
   } else {
     print('The message has NOT been successfully received');
-    print('The partially received message at timeout is $message');
+    print('The partially received message at timeout is $str');
   }
 
   print('UART receiver test completed successfully');
