@@ -6,7 +6,6 @@
  */
 
 import 'dart:async';
-import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'example_config.dart';
 
