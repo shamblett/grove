@@ -72,13 +72,14 @@ int main() {
       print('Failed to write string to UART, return is $lret');
       return -1;
     }
+    mraa.uart.flush(context);
     print('Send again or X to exit....');
     var char = stdin.readByteSync();
     if (char == 0x58) {
       stop = true;
     }
   }
-  mraa.uart.flush(context);
+
   print('UART send test completed successfully');
   return 0;
 }
