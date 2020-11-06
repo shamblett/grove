@@ -55,7 +55,7 @@ int main() {
     return -1;
   }
   // Non blocking
-  ret = mraa.uart.nonBlocking(context, false);
+  ret = mraa.uart.nonBlocking(context, true);
   if (ret != MraaReturnCode.success) {
     print('Unable to set mode on UART');
     return -1;
