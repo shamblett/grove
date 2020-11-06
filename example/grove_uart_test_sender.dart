@@ -40,12 +40,6 @@ int main() {
     return -1;
   }
 
-  // Flow control
-  ret = mraa.uart.flowControl(context, true, false);
-  if (ret != MraaReturnCode.success) {
-    print('Unable to set flow control on UART');
-    return -1;
-  }
 
   // Baud rate
   ret = mraa.uart.baudRate(context, 115200);
