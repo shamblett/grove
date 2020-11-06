@@ -73,7 +73,7 @@ int main() {
 
   print('Starting receive loop');
   while (!stop) {
-    if (mraa.uart.dataAvailable(context, 10)) {
+    if (mraa.uart.dataAvailable(context, 1000)) {
       print('Data is available');
       final buffer = MraaUartBuffer();
       final ret = mraa.uart.readBytes(context, buffer, uartTestMessage.length);
