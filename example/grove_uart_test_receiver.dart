@@ -65,12 +65,12 @@ int main() {
       'Reading the test string from the UART, you have 10 seconds to send....');
   var stop = false;
   var message = <int>[];
-  void tc() {
+
+  final timer = Timer(Duration(seconds: 10), () {
     print('Read loop timer invoked - stopping');
     stop = true;
-  }
+  });
 
-  final timer = Timer(Duration(seconds: 10), tc);
   print('Starting receive loop');
   while (!stop) {
     if (mraa.uart.dataAvailable(context, 10)) {
