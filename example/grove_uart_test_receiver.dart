@@ -102,8 +102,7 @@ int main() {
         print('Unrecognised return value - $ret');
       }
     } else {
-      print(' No data available - sleeping');
-      sleep(Duration(milliseconds: 100));
+      sleep(Duration(milliseconds: 1));
     }
   }
 

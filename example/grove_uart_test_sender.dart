@@ -59,19 +59,25 @@ int main() {
     print('Unable to set mode on UART');
     return -1;
   }
-
-  // Send a string.
-  print(
-      'Press a key to send the test string, ensure the receiver is running.....');
-  stdin.readByteSync();
-  final buffer = MraaUartBuffer();
-  buffer.utf8Data = uartTestMessage;
-  var lret = mraa.uart.writeUtf8(context, buffer, buffer.utf8Length);
-  if (lret != 12) {
-    print('Failed to write string to UART, return is $lret');
-    return -1;
+  var stop = false;
+  while (!stop) {
+    // Send a string.
+    print(
+        'Press a key to send the test string, ensure the receiver is running.....');
+    stdin.readByteSync();
+    final buffer = MraaUartBuffer();
+    buffer.utf8Data = uartTestMessage;
+    var lret = mraa.uart.writeUtf8(context, buffer, buffer.utf8Length);
+    if (lret != 12) {
+      print('Failed to write string to UART, return is $lret');
+      return -1;
+    }
+    print('Send again or X to exit....');
+    var char = stdin.readByteSync();
+    if (char == 0x58) {
+      stop = true;
+    }
   }
-
   mraa.uart.flush(context);
   print('UART send test completed successfully');
   return 0;
