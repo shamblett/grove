@@ -60,6 +60,12 @@ int main() {
     print('Unable to set mode on UART');
     return -1;
   }
+  // Non blocking
+  ret = mraa.uart.nonBlocking(context, false);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set mode on UART');
+    return -1;
+  }
 
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
