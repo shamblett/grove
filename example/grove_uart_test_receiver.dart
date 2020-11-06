@@ -60,6 +60,12 @@ int main() {
     print('Unable to set mode on UART');
     return -1;
   }
+  // Non blocking
+  ret = mraa.uart.nonBlocking(context, true);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set mode on UART');
+    return -1;
+  }
 
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
@@ -78,6 +84,7 @@ int main() {
       final buffer = MraaUartBuffer();
       final ret = mraa.uart.readUtf8(context, buffer, uartTestMessage.length);
       if (ret == Mraa.generalError) {
+        print('Received general error - continuing');
         continue;
       } else if (ret < uartTestMessage.length) {
         message = '$message${buffer.utf8Data}';
