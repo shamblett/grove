@@ -41,6 +41,7 @@ int main() {
     return -1;
   }
 
+
   // Baud rate
   ret = mraa.uart.baudRate(context, 115200);
   if (ret != MraaReturnCode.success) {
@@ -94,6 +95,8 @@ int main() {
       } else {
         print('Unrecognised return value - $ret');
       }
+    } else {
+      print('Waiting for data');
     }
   }
 
