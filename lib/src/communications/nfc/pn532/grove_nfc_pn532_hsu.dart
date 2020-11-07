@@ -37,6 +37,12 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       return false;
     }
 
+    // Mode 8N1
+    ret = _mraaUart.mode(_context, 8, MraaUartParity.none, 1);
+    if (ret != MraaReturnCode.success) {
+      return false;
+    }
+
     return true;
   }
 
