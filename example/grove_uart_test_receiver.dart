@@ -5,7 +5,6 @@
  * Copyright :  S.Hamblett
  */
 
-import 'dart:async';
 import 'package:mraa/mraa.dart';
 import 'example_config.dart';
 
@@ -40,7 +39,6 @@ int main() {
     return -1;
   }
 
-
   // Baud rate
   ret = mraa.uart.baudRate(context, 115200);
   if (ret != MraaReturnCode.success) {
@@ -62,55 +60,57 @@ int main() {
 
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
-  var stop = false;
   var message = <int>[];
-
-  final timer = Timer(Duration(seconds: 10), () {
-    print('Read loop timer invoked - stopping');
-    stop = true;
-  });
-
+  var complete = false;
   print('Starting receive loop');
-  while (!stop) {
-    if (mraa.uart.dataAvailable(context, 1000)) {
-      print('Data is available');
-      final buffer = MraaUartBuffer();
+  if (mraa.uart.dataAvailable(context, 10000)) {
+    print('Data is available');
+    final buffer = MraaUartBuffer();
+    while (true) {
       final ret = mraa.uart.readBytes(context, buffer, uartTestMessage.length);
       if (ret == Mraa.generalError) {
         print('Received general error - continuing');
         continue;
       } else if (ret < uartTestMessage.length) {
         message.addAll(buffer.byteData);
+        buffer.byteData.clear();
         if (message.length == uartTestMessage.length) {
           print('Test message received - stopping');
-          timer.cancel();
-          stop = true;
+          complete = true;
+          break;
+        }
+        if (mraa.uart.dataAvailable(context, 1)) {
+          continue;
+        } else {
+          print('Partially received - no more data - exiting');
+          break;
         }
       } else if (ret == uartTestMessage.length) {
         message.addAll(buffer.byteData);
         print('Test message received in one read - stopping');
-        stop = true;
-        timer.cancel();
+        complete = true;
+        break;
       } else {
         print('Unrecognised return value - $ret');
+        continue;
       }
-    } else {
-      print('Waiting for data');
     }
+  } else {
+    print('No data available for 10 seconds - exiting');
+    return -1;
   }
 
   var str;
-  if (message.length == uartTestMessage.length) {
+  if (complete) {
     str = String.fromCharCodes(message);
     if (str == uartTestMessage) {
       print('The message has been successfully received');
       print('The received message is $str');
+      print('UART receiver test completed successfully');
     }
   } else {
     print('The message has NOT been successfully received');
-    print('The partially received message at timeout is $str');
   }
 
-  print('UART receiver test completed successfully');
   return 0;
 }
