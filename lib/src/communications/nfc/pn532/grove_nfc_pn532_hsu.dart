@@ -30,29 +30,13 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     if (_context == null) {
       return false;
     }
-    // Read timeout
-    var ret = _mraaUart.timeout(
-        _context, GroveNfcPn532Definitions.maxTimeToWait, 0, 0);
-    if (ret != MraaReturnCode.success) {
-      return false;
-    }
-    // Flow control
-    ret = _mraaUart.flowControl(_context, true, false);
-    if (ret != MraaReturnCode.success) {
-      return false;
-    }
+
     // Baud rate
-    ret = _mraaUart.baudRate(_context, GroveNfcPn532Definitions.baudRate);
-    if (ret != MraaReturnCode.success) {
-      return false;
-    }
-    // Mode 8N1
-    ret = _mraaUart.mode(_context, 8, MraaUartParity.none, 1);
+    var ret = _mraaUart.baudRate(_context, GroveNfcPn532Definitions.baudRate);
     if (ret != MraaReturnCode.success) {
       return false;
     }
 
-    _mraaUart.flush(_context);
     return true;
   }
 
@@ -123,88 +107,97 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   ///  Maximum time to wait is in milliseconds.
   ///  Always returns a result, a length of 0 indicates failure.
   @override
-  int readResponse(List<int> rBuffer, int length, {int maxTimeToWait}) {
+  int readResponse(List<int> rBuffer, int length,
+      {int maxTimeToWait = GroveNfcPn532Definitions.maxTimeToWait}) {
     final result = 0;
-    if (maxTimeToWait != null) {
-      _mraaUart.timeout(_context, maxTimeToWait, 0, 0);
-    }
-    final buffer = MraaUartBuffer();
+    final bytes = <int>[];
     // Preamble and start codes
-    var ret = _mraaUart.readBytes(_context, buffer,
-        GroveNfcPn532Definitions.preambleAndStartCodes.length);
-    if (ret != GroveNfcPn532Definitions.preambleAndStartCodes.length) {
+    var ret = _receive(
+        bytes, GroveNfcPn532Definitions.preambleAndStartCodes.length,
+        timeout: maxTimeToWait);
+    if (!ret) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read preamble and start codes, return is $ret');
+          'GroveNfcPn532Hsu::readResponse - failed to read preamble and start codes - timed out');
       return result;
     }
-    if (!eq(GroveNfcPn532Definitions.preambleAndStartCodes.length,
-        buffer.byteData)) {
+    if (!eq(
+        GroveNfcPn532Definitions.preambleAndStartCodes.length, bytes.length)) {
       print(
-          'GroveNfcPn532Hsu::readResponse - preamble and start codes not correct, ${buffer.byteData}');
+          'GroveNfcPn532Hsu::readResponse - preamble and start codes not correct, ${bytes}');
       return result;
     }
     // Length
-    buffer.byteData.clear();
-    ret = _mraaUart.readBytes(
-        _context, buffer, GroveNfcPn532Definitions.readResponseLength);
-    if (ret != GroveNfcPn532Definitions.readResponseLength) {
+    bytes.clear();
+    ret = _receive(bytes, GroveNfcPn532Definitions.readResponseLength,
+        timeout: maxTimeToWait);
+    if (!ret) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read length, return is $ret');
+          'GroveNfcPn532Hsu::readResponse - failed to read length - timed out');
       return result;
     }
-    if (0 != buffer.byteData[0] + buffer.byteData[1]) {
-      print(
-          'GroveNfcPn532Hsu::readResponse - length check failed, ${buffer.byteData}');
+    if (0 != bytes[0] + bytes[1]) {
+      print('GroveNfcPn532Hsu::readResponse - length check failed, ${bytes}');
       return result;
     }
-    buffer.byteData[0] -= GroveNfcPn532Definitions.readResponseLength;
-    if (buffer.byteData[0] > length) {
-      print(
-          'GroveNfcPn532Hsu::readResponse - no space error, ${buffer.byteData}');
+    bytes[0] -= GroveNfcPn532Definitions.readResponseLength;
+    if (bytes[0] > length) {
+      print('GroveNfcPn532Hsu::readResponse - no space error, ${bytes}');
       return result;
     }
-    final rxLength = buffer.byteData[0];
+    final rxLength = bytes[0];
     // Receive the command byte
-    buffer.byteData.clear();
-    ret = _mraaUart.readBytes(
-        _context, buffer, GroveNfcPn532Definitions.commandByteLength);
-    if (ret != GroveNfcPn532Definitions.readResponseLength) {
+    bytes.clear();
+    ret = _receive(bytes, GroveNfcPn532Definitions.commandByteLength,
+        timeout: maxTimeToWait);
+    if (!ret) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read command byte 1, return is $ret');
+          'GroveNfcPn532Hsu::readResponse - failed to read command byte 1 - timed out');
       return result;
     }
     final command = _commandAwaitingResponse + 1;
-    if (GroveNfcPn532Definitions.pn532ToHost != buffer.byteData[0] ||
-        command != buffer.byteData[1]) {}
-    buffer.byteData.clear();
-    ret = _mraaUart.readBytes(_context, buffer, rxLength);
-    if (ret != rxLength) {
+    if (GroveNfcPn532Definitions.pn532ToHost != bytes[0] ||
+        command != bytes[1]) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read command byte 2, return is $ret');
+          'GroveNfcPn532Hsu::readResponse - failed to read command byte 1 - error ${bytes}');
+    }
+    bytes.clear();
+    ret = _receive(bytes, rxLength, timeout: maxTimeToWait);
+    if (!ret) {
+      print(
+          'GroveNfcPn532Hsu::readResponse - failed to read command byte 2 - timed out');
+      return result;
+    }
+    if (bytes.length != rxLength) {
+      print(
+          'GroveNfcPn532Hsu::readResponse - failed to read command byte 2, ${bytes}');
       return result;
     }
     var sum = GroveNfcPn532Definitions.pn532ToHost + command;
-    buffer.byteData.forEach((e) {
+    bytes.forEach((e) {
       sum += e;
     });
     // Checksum and postamble
-    buffer.byteData.clear();
-    ret = _mraaUart.readBytes(
-        _context, buffer, GroveNfcPn532Definitions.postambleChecksumlength);
-    if (ret != GroveNfcPn532Definitions.postambleChecksumlength) {
+    bytes.clear();
+    ret = _receive(bytes, GroveNfcPn532Definitions.postambleChecksumlength,
+        timeout: maxTimeToWait);
+    if (!ret) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read checksum and postamble, return is $ret');
+          'GroveNfcPn532Hsu::readResponse - failed to read checksum and postamble - timed out');
       return result;
     }
-    if (0 != sum + buffer.byteData[0] || 0 != buffer.byteData[1]) {
+    if (bytes.length != GroveNfcPn532Definitions.postambleChecksumlength) {
       print(
-          'GroveNfcPn532Hsu::readResponse - checksum error, ${buffer.byteData}');
+          'GroveNfcPn532Hsu::readResponse - failed to read checksum and postamble, ${bytes}');
+      return result;
+    }
+    if (0 != sum + bytes[0] || 0 != bytes[1]) {
+      print('GroveNfcPn532Hsu::readResponse - checksum error, ${bytes}');
       return result;
     }
     if (maxTimeToWait != null) {
       _mraaUart.timeout(_context, GroveNfcPn532Definitions.maxTimeToWait, 0, 0);
     }
-    rBuffer.addAll(buffer.byteData);
+    rBuffer.addAll(bytes);
     return rxLength;
   }
 
@@ -213,23 +206,60 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   bool _readAcknowledgement() {
     var readOk = false;
     var ackCheck = false;
-    _mraaUart.timeout(_context, GroveNfcPn532Definitions.ackWaitTime, 0, 0);
-    final buff = MraaUartBuffer();
-    final ret = _mraaUart.readBytes(
-        _context, buff, GroveNfcPn532Definitions.acknowledge.length);
-    if (ret != buff.byteLength) {
+    final bytes = <int>[];
+    final ret = _receive(bytes, GroveNfcPn532Definitions.acknowledge.length,
+        timeout: GroveNfcPn532Definitions.ackWaitTime);
+    if (!ret) {
       print(
-          'GroveNfcPn532Hsu::_readAcknowledgement - failed to read acknowledgement from device return value is $ret');
+          'GroveNfcPn532Hsu::_readAcknowledgement - failed to read acknowledgement from device - timed out');
+    }
+    if (ret) {
+      // Check the acknowledgement
       readOk = true;
+      var isEqual = eq(GroveNfcPn532Definitions.acknowledge, bytes);
+      if (!isEqual) {
+        print(
+            'GroveNfcPn532Hsu::_readAcknowledgement - invalid acknowledge sequence received from device, ${bytes}');
+      } else {
+        ackCheck = true;
+      }
     }
-    // Check the acknowledgement
-    var isEqual = eq(GroveNfcPn532Definitions.acknowledge, buff.byteData);
-    if (!isEqual) {
-      print(
-          'GroveNfcPn532Hsu::_readAcknowledgement - invalid acknowledge sequence received from device, ${buff.byteData.toString()}');
-      ackCheck = true;
-    }
-    _mraaUart.timeout(_context, GroveNfcPn532Definitions.maxTimeToWait, 0, 0);
     return readOk && ackCheck;
+  }
+
+  // Return of true indicates OK, false is timed out.
+  bool _receive(List<int> bytes, int length,
+      {int timeout = GroveNfcPn532Definitions.maxTimeToWait}) {
+    var rxOk = false;
+    if (_mraaUart.dataAvailable(_context, timeout)) {
+      final buffer = MraaUartBuffer();
+      while (true) {
+        final ret = _mraaUart.readBytes(_context, buffer, length);
+        if (ret == Mraa.generalError) {
+          continue;
+        } else if (ret < length) {
+          bytes.addAll(buffer.byteData);
+          buffer.byteData.clear();
+          if (bytes.length == length) {
+            rxOk = true;
+            break;
+          }
+          if (_mraaUart.dataAvailable(_context, 1)) {
+            continue;
+          } else {
+            break;
+          }
+        } else if (ret == length) {
+          bytes.addAll(buffer.byteData);
+          rxOk = true;
+          break;
+        } else {
+          continue;
+        }
+      }
+    } else {
+      print('No data available for $timeout milliseconds - exiting');
+    }
+    return rxOk;
   }
 }
