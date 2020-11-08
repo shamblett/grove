@@ -5,7 +5,6 @@
  * Copyright :  S.Hamblett
  */
 
-import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 import 'example_config.dart';

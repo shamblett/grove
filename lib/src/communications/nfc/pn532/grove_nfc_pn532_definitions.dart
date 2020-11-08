@@ -73,5 +73,4 @@ class GroveNfcPn532Definitions {
   static const uartDefaultDevice = '/dev/ttyS0';
   static const maxTimeToWait = 1000; // ms
   static const baudRate = 115200;
-
 }
