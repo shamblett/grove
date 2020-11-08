@@ -43,3 +43,9 @@ const int soundSensorAIOPin = 4;
 
 // The AIO pin for the temperature sensor, set as needed.
 const int temperatureSensorAIOPin = 2;
+
+// Default UART tty device
+const String defaultUart = '/dev/ttyS0';
+
+// UART test message
+const String uartTestMessage = 'Hello World!';

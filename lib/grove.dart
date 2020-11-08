@@ -12,6 +12,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:mraa/mraa.dart';
 
 part 'src/display/screen/oled/ssd1327/grove_oled_ssd1327.dart';
@@ -26,3 +27,7 @@ part 'src/environment/temperature/grove_temperature_values.dart';
 part 'src/utilities/grove_sequence_monitor.dart';
 part 'src/utilities/grove_hex_conversions.dart';
 part 'src/grove_initialisation_states.dart';
+part 'src/communications/nfc/pn532/grove_nfc_pn532_definitions.dart';
+part 'src/communications/nfc/pn532/grove_nfc_pn532_interface.dart';
+part 'src/communications/nfc/pn532/grove_nfc_pn532_hsu.dart';
+part 'src/communications/nfc/pn532/grove_nfc_pn532.dart';
