@@ -32,23 +32,23 @@ extension GroveUartExtensions on MraaUart {
   bool receive(Pointer<MraaUartContext> context, List<int> bytes, int length,
       {int timeout = 0}) {
     var rxOk = false;
+    var rxLength = length;
     if (dataAvailable(context, timeout)) {
-      final buffer = MraaUartBuffer();
       while (true) {
-        final ret = readBytes(context, buffer, length);
+        final buffer = MraaUartBuffer();
+        final ret = readBytes(context, buffer, rxLength);
         if (ret == Mraa.generalError) {
           continue;
         } else if (ret < length) {
           bytes.addAll(buffer.byteData);
-          buffer.byteData.clear();
           if (bytes.length == length) {
             rxOk = true;
             break;
-          }
-          if (dataAvailable(context, 1)) {
-            continue;
           } else {
-            break;
+            rxLength = length - ret;
+            if ( rxLength == 0) {
+              break;
+            }
           }
         } else if (ret == length) {
           bytes.addAll(buffer.byteData);
