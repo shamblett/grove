@@ -6,6 +6,7 @@
  */
 
 import 'dart:io';
+import 'package:grove/grove.dart';
 import 'package:mraa/mraa.dart';
 import 'example_config.dart';
 
@@ -58,17 +59,14 @@ int main() {
     print(
         'Press a key to send the test string, ensure the receiver is running.....');
     stdin.readByteSync();
-    final buffer = MraaUartBuffer();
-    buffer.utf8Data = uartTestMessage;
-    var lret = mraa.uart.writeUtf8(context, buffer, buffer.utf8Length);
-    if (lret != 12) {
-      print('Failed to write string to UART, return is $lret');
+    final ok = mraa.uart.send(context, uartTestMessage.codeUnits);
+    if (!ok) {
+      print('Failed to write string to UART');
       return -1;
     }
-    mraa.uart.flush(context);
     print('Send again or X to exit....');
-    var char = stdin.readByteSync();
-    if (char == 0x58) {
+    final char = stdin.readByteSync().toString();
+    if (char.toUpperCase() == 'X') {
       stop = true;
     }
   }

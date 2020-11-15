@@ -15,6 +15,7 @@ import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:mraa/mraa.dart';
 
+part 'src/grove_uart_extensions.dart';
 part 'src/display/screen/oled/ssd1327/grove_oled_ssd1327.dart';
 part 'src/display/screen/oled/ssd1327/grove_oled_ssd1327_definitions.dart';
 part 'src/display/led/grove_ledbar_my9221.dart';

@@ -5,6 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
+import 'package:grove/grove.dart';
 import 'package:mraa/mraa.dart';
 import 'example_config.dart';
 
@@ -61,55 +62,17 @@ int main() {
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
   var message = <int>[];
-  var complete = false;
-  print('Starting receive loop');
-  if (mraa.uart.dataAvailable(context, 10000)) {
-    print('Data is available');
-    final buffer = MraaUartBuffer();
-    while (true) {
-      final ret = mraa.uart.readBytes(context, buffer, uartTestMessage.length);
-      if (ret == Mraa.generalError) {
-        print('Received general error - continuing');
-        continue;
-      } else if (ret < uartTestMessage.length) {
-        message.addAll(buffer.byteData);
-        buffer.byteData.clear();
-        if (message.length == uartTestMessage.length) {
-          print('Test message received - stopping');
-          complete = true;
-          break;
-        }
-        if (mraa.uart.dataAvailable(context, 1)) {
-          continue;
-        } else {
-          print('Partially received - no more data - exiting');
-          break;
-        }
-      } else if (ret == uartTestMessage.length) {
-        message.addAll(buffer.byteData);
-        print('Test message received in one read - stopping');
-        complete = true;
-        break;
-      } else {
-        print('Unrecognised return value - $ret');
-        continue;
-      }
-    }
+  print('Starting receive.....');
+  final ok = mraa.uart.receive(context, message, 10000);
+  if (ok) {
+    final str = String.fromCharCodes(message);
+    print('The message has been successfully received');
+    print('The received message is $str');
+    print('UART receiver test completed successfully');
   } else {
-    print('No data available for 10 seconds - exiting');
+    print('No data available for 10 seconds or receive failure.');
+    print('The message has NOT been successfully received - exiting');
     return -1;
-  }
-
-  var str;
-  if (complete) {
-    str = String.fromCharCodes(message);
-    if (str == uartTestMessage) {
-      print('The message has been successfully received');
-      print('The received message is $str');
-      print('UART receiver test completed successfully');
-    }
-  } else {
-    print('The message has NOT been successfully received');
   }
 
   return 0;
