@@ -18,7 +18,7 @@ extension GroveUartExtensions on MraaUart {
     buffer.byteData = Uint8List.fromList(data);
     var ret = writeBytes(context, buffer, buffer.byteLength);
     if (flush) {
-      //this.flush(context);
+      this.flush(context);
     }
     if (ret != data.length) {
       return false;
@@ -57,6 +57,7 @@ extension GroveUartExtensions on MraaUart {
         } else {
           continue;
         }
+        while (!dataAvailable(context, 1)) {}
       }
     }
     return rxOk;
