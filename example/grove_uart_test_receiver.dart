@@ -63,7 +63,8 @@ int main() {
       'Reading the test string from the UART, you have 10 seconds to send....');
   var message = <int>[];
   print('Starting receive.....');
-  final ok = mraa.uart.receive(context, message, 10000);
+  final ok = mraa.uart
+      .receive(context, message, uartTestMessage.length, timeout: 10000);
   if (ok) {
     final str = String.fromCharCodes(message);
     print('The message has been successfully received');
