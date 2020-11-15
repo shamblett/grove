@@ -66,7 +66,7 @@ int main() {
       return -1;
     }
     print('Send again or X to exit....');
-    final char = stdin.readByteSync().toString();
+    final char = String.fromCharCode(stdin.readByteSync());
     if (char.toUpperCase() == 'X') {
       stop = true;
     }
