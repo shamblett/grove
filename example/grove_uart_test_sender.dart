@@ -59,6 +59,7 @@ int main() {
     print(
         'Press a key to send the test string, ensure the receiver is running.....');
     stdin.readByteSync();
+    print('Sending ${uartTestMessage.codeUnits} ....');
     final ok = mraa.uart.send(context, uartTestMessage.codeUnits);
     if (!ok) {
       print('Failed to write string to UART');
