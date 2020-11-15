@@ -40,6 +40,19 @@ int main() {
     return -1;
   }
 
+  // Baud rate
+  ret = mraa.uart.baudRate(context, 115200);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set baud rate on UART');
+    return -1;
+  }
+  // Mode 8N1
+  ret = mraa.uart.mode(context, 8, MraaUartParity.none, 1);
+  if (ret != MraaReturnCode.success) {
+    print('Unable to set mode on UART');
+    return -1;
+  }
+
   print(
       'Reading the test string from the UART, you have 10 seconds to send....');
   var message = <int>[];
