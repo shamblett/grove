@@ -16,7 +16,7 @@ extension GroveUartExtensions on MraaUart {
       {bool flush = true}) {
     final buffer = MraaUartBuffer();
     buffer.byteData = Uint8List.fromList(data);
-    var ret = writeBytes(context, buffer, data.length);
+    var ret = writeBytes(context, buffer, buffer.byteLength);
     if (flush) {
       this.flush(context);
     }
