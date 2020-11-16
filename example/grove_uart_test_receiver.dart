@@ -62,7 +62,7 @@ int main() {
   if (ok) {
     final str = String.fromCharCodes(message);
     print('The message has been successfully received');
-    print('The received message is $str, $message');
+    print('The received message is : $str, as bytes $message');
     print('UART receiver test completed successfully');
   } else {
     print('No data available for 10 seconds or receive failure.');
