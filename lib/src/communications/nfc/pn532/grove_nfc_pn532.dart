@@ -54,12 +54,6 @@ class GroveNfcPn532 {
     if (!_prepareCommand()) {
       return 0;
     }
-    var ok = _interface.wakeup();
-    if (!ok) {
-      print(
-          'GroveNfcPn532::firmwareVersion - failed to wakeup the HSU interface');
-      return 0;
-    }
     final ret =
         _interface.writeCommand([GroveNfcPn532Definitions.getFirmwareVersion]);
     if (ret != CommandStatus.ok) {
