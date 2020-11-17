@@ -20,7 +20,7 @@ class GroveNfcPn532 {
     _interface = GroveNfcPn532Hsu(_mraa.uart, uartDevice: _tty);
   }
 
-  final _mraa;
+  Mraa _mraa;
 
   String _tty;
 
