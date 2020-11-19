@@ -7,6 +7,9 @@
 
 part of grove;
 
+/// Equality function for modem command/response processing
+Function eq = const ListEquality().equals;
+
 /// Extension methods for Uart communication in Grove.
 extension GroveUartExtensions on MraaUart {
   /// Send bytes with optional UART buffer flushing, defaults to flush.

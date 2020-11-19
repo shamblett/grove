@@ -7,8 +7,6 @@
 
 part of grove;
 
-Function eq = const ListEquality().equals;
-
 /// Communications interface to the PN532 High Speed Uart(HSU) interface.
 class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   /// Construction
