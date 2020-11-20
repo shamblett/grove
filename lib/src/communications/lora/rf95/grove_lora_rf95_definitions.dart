@@ -16,5 +16,8 @@ class GroveLoraRf95Definitions {
   static const baudRate = 57600;
 
   /// Commands
+  static const uartWrite = 0x57; // W
+  static const uartRead = 0x52; // R
+  static const uartTimeout = 3; // ms
 
 }
