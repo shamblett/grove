@@ -56,7 +56,8 @@ class GroveLoraRf95Hsu {
     return true;
   }
 
-  /// UART receive.
+  /// UART receive
+  ///
   /// Receives the length specified in [length]
   /// A return of true indicates the read was OK.
   bool uartRx(int register, List<int> bytes, int length) {
@@ -80,9 +81,22 @@ class GroveLoraRf95Hsu {
     return true;
   }
 
-  /// Read a register value.
+  /// Read a register value
+  ///
+  /// Returns [GroveLoraRf95Definitions.readError] on fail.
   int read(int register) {
-    return 0;
+    final buffer = <int>[];
+    final ok =
+        uartRx(register & ~GroveLoraRf95Definitions.writeMask, buffer, 1);
+    if (!ok) {
+      print('read - Failed to read data from UART, register is $register');
+      return GroveLoraRf95Definitions.readError;
+    }
+    if (buffer.length != 1) {
+      print('read - Invalid length from read operation, register is $register');
+      return GroveLoraRf95Definitions.readError;
+    }
+    return buffer[0];
   }
 
   /// Write a register value.
