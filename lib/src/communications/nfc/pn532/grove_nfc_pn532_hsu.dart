@@ -72,7 +72,6 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     header.forEach((int e) {
       sum += e;
     });
-    print('Sum is $sum');
     if (body != null) {
       sequence.addAll(body);
       body.forEach((int e) {
@@ -81,7 +80,6 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     }
     // checksum of TFI + DATA
     final checksum = ~sum + 1;
-    print('Checksumum is $checksum');
     sequence.add(checksum);
     sequence.add(GroveNfcPn532Definitions.postamble);
 
