@@ -99,12 +99,44 @@ class GroveLoraRf95Hsu {
     return buffer[0];
   }
 
-  /// Write a register value.
-  void write(int register, int value) {}
+  /// Write a register value
+  ///
+  /// Returns true if the write succeeded.
+  bool write(int register, int value) {
+    final buffer = <int>[];
+    buffer.add(value);
+    final ok = uartTx(register & GroveLoraRf95Definitions.writeMask, buffer);
+    if (!ok) {
+      print('write - Failed to write data to UART, register is $register');
+      return false;
+    }
+    return true;
+  }
 
   /// Burst read
-  void burstRead(int register, List<int> bytes, int length) {}
+  ///
+  /// A return of true indicates the read was OK.
+  bool burstRead(int register, List<int> bytes, int length) {
+    final ok =
+        uartRx(register & ~GroveLoraRf95Definitions.writeMask, bytes, length);
+    if (!ok) {
+      print(
+          'burstRead - Failed to read data from the UART, register is $register');
+      return false;
+    }
+    return true;
+  }
 
   /// Burst write
-  void burstWrite(int register, List<int> bytes) {}
+  ///
+  /// A return of true indicates the write was OK.
+  bool burstWrite(int register, List<int> bytes) {
+    final ok = uartTx(register & GroveLoraRf95Definitions.writeMask, bytes);
+    if (!ok) {
+      print(
+          'burstWrite - Failed to write data to the UART, register is $register');
+      return false;
+    }
+    return true;
+  }
 }
