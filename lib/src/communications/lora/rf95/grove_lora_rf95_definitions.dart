@@ -60,4 +60,17 @@ class GroveLoraRf95Definitions {
   static const rhrF95ReG24Hopperiod = 0x24;
   static const rhrF95ReG25Fiforxbyteaddr = 0x25;
   static const rhrF95ReG26ModemconfiG3 = 0x26;
+
+  /// Modes
+  static const rhrF95Longrangemode = 0x80;
+  static const rhrF95Accesssharedreg = 0x40;
+  static const rhrF95Mode = 0x07;
+  static const rhrF95Modesleep = 0x00;
+  static const rhrF95Modestdby = 0x01;
+  static const rhrF95Modefstx = 0x02;
+  static const rhrF95Modetx = 0x03;
+  static const rhrF95Modefsrx = 0x04;
+  static const rhrF95Moderxcontinuous = 0x05;
+  static const rhr_f95_moderxsingle = 0x06;
+  static const rhrF95Modecad = 0x07;
 }
