@@ -60,6 +60,12 @@ class GroveLoraRf95Definitions {
   static const rhrF95ReG24Hopperiod = 0x24;
   static const rhrF95ReG25Fiforxbyteaddr = 0x25;
   static const rhrF95ReG26ModemconfiG3 = 0x26;
+  static const rhrF95ReG4DPaDac = 0x4d;
+
+  /// PA
+  static const rhrF95PaDacDisable = 0x04;
+  static const rhrF95PaDacEnable = 0x07;
+  static const rhrF95PaSelect = 0x80;
 
   /// Modes
   static const rhrF95Longrangemode = 0x80;
@@ -76,4 +82,12 @@ class GroveLoraRf95Definitions {
 
   /// Radio defaults
   static const defaultPreambleLength = 8;
+  static const defaultFrequency = 868.0;
+  static const defaultPower = 13;
+
+  /// The crystal oscillator frequency of the module
+  static const rhrF95Fxosc = 32000000.0;
+
+  // The Frequency Synthesizer step = RH_RF95_FXOSC / 2^^19
+  static const rhrF95Fstep = (rhrF95Fxosc / 524288);
 }
