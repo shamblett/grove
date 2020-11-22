@@ -71,6 +71,9 @@ class GroveLoraRf95Definitions {
   static const rhrF95Modetx = 0x03;
   static const rhrF95Modefsrx = 0x04;
   static const rhrF95Moderxcontinuous = 0x05;
-  static const rhr_f95_moderxsingle = 0x06;
+  static const rhrF95Moderxsingle = 0x06;
   static const rhrF95Modecad = 0x07;
+
+  /// Radio defaults
+  static const defaultPreambleLength = 8;
 }
