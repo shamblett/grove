@@ -21,7 +21,7 @@ class GroveLoraRf95Hsu {
   /// Initialise
   ///
   /// A return of true indicates initialisation OK.
-  bool init() {
+  bool initialise() {
     // Device
     _context = _mraaUart.initialiseRaw(_uartDevice);
     if (_context == null) {

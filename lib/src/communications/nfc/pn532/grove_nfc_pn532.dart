@@ -28,7 +28,8 @@ class GroveNfcPn532 {
 
   bool initialised = false;
 
-  /// Initialise.
+  /// Initialise
+  ///
   /// Must be called or no communication to the device will occur.
   /// Returns true if initialisation succeed.
   bool initialise() {

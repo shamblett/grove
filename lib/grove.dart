@@ -34,4 +34,5 @@ part 'src/communications/nfc/pn532/grove_nfc_pn532_hsu.dart';
 part 'src/communications/nfc/pn532/grove_nfc_pn532.dart';
 part 'src/communications/lora/rf95/grove_lora_rf95_definitions.dart';
 part 'src/communications/lora/rf95/grove_lora_rf95_hsu.dart';
+part 'src/communications/lora/rf95/grove_lora_rf95.dart';
 
