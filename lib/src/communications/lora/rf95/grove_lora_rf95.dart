@@ -87,7 +87,7 @@ class GroveLoraRf95 {
     }
 
     // Wait for sleep mode to take over from say, CAD
-    sleep(Duration(milliseconds: 10));
+    io.sleep(Duration(milliseconds: 10));
 
     // Check we are in sleep mode, with LORA set
     if (_interface.read(GroveLoraRf95Definitions.rhrF95ReG01Opmode) !=
@@ -425,6 +425,20 @@ class GroveLoraRf95 {
         GroveLoraRf95Definitions.clearIrqFlags);
   }
 
+  /// setModeRx
+  ///
+  /// If current mode is Tx or Idle, changes it to Rx.
+  /// Starts the receiver in the RF95/96/97/98.
+  void setModeRx() {
+    if (_mode != GroveLoraMode.modeRx) {
+      _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+          GroveLoraRf95Definitions.rhrF95Moderxcontinuous);
+      // Interrupt on RxDone
+      _interface.write(GroveLoraRf95Definitions.rhrF95Rrg40DioMapping1, 0x00);
+      _mode = GroveLoraMode.modeRx;
+    }
+  }
+
   /// available
   ///
   /// Tests whether a new message is available from the driver.
@@ -434,6 +448,63 @@ class GroveLoraRf95 {
   /// Returns true if a new, complete, error-free uncollected message
   /// is available to be retrieved by [receiveMessage].
   bool available() {
+    if (_interface.readByte() == GroveLoraRf95Definitions.uartAvailable) {
+      handleInterrupt();
+    }
+    if (_mode == GroveLoraMode.modeTx) {
+      return false;
+    }
+    setModeRx();
+    // Will be set by the interrupt handler when a good message is received
+    return _rxBufValid;
+  }
+
+  /// send
+  ///
+  /// Waits until any previous transmit packet is finished being transmitted with waitPacketSent().
+  /// Then loads a message into the transmitter and starts the transmitter. Note that a message length
+  /// of 0 is permitted.
+  /// Returns true if the message length was valid and it was correctly queued for transmit.
+  bool send(List<int> data) {
+    if (data.length > GroveLoraRf95Definitions.rhrF95MaxMessageLen) {
+      return false;
+    }
+    // TODO send functionality to be added later
+    return true;
+  }
+
+  /// receive
+  ///
+  /// Turns the receiver on if it not already on.
+  /// If there is a valid message available, copy it to buffer and return true
+  /// else return false.
+  /// Caution, 0 length messages are permitted.
+  /// You should be sure to call this function frequently enough to not miss any messages
+  /// It is recommended that you call it in your main loop.
+  /// Returns true if a valid message was copied to buffer
+  bool receive(List<int> buffer) {
     return false;
+  }
+
+  /// sleep
+  ///
+  /// Sets the radio into low-power sleep mode.
+  /// If successful, the transport will stay in sleep mode until woken by
+  /// changing mode it idle, transmit or receive (eg by calling [send], [receive],
+  /// [available] etc)
+  /// Caution: there is a time penalty as the radio takes a finite time to wake
+  /// from sleep mode.
+  /// Returns true if sleep mode was successfully entered.
+  bool sleep() {
+    if (_mode != GroveLoraMode.modeSleep) {
+      final ok = _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+          GroveLoraRf95Definitions.rhrF95Modesleep);
+      if (!ok) {
+        print('GroveLoraRf95::sleep - failed to set sleep mode');
+        return false;
+      }
+      _mode = GroveLoraMode.modeSleep;
+    }
+    return true;
   }
 }

@@ -16,6 +16,7 @@ class GroveLoraRf95Definitions {
   /// Commands
   static const uartWrite = 0x57; // W
   static const uartRead = 0x52; // R
+  static const uartAvailable = 0x49; // I
   static const uartTimeout = 3; // ms
   static const writeMask = 0x80;
   static const readError = -1;
@@ -129,11 +130,24 @@ class GroveLoraRf95Definitions {
   static const rhrF95Moderxsingle = 0x06;
   static const rhrF95Modecad = 0x07;
 
-  /// Radio defaults
+  /// Radio/LORA defaults
   static const defaultPreambleLength = 8;
   static const defaultFrequency = 868.0;
   static const defaultPower = 13;
   static const rhrBroadcastAddress = 0xff;
+  static const rhrF95Rrg40DioMapping1 = 0x40;
+  // Max number of octets the LORA Rx/Tx FIFO can hold
+  static const rhrF95FifoSize = 0xff;
+  // This is the maximum number of bytes that can be carried by the LORA.
+  // We use some for headers.
+  static const rhrF95MaxPayloadLen = rhrF95FifoSize;
+  // The length of the headers we add.
+  // The headers are inside the LORA's payload
+  static const rhrF95HeaderLen = 4;
+  // This is the maximum message length that can be supported by this driver.
+  // Can be pre-defined to a smaller size (to save SRAM) prior to including this header.
+  // Here we allow for 1 byte message length, 4 bytes headers, user data and 2 bytes of FCS.
+  static const rhrF95MaxMessageLen =  (rhrF95MaxPayloadLen  - rhrF95HeaderLen);
 
   /// The crystal oscillator frequency of the module
   static const rhrF95Fxosc = 32000000.0;

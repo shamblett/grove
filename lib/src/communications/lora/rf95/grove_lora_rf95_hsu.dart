@@ -37,6 +37,20 @@ class GroveLoraRf95Hsu {
     return true;
   }
 
+  /// readByte
+  ///
+  /// Read a single byte from the UART.
+  /// Returns [GroveLoraRf95Definitions.readError] on failure to read a byte.
+  int readByte() {
+    final bytes = MraaUartBuffer();
+    final bytesRead = _mraaUart.readBytes(_context, bytes, 1);
+    if ( bytesRead != 1 ) {
+      print('GroveLoraRf95Hsu::readByte - failed to read a byte, $bytesRead');
+      return GroveLoraRf95Definitions.readError;
+    }
+    return bytes.byteData[0];
+  }
+
   /// UART transmit
   ///
   /// Transmits the length of [bytes].
@@ -50,7 +64,7 @@ class GroveLoraRf95Hsu {
     final ok = _mraaUart.send(_context, buffer);
     if (!ok) {
       print(
-          'uartTx - Failed to send UART write, register is $register, length is ${bytes.length}');
+          'GroveLoraRf95Hsu::uartTx - Failed to send UART write, register is $register, length is ${bytes.length}');
       return false;
     }
     return true;
@@ -68,14 +82,14 @@ class GroveLoraRf95Hsu {
     var ok = _mraaUart.send(_context, buffer);
     if (!ok) {
       print(
-          'uartRx - Failed to send UART read, register is $register, length is $length');
+          'GroveLoraRf95Hsu::uartRx - Failed to send UART read, register is $register, length is $length');
       return false;
     }
     ok = _mraaUart.receive(_context, bytes, length,
         timeout: GroveLoraRf95Definitions.uartTimeout);
     if (!ok) {
       print(
-          'uartRx - Failed to receive data from UART, register is $register, length is $length');
+          'GroveLoraRf95Hsu::uartRx - Failed to receive data from UART, register is $register, length is $length');
       return false;
     }
     return true;
@@ -89,11 +103,11 @@ class GroveLoraRf95Hsu {
     final ok =
         uartRx(register & ~GroveLoraRf95Definitions.writeMask, buffer, 1);
     if (!ok) {
-      print('read - Failed to read data from UART, register is $register');
+      print('GroveLoraRf95Hsu::read - Failed to read data from UART, register is $register');
       return GroveLoraRf95Definitions.readError;
     }
     if (buffer.length != 1) {
-      print('read - Invalid length from read operation, register is $register');
+      print('GroveLoraRf95Hsu::read - Invalid length from read operation, register is $register');
       return GroveLoraRf95Definitions.readError;
     }
     return buffer[0];
@@ -107,7 +121,7 @@ class GroveLoraRf95Hsu {
     buffer.add(value);
     final ok = uartTx(register & GroveLoraRf95Definitions.writeMask, buffer);
     if (!ok) {
-      print('write - Failed to write data to UART, register is $register');
+      print('GroveLoraRf95Hsu::write - Failed to write data to UART, register is $register');
       return false;
     }
     return true;
@@ -121,7 +135,7 @@ class GroveLoraRf95Hsu {
         uartRx(register & ~GroveLoraRf95Definitions.writeMask, bytes, length);
     if (!ok) {
       print(
-          'burstRead - Failed to read data from the UART, register is $register');
+          'GroveLoraRf95Hsu::burstRead - Failed to read data from the UART, register is $register');
       return false;
     }
     return true;
@@ -134,7 +148,7 @@ class GroveLoraRf95Hsu {
     final ok = uartTx(register & GroveLoraRf95Definitions.writeMask, bytes);
     if (!ok) {
       print(
-          'burstWrite - Failed to write data to the UART, register is $register');
+          'GroveLoraRf95Hsu::burstWrite - Failed to write data to the UART, register is $register');
       return false;
     }
     return true;

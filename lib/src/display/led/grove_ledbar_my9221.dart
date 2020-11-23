@@ -207,13 +207,13 @@ class GroveLedBarMy9221 {
     _mraa.gpio.write(_dev.gpioClk, 0);
     _mraa.gpio.write(_dev.gpioClk, 1);
     _mraa.gpio.write(_dev.gpioClk, 0);
-    sleep(const Duration(microseconds: 240));
+    io.sleep(const Duration(microseconds: 240));
 
     for (var idx = 0; idx < 4; idx++) {
       _mraa.gpio.write(_dev.gpioData, 1);
       _mraa.gpio.write(_dev.gpioData, 0);
     }
-    sleep(const Duration(microseconds: 1));
+    io.sleep(const Duration(microseconds: 1));
     _mraa.gpio.write(_dev.gpioClk, 1);
     _mraa.gpio.write(_dev.gpioClk, 0);
   }

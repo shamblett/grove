@@ -8,7 +8,7 @@
 library grove;
 
 import 'dart:ffi';
-import 'dart:io';
+import 'dart:io' as io;
 import 'dart:math';
 import 'dart:typed_data';
 
