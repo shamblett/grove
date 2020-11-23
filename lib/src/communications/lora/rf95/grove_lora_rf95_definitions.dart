@@ -62,6 +62,44 @@ class GroveLoraRf95Definitions {
   static const rhrF95ReG26ModemconfiG3 = 0x26;
   static const rhrF95ReG4DPaDac = 0x4d;
 
+  static const registers = <int>[
+    rhrF95ReG01Opmode,
+    rhrF95ReG06Frfmsb,
+    rhrF95ReG07Frfmid,
+    rhrF95ReG08Frflsb,
+    rhrF95ReG09Paconfig,
+    rhrF95ReG0Aparamp,
+    rhrF95ReG0Bocp,
+    rhrF95ReG0Clna,
+    rhrF95ReG0Dfifoaddrptr,
+    rhrF95ReG0Efifotxbaseaddr,
+    rhrF95ReG0Ffiforxbaseaddr,
+    rhrF95ReG10Fiforxcurrentaddr,
+    rhrF95ReG11Irqflagsmask,
+    rhrF95ReG12Irqflags,
+    rhrF95ReG13Rxnbbytes,
+    rhrF95ReG14Rxheadercntvaluemsb,
+    rhrF95ReG15Rxheadercntvaluelsb,
+    rhrF95ReG16Rxpacketcntvaluemsb,
+    rhrF95ReG17Rxpacketcntvaluelsb,
+    rhrF95ReG18Modemstat,
+    rhrF95ReG19Pktsnrvalue,
+    rhrF95ReG1Apktrssivalue,
+    rhrF95ReG1Brssivalue,
+    rhrF95ReG1Chopchannel,
+    rhrF95ReG1DmodemconfiG1,
+    rhrF95ReG1EmodemconfiG2,
+    rhrF95ReG1Fsymbtimeoutlsb,
+    rhrF95ReG20Preamblemsb,
+    rhrF95ReG21Preamblelsb,
+    rhrF95ReG22Payloadlength,
+    rhrF95ReG23Maxpayloadlength,
+    rhrF95ReG24Hopperiod,
+    rhrF95ReG25Fiforxbyteaddr,
+    rhrF95ReG26ModemconfiG3,
+    rhrF95ReG4DPaDac
+  ];
+
   /// PA
   static const rhrF95PaDacDisable = 0x04;
   static const rhrF95PaDacEnable = 0x07;

@@ -283,4 +283,18 @@ class GroveLoraRf95 {
     }
     return true;
   }
+
+  /// Prints the value of all chip registers
+  /// For debugging purposes only.
+  void printRegisters() {
+    final sb = StringBuffer();
+    for (final register in GroveLoraRf95Definitions.registers) {
+      sb.write('${groveByte2Hex(register)} : ');
+      final registerValue = _interface.read(register);
+      sb.write('${groveByte2Hex(registerValue)},');
+    }
+    sb.writeln('');
+    print('GroveLoraRf95::printRegisters - register values are :-');
+    print(sb.toString());
+  }
 }
