@@ -26,19 +26,23 @@ class GroveLoraRf95 {
 
   GroveLoraMode _mode = GroveLoraMode.modeInitialising;
 
-  // Count of the number of bad messages (eg bad checksum etc) received
+  /// Count of the number of bad messages (eg bad checksum etc) received.
+  int get rxBad => _rxBad;
   int _rxBad = 0;
 
-  // Count of the number of successfully transmitted messaged
-  int _rxGood = 0;
-
-  // Count of the number of bad messages (correct checksum etc) received
+  /// Count of the number of successfully transmitted messages.
+  int get txGood => _txGood;
   int _txGood = 0;
+
+  /// Count of the number of successfully received messages.
+  int get rxGood => _rxGood;
+  int _rxGood = 0;
 
   // The receiver/transmitter buffer
   final List<int> _rxTxBuffer = <int>[];
 
-  // The value of the last received RSSI value, in some transport specific units
+  /// The value of the last received RSSI value, in some transport specific units.
+  int get lastRssi => _lastRssi;
   int _lastRssi = 0;
 
   // True when there is a valid message in the buffer
@@ -47,20 +51,23 @@ class GroveLoraRf95 {
   // TO header in the last received message
   int _rxHeaderTo = 0;
 
-  // FROM header in the last received message
+  /// FROM header in the last received message.
+  int get rxHeaderFrom => _rxHeaderFrom;
   int _rxHeaderFrom = 0;
 
-  // ID header in the last received message
+  /// ID header in the last received message.
+  int get rxHeaderId => _rxHeaderId;
   int _rxHeaderId = 0;
 
-  // FLAGS header in the last received message
+  /// FLAGS header in the last received message.
+  int get rxHeaderFlags => _rxHeaderFlags;
   int _rxHeaderFlags = 0;
 
   // This node id
-  int _thisAddress = 0;
+  int thisAddress = 0;
 
   // Whether the transport is in promiscuous mode
-  bool _promiscuous = false;
+  bool promiscuous = false;
 
   /// Initialise
   ///
@@ -362,8 +369,8 @@ class GroveLoraRf95 {
     _rxHeaderId = _rxTxBuffer[2];
     _rxHeaderFlags = _rxTxBuffer[3];
 
-    if (_promiscuous ||
-        _rxHeaderTo == _thisAddress ||
+    if (promiscuous ||
+        _rxHeaderTo == thisAddress ||
         _rxHeaderTo == GroveLoraRf95Definitions.rhrBroadcastAddress) {
       _rxGood++;
       _rxBufValid = true;
@@ -473,6 +480,14 @@ class GroveLoraRf95 {
     return true;
   }
 
+  /// clearRxBuffer
+  ///
+  /// Clear our local receive buffer.
+  void clearRxBuffer() {
+    _rxBufValid = false;
+    _rxTxBuffer.clear();
+  }
+
   /// receive
   ///
   /// Turns the receiver on if it not already on.
@@ -483,7 +498,13 @@ class GroveLoraRf95 {
   /// It is recommended that you call it in your main loop.
   /// Returns true if a valid message was copied to buffer
   bool receive(List<int> buffer) {
-    return false;
+    if (!available()) {
+      return false;
+    }
+    // Skip the 4 headers that are at the beginning of the rxBuf
+    buffer.addAll(_rxTxBuffer.sublist(4));
+    clearRxBuffer(); // This message accepted and cleared
+    return true;
   }
 
   /// sleep

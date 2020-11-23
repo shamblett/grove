@@ -147,7 +147,7 @@ class GroveLoraRf95Definitions {
   // This is the maximum message length that can be supported by this driver.
   // Can be pre-defined to a smaller size (to save SRAM) prior to including this header.
   // Here we allow for 1 byte message length, 4 bytes headers, user data and 2 bytes of FCS.
-  static const rhrF95MaxMessageLen =  (rhrF95MaxPayloadLen  - rhrF95HeaderLen);
+  static const rhrF95MaxMessageLen = (rhrF95MaxPayloadLen - rhrF95HeaderLen);
 
   /// The crystal oscillator frequency of the module
   static const rhrF95Fxosc = 32000000.0;

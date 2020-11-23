@@ -151,23 +151,23 @@ class GroveOledSsd1327 {
             : pColumn;
     // Column Address
     error = _writeRegCommand(GroveOledSsd1327Definitions.setColumnAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // Start Column
     error = _writeRegCommand(
         GroveOledSsd1327Definitions.startColumnAddress + (column * 4));
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // End column
     error = _writeRegCommand(GroveOledSsd1327Definitions.endColumnAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // Row Address
     error = _writeRegCommand(GroveOledSsd1327Definitions.setRowAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // Start row
     error = _writeRegCommand((row * 8));
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // End Row
     error = _writeRegCommand(0x07 + (row * 8));
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     return error;
   }
 
@@ -262,7 +262,7 @@ class GroveOledSsd1327 {
         value |= (bitTwo == 0) ? _grayLow : 0x00;
 
         error = _writeRegData(value);
-       io. sleep(cmdSleep);
+        io.sleep(cmdSleep);
       }
     }
     return error;
@@ -288,7 +288,7 @@ class GroveOledSsd1327 {
         data |= (bitOne != 0) ? _grayHigh : 0x00;
         data |= (bitTwo != 0) ? _grayLow : 0x00;
         rv = _writeRegData(data);
-       io. sleep(cmdSleep);
+        io.sleep(cmdSleep);
       }
     }
     return rv;
@@ -298,25 +298,25 @@ class GroveOledSsd1327 {
     var rv = MraaReturnCode.success;
     // Remap to horizontal mode
     rv = _writeRegCommand(GroveOledSsd1327Definitions.setRemap);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     rv = _writeRegCommand(GroveOledSsd1327Definitions.horizontalMode);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // Reset row Address
     rv = _writeRegCommand(GroveOledSsd1327Definitions.setRowAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     rv = _writeRegCommand(GroveOledSsd1327Definitions.startRowAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     rv = _writeRegCommand(GroveOledSsd1327Definitions.endRowAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // Column Address
     rv = _writeRegCommand(GroveOledSsd1327Definitions.setColumnAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // Start from 8th Column of driver IC. This is 0th Column for OLED
     rv = _writeRegCommand(GroveOledSsd1327Definitions.startColumnAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     // End at  (8 + 47)th column. Each column has 2 pixels(or segments)
     rv = _writeRegCommand(GroveOledSsd1327Definitions.endColumnAddress);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     _isVerticalMode = false;
     return rv;
   }
@@ -325,9 +325,9 @@ class GroveOledSsd1327 {
     var rv = MraaReturnCode.success;
     // Remap to vertical mode
     rv = _writeRegCommand(GroveOledSsd1327Definitions.setRemap);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     rv = _writeRegCommand(GroveOledSsd1327Definitions.verticalMode);
-   io. sleep(cmdSleep);
+    io.sleep(cmdSleep);
     _isVerticalMode = true;
     return rv;
   }
@@ -373,104 +373,104 @@ class GroveOledSsd1327 {
     // Unlock the OLED driver IC MCU interface from entering command.
     // i.e. accept commands
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setCommandLock);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setCommandLockReset);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set display off
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setDisplayOff);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set multiplex ratio to 96
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setMuxRatio);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.muxRatio);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set the display start line
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setDisplayStartLine);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.displayStartLine);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set the display offset
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setDisplayOffset);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.displayOffset);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set remap
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setRemap);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.verticalMode);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     _isVerticalMode = true;
     // Set vdd internal
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.functionSelectionA);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.vddInternal);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set the contrast
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setContrast);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // 100 nit
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.contrast);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set the phase Length
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setPhaseLength);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.phaseLength);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set the Display Clock Divide Ratio/Oscillator frequency
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setFrontClock);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.frontClockFrequency);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Linear LUT
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setLinearLut);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set pre_charge voltage
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setPreChargeVoltage);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.preChargeVoltage);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set VCOMH
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setVcomh);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.vcomh);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set second pre-charge period
     monitor +
         _writeRegCommand(GroveOledSsd1327Definitions.setSecondPreChargePeriod);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor +
         _writeRegCommand(GroveOledSsd1327Definitions.secondPreChargePeriod);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Enable second precharge and internal vsl
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.functionSelectionB);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor +
         _writeRegCommand(GroveOledSsd1327Definitions.secondPrechargeAndVSL);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set Normal Display Mode
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setNormalDisplay);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Deactivate Scroll
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.deactivateScroll);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Switch on display
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setDisplayOn);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set Row Address
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setRowAddress);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.startRowAddress);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.endRowAddress);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Set Column Address
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.setColumnAddress);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // Start from 8th Column of driver IC. This is 0th Column for OLED
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.startColumnAddress);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
     // End at  (8 + 47)th column. Each Column has 2  // pixels(segments)
     monitor + _writeRegCommand(GroveOledSsd1327Definitions.endColumnAddress);
-   io. sleep(initSleep);
+    io.sleep(initSleep);
   }
 }
