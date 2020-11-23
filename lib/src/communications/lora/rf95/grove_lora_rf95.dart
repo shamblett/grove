@@ -26,6 +26,42 @@ class GroveLoraRf95 {
 
   GroveLoraMode _mode = GroveLoraMode.modeInitialising;
 
+  // Count of the number of bad messages (eg bad checksum etc) received
+  int _rxBad = 0;
+
+  // Count of the number of successfully transmitted messaged
+  int _rxGood = 0;
+
+  // Count of the number of bad messages (correct checksum etc) received
+  int _txGood = 0;
+
+  // The receiver/transmitter buffer
+  final List<int> _rxTxBuffer = <int>[];
+
+  // The value of the last received RSSI value, in some transport specific units
+  int _lastRssi = 0;
+
+  // True when there is a valid message in the buffer
+  bool _rxBufValid = false;
+
+  // TO header in the last received message
+  int _rxHeaderTo = 0;
+
+  // FROM header in the last received message
+  int _rxHeaderFrom = 0;
+
+  // ID header in the last received message
+  int _rxHeaderId = 0;
+
+  // FLAGS header in the last received message
+  int _rxHeaderFlags = 0;
+
+  // This node id
+  int _thisAddress = 0;
+
+  // Whether the transport is in promiscuous mode
+  bool _promiscuous = false;
+
   /// Initialise
   ///
   /// Initialise the driver transport hardware and software.
@@ -311,6 +347,84 @@ class GroveLoraRf95 {
     return false;
   }
 
+  /// validateRxBuffer
+  ///
+  /// Examine the receive buffer to determine whether the message is for this node
+  /// and check whether the latest received message is complete and uncorrupted.
+  void validateRxBuffer() {
+    if (_rxTxBuffer.length < 4) {
+      // Too short to be a real message
+      return;
+    }
+    // Extract the 4 headers
+    _rxHeaderTo = _rxTxBuffer[0];
+    _rxHeaderFrom = _rxTxBuffer[1];
+    _rxHeaderId = _rxTxBuffer[2];
+    _rxHeaderFlags = _rxTxBuffer[3];
+
+    if (_promiscuous ||
+        _rxHeaderTo == _thisAddress ||
+        _rxHeaderTo == GroveLoraRf95Definitions.rhrBroadcastAddress) {
+      _rxGood++;
+      _rxBufValid = true;
+    }
+  }
+
+  /// handleInterrupt
+  ///
+  /// LORA is unusual in that it has several interrupt lines, and not a single, combined one.
+  /// On MiniWirelessLoRa, only one of the several interrupt lines (DI0) from the
+  /// RF95 is usefully connected to the processor.
+  /// We use this to get RxDone and TxDone interrupts.
+  void handleInterrupt() {
+    // Read the interrupt register
+    final irqFlags =
+        _interface.read(GroveLoraRf95Definitions.rhrF95ReG12Irqflags);
+    if (_mode == GroveLoraMode.modeRx &&
+        (irqFlags &
+                (GroveLoraRf95Definitions.rhrF95RxTimeout |
+                    GroveLoraRf95Definitions.rhrF95PayloadCrcError) ==
+            1)) {
+      _rxBad++;
+    } else if (_mode == GroveLoraMode.modeRx &&
+        (irqFlags & GroveLoraRf95Definitions.rhrF95RxDone) == 1) {
+      // We have received a packet
+      final length =
+          _interface.read(GroveLoraRf95Definitions.rhrF95ReG13Rxnbbytes);
+
+      // Reset the fifo read pointer to the beginning of the packet
+      final pointer = _interface
+          .read(GroveLoraRf95Definitions.rhrF95ReG10Fiforxcurrentaddr);
+      _interface.write(
+          GroveLoraRf95Definitions.rhrF95ReG0Dfifoaddrptr, pointer);
+      _interface.burstRead(
+          GroveLoraRf95Definitions.rhrF95ReG00Fifo, _rxTxBuffer, length);
+      // Clear all IRQ flags
+      _interface.write(GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
+          GroveLoraRf95Definitions.clearIrqFlags);
+
+      // Remember the RSSI of this packet
+      // this is according to the doc, but is it really correct?
+      // weakest receivable signals are reported RSSI at about -66
+      _lastRssi =
+          _interface.read(GroveLoraRf95Definitions.rhrF95ReG1Apktrssivalue) -
+              137;
+
+      // We have received a message.
+      validateRxBuffer();
+      if (_rxBufValid) {
+        setModeIdle();
+      } // Got one
+    } else if (_mode == GroveLoraMode.modeTx &&
+        (irqFlags & GroveLoraRf95Definitions.rhrF95TxDone) == 1) {
+      _txGood++;
+      setModeIdle();
+    }
+
+    _interface.write(GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
+        GroveLoraRf95Definitions.clearIrqFlags);
+  }
+
   /// available
   ///
   /// Tests whether a new message is available from the driver.
@@ -322,5 +436,4 @@ class GroveLoraRf95 {
   bool available() {
     return false;
   }
-
 }

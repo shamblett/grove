@@ -34,4 +34,4 @@ String groveList2Hex(List<int> values, {int lineLength = 8}) {
 }
 
 /// Single byte convert
-String groveByte2Hex(int value) => groveList2Hex([value], lineLength : 1);
+String groveByte2Hex(int value) => groveList2Hex([value], lineLength: 1);

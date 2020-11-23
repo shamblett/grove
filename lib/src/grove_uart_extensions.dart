@@ -49,7 +49,7 @@ extension GroveUartExtensions on MraaUart {
             break;
           } else {
             rxLength = length - ret;
-            if ( rxLength == 0) {
+            if (rxLength == 0) {
               break;
             }
           }

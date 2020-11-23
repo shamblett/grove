@@ -105,6 +105,17 @@ class GroveLoraRf95Definitions {
   static const rhrF95PaDacEnable = 0x07;
   static const rhrF95PaSelect = 0x80;
 
+  /// IRQ
+  static const rhrF95RxTimeoutMask = 0x80;
+  static const rhrF95RxDoneMask = 0x40;
+  static const rhrF95PayloadCrcErrorMask = 0x20;
+  static const rhrF95RxTimeout = 0x80;
+  static const rhrF95RxDone = 0x40;
+  static const rhrF95PayloadCrcError = 0x20;
+  static const rhrF95TxDone = 0x08;
+  static const rhrF95TxDoneMask = 0x08;
+  static const clearIrqFlags = 0xff;
+
   /// Modes
   static const rhrF95Longrangemode = 0x80;
   static const rhrF95Accesssharedreg = 0x40;
@@ -122,6 +133,7 @@ class GroveLoraRf95Definitions {
   static const defaultPreambleLength = 8;
   static const defaultFrequency = 868.0;
   static const defaultPower = 13;
+  static const rhrBroadcastAddress = 0xff;
 
   /// The crystal oscillator frequency of the module
   static const rhrF95Fxosc = 32000000.0;
