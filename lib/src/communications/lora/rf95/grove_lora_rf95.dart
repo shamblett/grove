@@ -297,4 +297,30 @@ class GroveLoraRf95 {
     print('GroveLoraRf95::printRegisters - register values are :-');
     print(sb.toString());
   }
+
+  /// receiveMessage
+  ///
+  /// Turns the receiver on if it not already on.
+  /// If there is a valid message available, copy it to [buffer] and return true
+  /// else return false.
+  /// Caution, 0 length messages are permitted.
+  /// You should be sure to call this function frequently enough to not miss any messages
+  /// It is recommended that you call it in your main loop.
+  /// Returns true if a valid message was copied to [buffer]
+  bool receiveMessage(List<int> buffer) {
+    return false;
+  }
+
+  /// available
+  ///
+  /// Tests whether a new message is available from the driver.
+  /// On most drivers, this will also put the driver into [modeRx] mode until
+  /// a message is actually received by the transport, when it wil be returned to [modeIdle].
+  /// This can be called multiple times in a timeout loop.
+  /// Returns true if a new, complete, error-free uncollected message
+  /// is available to be retrieved by [receiveMessage].
+  bool available() {
+    return false;
+  }
+
 }
