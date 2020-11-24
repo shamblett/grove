@@ -37,3 +37,4 @@ part 'src/communications/lora/rf95/grove_lora_rf95_hsu.dart';
 part 'src/communications/lora/rf95/grove_lora_rf95.dart';
 part 'src/communications/lora/rf95/grove_lora_configuration.dart';
 part 'src/communications/lora/rf95/grove_lora_operation.dart';
+part 'src/communications/lora/rf95/grove_lora_message.dart';

@@ -38,36 +38,17 @@ class GroveLoraRf95 {
   int get rxGood => _rxGood;
   int _rxGood = 0;
 
-  // The receiver/transmitter buffer
-  final List<int> _rxTxBuffer = <int>[];
-
-  /// The value of the last received RSSI value, in some transport specific units.
-  int get lastRssi => _lastRssi;
-  int _lastRssi = 0;
-
-  // True when there is a valid message in the buffer
-  bool _rxBufValid = false;
-
-  // TO header in the last received message
-  int _rxHeaderTo = 0;
-
-  /// FROM header in the last received message.
-  int get rxHeaderFrom => _rxHeaderFrom;
-  int _rxHeaderFrom = 0;
-
-  /// ID header in the last received message.
-  int get rxHeaderId => _rxHeaderId;
-  int _rxHeaderId = 0;
-
-  /// FLAGS header in the last received message.
-  int get rxHeaderFlags => _rxHeaderFlags;
-  int _rxHeaderFlags = 0;
-
   // This node id
   int thisAddress = 0;
 
   // Whether the transport is in promiscuous mode
   bool promiscuous = false;
+
+  /// Last message
+  final message = GroveLoraMessage();
+
+  // Temporary Rx/Tx message buffer
+  final _rxTxBuffer = <int>[];
 
   /// Initialise
   ///
@@ -364,16 +345,16 @@ class GroveLoraRf95 {
       return;
     }
     // Extract the 4 headers
-    _rxHeaderTo = _rxTxBuffer[0];
-    _rxHeaderFrom = _rxTxBuffer[1];
-    _rxHeaderId = _rxTxBuffer[2];
-    _rxHeaderFlags = _rxTxBuffer[3];
+    message.rxHeaderTo = _rxTxBuffer[0];
+    message.rxHeaderFrom = _rxTxBuffer[1];
+    message.rxHeaderId = _rxTxBuffer[2];
+    message.rxHeaderFlags = _rxTxBuffer[3];
 
     if (promiscuous ||
-        _rxHeaderTo == thisAddress ||
-        _rxHeaderTo == GroveLoraRf95Definitions.rhrBroadcastAddress) {
+        message.rxHeaderTo == thisAddress ||
+        message.rxHeaderTo == GroveLoraRf95Definitions.rhrBroadcastAddress) {
       _rxGood++;
-      _rxBufValid = true;
+      message.rxMessageValid = true;
     }
   }
 
@@ -394,7 +375,7 @@ class GroveLoraRf95 {
             1)) {
       _rxBad++;
     } else if (_mode == GroveLoraMode.modeRx &&
-        (irqFlags & GroveLoraRf95Definitions.rhrF95RxDone) == 1) {
+        (irqFlags & GroveLoraRf95Definitions.rhrF95RxDone) != 0) {
       // We have received a packet
       final length =
           _interface.read(GroveLoraRf95Definitions.rhrF95ReG13Rxnbbytes);
@@ -413,17 +394,17 @@ class GroveLoraRf95 {
       // Remember the RSSI of this packet
       // this is according to the doc, but is it really correct?
       // weakest receivable signals are reported RSSI at about -66
-      _lastRssi =
+      message.rxLastRssi =
           _interface.read(GroveLoraRf95Definitions.rhrF95ReG1Apktrssivalue) -
               137;
 
       // We have received a message.
       validateRxBuffer();
-      if (_rxBufValid) {
+      if (message.rxMessageValid) {
         setModeIdle();
       } // Got one
     } else if (_mode == GroveLoraMode.modeTx &&
-        (irqFlags & GroveLoraRf95Definitions.rhrF95TxDone) == 1) {
+        (irqFlags & GroveLoraRf95Definitions.rhrF95TxDone) != 0) {
       _txGood++;
       setModeIdle();
     }
@@ -463,7 +444,7 @@ class GroveLoraRf95 {
     }
     setModeRx();
     // Will be set by the interrupt handler when a good message is received
-    return _rxBufValid;
+    return message.rxMessageValid;
   }
 
   /// send
@@ -484,7 +465,6 @@ class GroveLoraRf95 {
   ///
   /// Clear our local receive buffer.
   void clearRxBuffer() {
-    _rxBufValid = false;
     _rxTxBuffer.clear();
   }
 
