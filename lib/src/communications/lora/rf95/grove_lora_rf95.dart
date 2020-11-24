@@ -322,19 +322,6 @@ class GroveLoraRf95 {
     print(sb.toString());
   }
 
-  /// receiveMessage
-  ///
-  /// Turns the receiver on if it not already on.
-  /// If there is a valid message available, copy it to [buffer] and return true
-  /// else return false.
-  /// Caution, 0 length messages are permitted.
-  /// You should be sure to call this function frequently enough to not miss any messages
-  /// It is recommended that you call it in your main loop.
-  /// Returns true if a valid message was copied to [buffer]
-  bool receiveMessage(List<int> buffer) {
-    return false;
-  }
-
   /// validateRxBuffer
   ///
   /// Examine the receive buffer to determine whether the message is for this node
@@ -349,6 +336,7 @@ class GroveLoraRf95 {
     message.rxHeaderFrom = _rxTxBuffer[1];
     message.rxHeaderId = _rxTxBuffer[2];
     message.rxHeaderFlags = _rxTxBuffer[3];
+    message.message.addAll(_rxTxBuffer.sublist(4));
 
     if (promiscuous ||
         message.rxHeaderTo == thisAddress ||
@@ -482,7 +470,7 @@ class GroveLoraRf95 {
       return false;
     }
     // Skip the 4 headers that are at the beginning of the rxBuf
-    buffer.addAll(_rxTxBuffer.sublist(4));
+    buffer.addAll(message.message);
     clearRxBuffer(); // This message accepted and cleared
     return true;
   }
