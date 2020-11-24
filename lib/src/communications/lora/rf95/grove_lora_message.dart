@@ -15,10 +15,11 @@ class GroveLoraMessage {
   /// The value of the last received RSSI value, in some transport specific units.
   int rxLastRssi = 0;
 
-  // True when there is a valid received message in the buffer
+  /// True when there is a valid received message in the buffer
   bool rxMessageValid = false;
+  bool get isValid => rxMessageValid;
 
-  // TO header in the last received message
+  /// TO header in the last received message
   int rxHeaderTo = 0;
 
   /// FROM header in the last received message.
