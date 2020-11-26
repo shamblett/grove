@@ -39,13 +39,13 @@ class GroveLoraRf95 {
   int _rxGood = 0;
 
   // This node id
-  int thisAddress = 0;
+  int thisAddress = GroveLoraRf95Definitions.rhrBroadcastAddress;
 
   // Whether the transport is in promiscuous mode
   bool promiscuous = false;
 
-  /// Last message
-  final message = GroveLoraMessage();
+  /// Last received message
+  final lastReceivedMessage = GroveLoraReceiveMessage();
 
   // Temporary Rx/Tx message buffer
   final _rxTxBuffer = <int>[];
@@ -299,15 +299,6 @@ class GroveLoraRf95 {
     return true;
   }
 
-  bool _initialisedOk() {
-    if (!initialised) {
-      print(
-          'GroveLoraRf95:: not initialised, commands will not be sent to the device');
-      return false;
-    }
-    return true;
-  }
-
   /// Prints the value of all chip registers
   /// For debugging purposes only.
   void printRegisters() {
@@ -332,17 +323,18 @@ class GroveLoraRf95 {
       return;
     }
     // Extract the 4 headers
-    message.rxHeaderTo = _rxTxBuffer[0];
-    message.rxHeaderFrom = _rxTxBuffer[1];
-    message.rxHeaderId = _rxTxBuffer[2];
-    message.rxHeaderFlags = _rxTxBuffer[3];
-    message.message.addAll(_rxTxBuffer.sublist(4));
+    lastReceivedMessage.headerTo = _rxTxBuffer[0];
+    lastReceivedMessage.headerFrom = _rxTxBuffer[1];
+    lastReceivedMessage.headerId = _rxTxBuffer[2];
+    lastReceivedMessage.headerFlags = _rxTxBuffer[3];
+    lastReceivedMessage.message.addAll(_rxTxBuffer.sublist(4));
 
     if (promiscuous ||
-        message.rxHeaderTo == thisAddress ||
-        message.rxHeaderTo == GroveLoraRf95Definitions.rhrBroadcastAddress) {
+        lastReceivedMessage.headerTo == thisAddress ||
+        lastReceivedMessage.headerTo ==
+            GroveLoraRf95Definitions.rhrBroadcastAddress) {
       _rxGood++;
-      message.rxMessageValid = true;
+      lastReceivedMessage.messageValid = true;
     }
   }
 
@@ -382,13 +374,13 @@ class GroveLoraRf95 {
       // Remember the RSSI of this packet
       // this is according to the doc, but is it really correct?
       // weakest receivable signals are reported RSSI at about -66
-      message.rxLastRssi =
+      lastReceivedMessage.lastRssi =
           _interface.read(GroveLoraRf95Definitions.rhrF95ReG1Apktrssivalue) -
               137;
 
       // We have received a message.
       validateRxBuffer();
-      if (message.rxMessageValid) {
+      if (lastReceivedMessage.messageValid) {
         setModeIdle();
       } // Got one
     } else if (_mode == GroveLoraMode.modeTx &&
@@ -432,7 +424,43 @@ class GroveLoraRf95 {
     }
     setModeRx();
     // Will be set by the interrupt handler when a good message is received
-    return message.rxMessageValid;
+    return lastReceivedMessage.isValid;
+  }
+
+  /// transmitAvailable
+  ///
+  /// Waits until the device is available for a transmit operation
+  /// Waits for [GroveLoraRf95Definitions.transmitAvailableWait] in 1
+  /// millisecond slices.
+  /// Returns true as soon as the device is available, false if it never
+  /// becomes available.
+  bool transmitAvailable() {
+    var count = 1;
+    var ok = false;
+    while (count < GroveLoraRf95Definitions.transmitAvailableWait) {
+      if (!available()) {
+        io.sleep(Duration(milliseconds: 1));
+        count++;
+      } else {
+        ok = true;
+        break;
+      }
+    }
+    return ok;
+  }
+
+  /// setModeTx.
+  ///
+  /// If the current mode is Rx or Idle, changes it to Tx.
+  /// Starts the transmitter.
+  void setModeTx() {
+    if (_mode != GroveLoraMode.modeTx) {
+      _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+          GroveLoraRf95Definitions.rhrF95Modetx);
+      // Interrupt on TxDone
+      _interface.write(GroveLoraRf95Definitions.rhrF95Reg40DioMapping1, 0x40);
+      _mode = GroveLoraMode.modeTx;
+    }
   }
 
   /// send
@@ -440,12 +468,43 @@ class GroveLoraRf95 {
   /// Waits until any previous transmit packet is finished being transmitted with waitPacketSent().
   /// Then loads a message into the transmitter and starts the transmitter. Note that a message length
   /// of 0 is permitted.
-  /// Returns true if the message length was valid and it was correctly queued for transmit.
-  bool send(List<int> data) {
-    if (data.length > GroveLoraRf95Definitions.rhrF95MaxMessageLen) {
+  /// Returns true if the message is valid and it was correctly queued for transmit.
+  bool send(GroveLoraTransmitMessage message) {
+    if (!message.isValid) {
       return false;
     }
-    // TODO send functionality to be added later
+
+    // Make sure we dont interrupt an outgoing message
+    if (!transmitAvailable()) {
+      print('GroveLoraRf95::send - Device is not available for transmit');
+      return false;
+    }
+    setModeIdle();
+
+    // Position at the beginning of the FIFO
+    _interface.write(GroveLoraRf95Definitions.rhrF95ReG0Dfifoaddrptr, 0);
+
+    // Headers
+    _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerTo);
+    _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerFrom);
+    _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerId);
+    _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerFlags);
+
+    // The message data
+    _interface.burstWrite(
+        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.message);
+    _interface.write(GroveLoraRf95Definitions.rhrF95ReG22PayloadLength,
+        message.length + GroveLoraRf95Definitions.rhrF95HeaderLen);
+
+    // Start the transmitter
+    // When transmit is done, interruptHandler will fire and
+    // radio mode will return to STANDBY
+    setModeTx();
+
     return true;
   }
 
@@ -464,14 +523,17 @@ class GroveLoraRf95 {
   /// Caution, 0 length messages are permitted.
   /// You should be sure to call this function frequently enough to not miss any messages
   /// It is recommended that you call it in your main loop.
+  /// If you need the complete message with headers read [lastReceivedMessage] before
+  /// calling this method again.
   /// Returns true if a valid message was copied to buffer
   bool receive(List<int> buffer) {
     if (!available()) {
       return false;
     }
-    // Skip the 4 headers that are at the beginning of the rxBuf
-    buffer.addAll(message.message);
-    clearRxBuffer(); // This message accepted and cleared
+
+    buffer.addAll(lastReceivedMessage.message);
+    // This message accepted and cleared
+    clearRxBuffer();
     return true;
   }
 
@@ -493,6 +555,15 @@ class GroveLoraRf95 {
         return false;
       }
       _mode = GroveLoraMode.modeSleep;
+    }
+    return true;
+  }
+
+  bool _initialisedOk() {
+    if (!initialised) {
+      print(
+          'GroveLoraRf95:: not initialised, commands will not be sent to the device');
+      return false;
     }
     return true;
   }

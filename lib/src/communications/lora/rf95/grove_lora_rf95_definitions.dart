@@ -56,12 +56,13 @@ class GroveLoraRf95Definitions {
   static const rhrF95ReG1Fsymbtimeoutlsb = 0x1f;
   static const rhrF95ReG20Preamblemsb = 0x20;
   static const rhrF95ReG21Preamblelsb = 0x21;
-  static const rhrF95ReG22Payloadlength = 0x22;
-  static const rhrF95ReG23Maxpayloadlength = 0x23;
+  static const rhrF95ReG22PayloadLength = 0x22;
+  static const rhrF95ReG23MaxpayloadLength = 0x23;
   static const rhrF95ReG24Hopperiod = 0x24;
   static const rhrF95ReG25Fiforxbyteaddr = 0x25;
   static const rhrF95ReG26ModemconfiG3 = 0x26;
   static const rhrF95ReG4DPaDac = 0x4d;
+  static const rhrF95Reg40DioMapping1 = 0x40;
 
   static const registers = <int>[
     rhrF95ReG01Opmode,
@@ -93,12 +94,13 @@ class GroveLoraRf95Definitions {
     rhrF95ReG1Fsymbtimeoutlsb,
     rhrF95ReG20Preamblemsb,
     rhrF95ReG21Preamblelsb,
-    rhrF95ReG22Payloadlength,
-    rhrF95ReG23Maxpayloadlength,
+    rhrF95ReG22PayloadLength,
+    rhrF95ReG23MaxpayloadLength,
     rhrF95ReG24Hopperiod,
     rhrF95ReG25Fiforxbyteaddr,
     rhrF95ReG26ModemconfiG3,
-    rhrF95ReG4DPaDac
+    rhrF95ReG4DPaDac,
+    rhrF95Reg40DioMapping1
   ];
 
   /// PA
@@ -148,10 +150,10 @@ class GroveLoraRf95Definitions {
   // Can be pre-defined to a smaller size (to save SRAM) prior to including this header.
   // Here we allow for 1 byte message length, 4 bytes headers, user data and 2 bytes of FCS.
   static const rhrF95MaxMessageLen = (rhrF95MaxPayloadLen - rhrF95HeaderLen);
-
-  /// The crystal oscillator frequency of the module
+  // The crystal oscillator frequency of the module
   static const rhrF95Fxosc = 32000000.0;
-
   // The Frequency Synthesizer step = RH_RF95_FXOSC / 2^^19
   static const rhrF95Fstep = (rhrF95Fxosc / 524288);
+  // Transmit available wait time
+  static const transmitAvailableWait = 500;
 }

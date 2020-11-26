@@ -7,49 +7,91 @@
 
 part of grove;
 
+/// A LORA receive message
+class GroveLoraReceiveMessage extends GroveLoraMessage {
+  /// The value of the last received RSSI value, in some transport specific units.
+  int lastRssi = 0;
+
+  /// True if the message is a valid received message.
+  bool messageValid = false;
+  bool get isValid => messageValid;
+
+  @override
+  String toString() {
+    final sb = StringBuffer();
+    if (isValid) {
+      final sb = StringBuffer();
+      sb.write(super.toString());
+      sb.writeln('Last RSSI : $lastRssi');
+    } else {
+      sb.writeln('There is no valid received message');
+    }
+    return sb.toString();
+  }
+}
+
+// A LORA transmit message
+class GroveLoraTransmitMessage extends GroveLoraMessage {
+  /// Construction
+  GroveLoraTransmitMessage() {
+    headerFrom = GroveLoraRf95Definitions.rhrBroadcastAddress;
+    headerTo = GroveLoraRf95Definitions.rhrBroadcastAddress;
+  }
+
+  /// True if the message is valid to transmit.
+  bool get isValid =>
+      headerTo != 0 &&
+      headerFrom != 0 &&
+      message.isNotEmpty &&
+      message.length > GroveLoraRf95Definitions.rhrF95MaxMessageLen;
+
+  @override
+  String toString() {
+    final sb = StringBuffer();
+    if (isValid) {
+      final sb = StringBuffer();
+      sb.write(super.toString());
+    } else {
+      sb.writeln('The transmit message is not valid');
+    }
+    return sb.toString();
+  }
+}
+
 /// A LORA message
 class GroveLoraMessage {
   // The message buffer
   final List<int> message = <int>[];
 
-  /// The value of the last received RSSI value, in some transport specific units.
-  int rxLastRssi = 0;
+  /// TO header.
+  int headerTo = 0;
 
-  /// True when there is a valid received message in the buffer
-  bool rxMessageValid = false;
-  bool get isValid => rxMessageValid;
+  /// FROM header.
+  int headerFrom = 0;
 
-  /// TO header in the last received message
-  int rxHeaderTo = 0;
+  /// ID header
+  int headerId = 0;
 
-  /// FROM header in the last received message.
-  int rxHeaderFrom = 0;
+  /// FLAGS header.
+  int headerFlags = 0;
 
-  /// ID header in the last received message.
-  int rxHeaderId = 0;
+  /// Timestamp of the message
+  String get time => timestamp?.toString()?.split('.')[0];
+  DateTime timestamp;
 
-  /// FLAGS header in the last received message.
-  int rxHeaderFlags = 0;
-
-  /// Timestamp of the last received message.
-  String get lastRxTimeString => lastRxTime.toString().split('.')[0];
-  DateTime lastRxTime;
+  /// Length of the message.
+  int get length => message.length;
 
   @override
   String toString() {
     final sb = StringBuffer();
-    if (rxMessageValid) {
-      sb.writeln('Rx Header To : $rxHeaderTo');
-      sb.writeln('Rx Header From : $rxHeaderFrom');
-      sb.writeln('Rx Header Id : $rxHeaderId');
-      sb.writeln('Rx Header Flags : $rxHeaderTo');
-      sb.writeln('Rx Last RSSI : $rxLastRssi');
-      sb.writeln('Rx Valid at : $lastRxTimeString');
-      sb.writeln('Rx Message bytes : $message');
-      sb.writeln('Rx Message as string : ${String.fromCharCodes(message)}');
-    } else {
-      sb.writeln('There is no valid received message');
-    }
+    sb.writeln('Header To : $headerTo');
+    sb.writeln('Header From : $headerFrom');
+    sb.writeln('Header Id : $headerId');
+    sb.writeln('Header Flags : $headerFlags');
+    sb.writeln('Valid at : $timestamp');
+    sb.writeln('Message bytes : $message');
+    sb.writeln('Message as string : ${String.fromCharCodes(message)}');
     return sb.toString();
   }
 }
