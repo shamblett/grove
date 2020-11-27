@@ -5,6 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
+import 'dart:io';
 import 'package:mraa/mraa.dart';
 import 'package:grove/grove.dart';
 import 'example_config.dart';
@@ -41,5 +42,33 @@ int main() {
     return -1;
   }
 
+  // Loop around the receive/transmit cycle until stopped.
+  final greeting = 'Hello LORA from Dart!';
+  final sendMessage = GroveLoraTransmitMessage();
+  sendMessage.message.addAll(greeting.codeUnits);
+  while (true) {
+    final buffer = <int>[];
+    if (lora.receive(buffer)) {
+      final received = lora.lastReceivedMessage;
+      print(received);
+      print('Sending....');
+      final ok = lora.send(sendMessage);
+      if (ok) {
+        print('Greeting message sent');
+      } else {
+        print('Failed to send greeting message');
+      }
+    } else {
+      print('Nothing received...');
+    }
+    sleep(Duration(seconds: 2));
+    print('Go again or X to exit....');
+    final char = String.fromCharCode(stdin.readByteSync());
+    if (char.toUpperCase() == 'X') {
+      break;
+    }
+  }
+
+  print('LORA Rf95 server example complete');
   return 0;
 }
