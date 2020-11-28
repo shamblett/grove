@@ -46,6 +46,7 @@ int main() {
   final greeting = 'Hello LORA from Dart!';
   final sendMessage = GroveLoraTransmitMessage();
   sendMessage.message.addAll(greeting.codeUnits);
+  print('Starting receive loop.....');
   while (true) {
     final buffer = <int>[];
     if (lora.receive(buffer)) {
