@@ -45,7 +45,7 @@ class GroveLoraRf95Hsu {
     final bytes = <int>[];
     final ok = _mraaUart.receive(_context, bytes, 1,
         timeout: GroveLoraRf95Definitions.uartTimeout);
-    if (!ok && bytes.length != 1) {
+    if (!ok || bytes.length != 1) {
       print('GroveLoraRf95Hsu::readByte - failed to read a byte, $bytes');
       return GroveLoraRf95Definitions.readError;
     }
