@@ -78,7 +78,7 @@ class GroveLoraRf95Hsu {
     final buffer = <int>[];
     buffer.add(GroveLoraRf95Definitions.uartRead);
     buffer.add(register);
-    buffer.add(bytes.length);
+    buffer.add(length);
     var ok = _mraaUart.send(_context, buffer);
     if (!ok) {
       print(
@@ -121,7 +121,7 @@ class GroveLoraRf95Hsu {
   bool write(int register, int value) {
     final buffer = <int>[];
     buffer.add(value);
-    final ok = uartTx(register & GroveLoraRf95Definitions.writeMask, buffer);
+    final ok = uartTx(register | GroveLoraRf95Definitions.writeMask, buffer);
     if (!ok) {
       print(
           'GroveLoraRf95Hsu::write - Failed to write data to UART, register is $register');
@@ -148,7 +148,7 @@ class GroveLoraRf95Hsu {
   ///
   /// A return of true indicates the write was OK.
   bool burstWrite(int register, List<int> bytes) {
-    final ok = uartTx(register & GroveLoraRf95Definitions.writeMask, bytes);
+    final ok = uartTx(register | GroveLoraRf95Definitions.writeMask, bytes);
     if (!ok) {
       print(
           'GroveLoraRf95Hsu::burstWrite - Failed to write data to the UART, register is $register');
