@@ -17,7 +17,7 @@ class GroveLoraRf95Definitions {
   static const uartWrite = 0x57; // W
   static const uartRead = 0x52; // R
   static const uartAvailable = 0x49; // I
-  static const uartTimeout = 3; // ms
+  static const uartTimeout = 30; // ms
   static const writeMask = 0x80;
   static const readError = -1;
 
