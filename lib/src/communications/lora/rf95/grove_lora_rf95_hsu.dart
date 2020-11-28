@@ -42,13 +42,14 @@ class GroveLoraRf95Hsu {
   /// Read a single byte from the UART.
   /// Returns [GroveLoraRf95Definitions.readError] on failure to read a byte.
   int readByte() {
-    final bytes = MraaUartBuffer();
-    final bytesRead = _mraaUart.readBytes(_context, bytes, 1);
-    if (bytesRead != 1) {
-      print('GroveLoraRf95Hsu::readByte - failed to read a byte, $bytesRead');
+    final bytes = <int>[];
+    final ok = _mraaUart.receive(_context, bytes, 1,
+        timeout: GroveLoraRf95Definitions.uartTimeout);
+    if (!ok && bytes.length != 1) {
+      print('GroveLoraRf95Hsu::readByte - failed to read a byte, $bytes');
       return GroveLoraRf95Definitions.readError;
     }
-    return bytes.byteData[0];
+    return bytes[0];
   }
 
   /// UART transmit
