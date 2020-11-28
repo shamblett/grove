@@ -53,8 +53,6 @@ class GroveLoraRf95 {
   /// Initialise
   ///
   /// Initialise the driver transport hardware and software.
-  /// Make sure the driver is properly configured before calling initialise
-  /// or no commands will be sent to the device.
   /// Returns true if initialisation succeeded.
   bool initialise() {
     var ok = _interface.initialise();
@@ -151,10 +149,6 @@ class GroveLoraRf95 {
   /// canned configurations in ModemConfigChoice suit you.
   /// /// Returns true if the configuration is set.
   bool setModemRegisters(GroveLoraModemConfiguration configuration) {
-    if (!_initialisedOk()) {
-      print('GroveLoraRf95::setModemRegisters - not initialised');
-      return false;
-    }
     var ok = _interface.write(
         GroveLoraRf95Definitions.rhrF95ReG1DmodemconfiG1, configuration.reg1d);
     ok &= _interface.write(
@@ -174,10 +168,6 @@ class GroveLoraRf95 {
   ///  here, use [setModemRegisters()] with your own modem configuration.
   /// Returns true if the choice is set.
   bool setModemConfiguration(GroveLoraModemConfigurationChoice choice) {
-    if (!_initialisedOk()) {
-      print('GroveLoraRf95::setModemConfiguration - not initialised');
-      return false;
-    }
     final configuration =
         GroveLoraModemConfiguration.fromList(modemConfigurationTable[choice]);
     setModemRegisters(configuration);
@@ -192,10 +182,6 @@ class GroveLoraRf95 {
   /// Sets the message preamble length in RH_RF95_REG_??_PREAMBLE_?SB
   /// Returns true if the preamable length is set.
   bool setPreambleLength(int bytes) {
-    if (!_initialisedOk()) {
-      print('GroveLoraRf95::setPreambleLength - not initialised');
-      return false;
-    }
     var ok = _interface.write(
         GroveLoraRf95Definitions.rhrF95ReG20Preamblemsb, bytes >> 8);
     ok &= _interface.write(
@@ -215,10 +201,6 @@ class GroveLoraRf95 {
   /// of your radio will probably not work.
   /// Returns true if the frequency is set.
   bool setFrequency(double centre) {
-    if (!_initialisedOk()) {
-      print('GroveLoraRf95::setFrequency - not initialised');
-      return false;
-    }
     // Frf = FRF / FSTEP
     var frf = (centre * 1000000.0) ~/ GroveLoraRf95Definitions.rhrF95Fstep;
     var ok = _interface.write(
@@ -241,10 +223,6 @@ class GroveLoraRf95 {
   /// After [initialise], the power will be set to 13dBm, with PA Boost enabled.
   /// Returns true if the Tx power is set.
   bool setTxPower(int txPower) {
-    if (!_initialisedOk()) {
-      print('GroveLoraRf95::setTxPower - not initialised');
-      return false;
-    }
     var power = txPower;
     if (power > 23) power = 23;
     if (power < 5) power = 5;
@@ -555,12 +533,4 @@ class GroveLoraRf95 {
     return true;
   }
 
-  bool _initialisedOk() {
-    if (!initialised) {
-      print(
-          'GroveLoraRf95:: not initialised, commands will not be sent to the device');
-      return false;
-    }
-    return true;
-  }
 }
