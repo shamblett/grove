@@ -319,6 +319,7 @@ class GroveLoraRf95 {
   /// We use this to get RxDone and TxDone interrupts.
   void handleInterrupt() {
     // Read the interrupt register
+    print('GroveLoraRf95::handleInterrupt - entered');
     final irqFlags =
         _interface.read(GroveLoraRf95Definitions.rhrF95ReG12Irqflags);
     if (_mode == GroveLoraMode.modeRx &&
@@ -389,6 +390,7 @@ class GroveLoraRf95 {
   /// Returns true if a new, complete, error-free uncollected message
   /// is available to be retrieved by [receiveMessage].
   bool available() {
+    print('GroveLoraRf95::available - entered');
     if (_interface.readByte() == GroveLoraRf95Definitions.uartAvailable) {
       handleInterrupt();
     }
@@ -500,6 +502,7 @@ class GroveLoraRf95 {
   /// calling this method again.
   /// Returns true if a valid message was copied to buffer
   bool receive(List<int> buffer) {
+    print('GroveLoraRf95::receive - entered');
     if (!available()) {
       return false;
     }
