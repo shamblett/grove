@@ -283,10 +283,6 @@ class GroveLoraRf95 {
   /// receiver is running it disables them.
   /// Returns true if idle mode is set.
   bool setModeIdle() {
-    if (!_initialisedOk()) {
-      print('GroveLoraRf95::setModeIdle - not initialised');
-      return false;
-    }
     if (_mode != GroveLoraMode.modeIdle) {
       final ok = _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
           GroveLoraRf95Definitions.rhrF95Modestdby);
