@@ -170,8 +170,7 @@ class GroveLoraRf95 {
   bool setModemConfiguration(GroveLoraModemConfigurationChoice choice) {
     final configuration =
         GroveLoraModemConfiguration.fromList(modemConfigurationTable[choice]);
-    setModemRegisters(configuration);
-    return false;
+    return setModemRegisters(configuration);
   }
 
   /// setPreambleLength
