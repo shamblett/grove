@@ -395,10 +395,14 @@ class GroveLoraRf95 {
       handleInterrupt();
     }
     if (_mode == GroveLoraMode.modeTx) {
+      print('GroveLoraRf95::available - we are transmitting, exiting');
       return false;
     }
     setModeRx();
     // Will be set by the interrupt handler when a good message is received
+    if (!lastReceivedMessage.isValid) {
+      print('GroveLoraRf95::available - no valid received message - exiting.');
+    }
     return lastReceivedMessage.isValid;
   }
 
@@ -534,5 +538,4 @@ class GroveLoraRf95 {
     }
     return true;
   }
-
 }
