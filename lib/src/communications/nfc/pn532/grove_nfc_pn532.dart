@@ -20,7 +20,7 @@ class GroveNfcPn532 {
     _interface = GroveNfcPn532Hsu(_mraa.uart, uartDevice: _tty);
   }
 
-  final _mraa;
+  final Mraa _mraa;
 
   String _tty;
 
@@ -28,7 +28,8 @@ class GroveNfcPn532 {
 
   bool initialised = false;
 
-  /// Initialise.
+  /// Initialise
+  ///
   /// Must be called or no communication to the device will occur.
   /// Returns true if initialisation succeed.
   bool initialise() {
@@ -52,12 +53,6 @@ class GroveNfcPn532 {
   /// A response of zero indicates failure.
   int firmwareVersion() {
     if (!_prepareCommand()) {
-      return 0;
-    }
-    var ok = _interface.wakeup();
-    if (!ok) {
-      print(
-          'GroveNfcPn532::firmwareVersion - failed to wakeup the HSU interface');
       return 0;
     }
     final ret =

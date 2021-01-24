@@ -32,3 +32,6 @@ String groveList2Hex(List<int> values, {int lineLength = 8}) {
   var temp = sb.toString();
   return temp.substring(0, temp.length - 2);
 }
+
+/// Single byte convert
+String groveByte2Hex(int value) => groveList2Hex([value], lineLength: 1);
