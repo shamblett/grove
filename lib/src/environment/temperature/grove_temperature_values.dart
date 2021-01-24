@@ -15,13 +15,13 @@ class GroveTemperatureValues {
   }
 
   /// Raw value
-  int raw;
+  late int raw;
 
   /// Celsius
-  double celsius;
+  late double celsius;
 
   /// Timestamp
-  DateTime validAt;
+  DateTime? validAt;
 
   @override
   String toString() => 'Temperature values at $validAt :: Raw : $raw : Celsius '

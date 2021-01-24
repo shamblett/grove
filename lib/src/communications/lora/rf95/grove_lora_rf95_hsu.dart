@@ -11,25 +11,25 @@ part of grove;
 class GroveLoraRf95Hsu {
   /// Construction
   GroveLoraRf95Hsu(this._mraaUart,
-      {String uartDevice = GroveLoraRf95Definitions.uartDefaultDevice}) {
+      {String? uartDevice = GroveLoraRf95Definitions.uartDefaultDevice}) {
     _uartDevice = uartDevice;
   }
   final MraaUart _mraaUart;
-  String _uartDevice;
-  Pointer<MraaUartContext> _context;
+  String? _uartDevice;
+  Pointer<MraaUartContext>? _context;
 
   /// Initialise
   ///
   /// A return of true indicates initialisation OK.
   bool initialise() {
     // Device
-    _context = _mraaUart.initialiseRaw(_uartDevice);
+    _context = _mraaUart.initialiseRaw(_uartDevice!);
     if (_context == null) {
       return false;
     }
 
     // Baud rate
-    var ret = _mraaUart.baudRate(_context, GroveLoraRf95Definitions.baudRate);
+    var ret = _mraaUart.baudRate(_context!, GroveLoraRf95Definitions.baudRate);
     if (ret != MraaReturnCode.success) {
       return false;
     }
@@ -43,7 +43,7 @@ class GroveLoraRf95Hsu {
   /// Returns [GroveLoraRf95Definitions.readError] on failure to read a byte.
   int readByte() {
     final bytes = <int>[];
-    final ok = _mraaUart.receive(_context, bytes, 1,
+    final ok = _mraaUart.receive(_context!, bytes, 1,
         timeout: GroveLoraRf95Definitions.uartTimeout);
     if (!ok || bytes.length != 1) {
       print('GroveLoraRf95Hsu::readByte - failed to read a byte, $bytes');
@@ -62,7 +62,7 @@ class GroveLoraRf95Hsu {
     buffer.add(register);
     buffer.add(bytes.length);
     buffer.addAll(bytes);
-    final ok = _mraaUart.send(_context, buffer);
+    final ok = _mraaUart.send(_context!, buffer);
     if (!ok) {
       print(
           'GroveLoraRf95Hsu::uartTx - Failed to send UART write, register is $register, length is ${bytes.length}');
@@ -80,13 +80,13 @@ class GroveLoraRf95Hsu {
     buffer.add(GroveLoraRf95Definitions.uartRead);
     buffer.add(register);
     buffer.add(length);
-    var ok = _mraaUart.send(_context, buffer);
+    var ok = _mraaUart.send(_context!, buffer);
     if (!ok) {
       print(
           'GroveLoraRf95Hsu::uartRx - Failed to send UART read, register is $register, length is $length');
       return false;
     }
-    ok = _mraaUart.receive(_context, bytes, length,
+    ok = _mraaUart.receive(_context!, bytes, length,
         timeout: GroveLoraRf95Definitions.uartTimeout);
     if (!ok) {
       print(

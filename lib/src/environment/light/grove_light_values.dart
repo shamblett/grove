@@ -10,13 +10,13 @@ part of grove;
 /// The values class for the Grove light sensors.
 class GroveLightValues {
   /// Raw value
-  int raw;
+  late int raw;
 
   /// Lux
-  double lux;
+  late double lux;
 
   /// Timestamp
-  DateTime validAt;
+  DateTime? validAt;
 
   @override
   String toString() =>

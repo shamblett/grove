@@ -18,11 +18,11 @@ class GroveLoraRf95 {
 
   final Mraa _mraa;
 
-  String _tty;
+  String? _tty;
 
   bool initialised = false;
 
-  GroveLoraRf95Hsu _interface;
+  late GroveLoraRf95Hsu _interface;
 
   GroveLoraMode _mode = GroveLoraMode.modeInitialising;
 
@@ -169,7 +169,7 @@ class GroveLoraRf95 {
   /// Returns true if the choice is set.
   bool setModemConfiguration(GroveLoraModemConfigurationChoice choice) {
     final configuration =
-        GroveLoraModemConfiguration.fromList(modemConfigurationTable[choice]);
+        GroveLoraModemConfiguration.fromList(modemConfigurationTable[choice]!);
     return setModemRegisters(configuration);
   }
 

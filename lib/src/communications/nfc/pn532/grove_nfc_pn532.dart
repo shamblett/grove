@@ -22,9 +22,9 @@ class GroveNfcPn532 {
 
   final Mraa _mraa;
 
-  String _tty;
+  String? _tty;
 
-  GroveNfcPn532Interface _interface;
+  late GroveNfcPn532Interface _interface;
 
   bool initialised = false;
 

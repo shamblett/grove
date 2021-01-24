@@ -201,7 +201,7 @@ class GroveOledSsd1327 {
   /// A sized monochrome image in say BMP format can be converted into the
   /// [bytesToDraw] format using tools such as http://www.riuson.com/lcd-image-converter
   /// and others.
-  MraaReturnCode drawImage(List<int> bitmap, [int bytesToDraw]) {
+  MraaReturnCode drawImage(List<int> bitmap, [int? bytesToDraw]) {
     var error = MraaReturnCode.success;
     final wasVertical = _isVerticalMode;
     final data = Uint8List.fromList(bitmap);
@@ -246,7 +246,7 @@ class GroveOledSsd1327 {
   /// Turn the display off(sleep) mode.
   void turnOff() => _writeRegCommand(GroveOledSsd1327Definitions.setDisplayOff);
 
-  MraaReturnCode _draw(Uint8List data, [int bytesToDraw]) {
+  MraaReturnCode _draw(Uint8List data, [int? bytesToDraw]) {
     var error = MraaReturnCode.success;
     // Set horizontal mode for drawing
     _setHorizontalMode();

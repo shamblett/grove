@@ -25,14 +25,14 @@ const Map<int, state> sm = {
 
 /// Virtual OLED test support package.
 class GroveVirtualOled {
-  int startColumn = -1;
-  int endColumn = -1;
-  int startRow = -1;
-  int endRow = -1;
+  int? startColumn = -1;
+  int? endColumn = -1;
+  int? startRow = -1;
+  int? endRow = -1;
 
-  final commandStack = <int>[];
-  final commandDataStack = <int>[];
-  final dataDataStack = <int>[];
+  final commandStack = <int?>[];
+  final commandDataStack = <int?>[];
+  final dataDataStack = <int?>[];
 
   int _grayHigh = 0;
   int _grayLow = 0;
@@ -49,9 +49,9 @@ class GroveVirtualOled {
     _grayLow = level & 0x0F;
   }
 
-  state currentState = state.commandExpected;
+  state? currentState = state.commandExpected;
 
-  void writeCommandData(int command, int data) {
+  void writeCommandData(int? command, int? data) {
     if (currentState != state.commandExpected) {
       commandDataStack.add(data);
       switch (currentState) {
@@ -85,12 +85,12 @@ class GroveVirtualOled {
           }
       }
     } else {
-      currentState = sm[data];
+      currentState = sm[data!];
       commandStack.add(data);
     }
   }
 
-  void writeDataData(int value) {
+  void writeDataData(int? value) {
     dataDataStack.add(value);
   }
 

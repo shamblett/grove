@@ -33,7 +33,7 @@ int main() {
         final oled = GroveOledSsd1327(mraa, context);
         expect(oled.initialised, isFalse);
         expect(oled.monitored.isOk, isFalse);
-        when(mraaI2c.writeByteData(context, any, any))
+        when(mraaI2c.writeByteData(context, any!, any!))
             .thenReturn(MraaReturnCode.success);
         final ret = oled.initialise();
         expect(ret, isTrue);
@@ -44,7 +44,7 @@ int main() {
         final oled = GroveOledSsd1327(mraa, context);
         expect(oled.initialised, isFalse);
         expect(oled.monitored.isOk, isFalse);
-        when(mraaI2c.writeByteData(context, any, any))
+        when(mraaI2c.writeByteData(context, any!, any!))
             .thenReturn(MraaReturnCode.success);
         when(mraaI2c.writeByteData(context, 0xfd, 0x80))
             .thenReturn(MraaReturnCode.errorInvalidResource);
@@ -74,7 +74,7 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
+        when(mraaI2c.writeByteData(context, any!, any!)).thenAnswer((invocation) {
           virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
@@ -90,7 +90,7 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
+        when(mraaI2c.writeByteData(context, any!, any!)).thenAnswer((invocation) {
           virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
@@ -106,7 +106,7 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any, any)).thenAnswer((invocation) {
+        when(mraaI2c.writeByteData(context, any!, any!)).thenAnswer((invocation) {
           virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
@@ -123,17 +123,17 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .thenAnswer((invocation) {
           virt.writeDataData(invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
+                context, any!, GroveOledSsd1327Definitions.oledCmd))
             .thenReturn(MraaReturnCode.success);
         oled.clear();
         verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .called(4608);
         expect(virt.dataDataStack.length, 4608);
       });
@@ -143,14 +143,14 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .thenAnswer((invocation) {
           virt.grayLevel = oled.grayLevel;
           virt.writeDataData(invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
+                context, any!, GroveOledSsd1327Definitions.oledCmd))
             .thenReturn(MraaReturnCode.success);
         oled.drawImage([
           0x00,
@@ -170,7 +170,7 @@ int main() {
           0x0f
         ]);
         verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .called(60);
         expect(virt.dataDataStack.length, 60);
       });
@@ -180,18 +180,18 @@ int main() {
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .thenAnswer((invocation) {
           virt.grayLevel = oled.grayLevel;
           virt.writeDataData(invocation.positionalArguments[1]);
           return MraaReturnCode.success;
         });
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
+                context, any!, GroveOledSsd1327Definitions.oledCmd))
             .thenReturn(MraaReturnCode.success);
         oled.drawImage(dartLogo96x96);
         verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .called(4608);
         expect(virt.dataDataStack.length, 4608);
       });
@@ -265,17 +265,17 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
+                context, any!, GroveOledSsd1327Definitions.oledCmd))
             .thenReturn(MraaReturnCode.success);
         when(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .thenReturn(MraaReturnCode.success);
         oled.write('Hello');
         verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledData))
+                context, any!, GroveOledSsd1327Definitions.oledData))
             .called(160);
         verify(mraaI2c.writeByteData(
-                context, any, GroveOledSsd1327Definitions.oledCmd))
+                context, any!, GroveOledSsd1327Definitions.oledCmd))
             .called(2);
       });
     });
