@@ -76,7 +76,7 @@ class GroveLoraMessage {
   int headerFlags = 0;
 
   /// Timestamp of the message
-  String get time => timestamp?.toString()?.split('.')[0];
+  String? get time => timestamp.toString().split('.')[0];
   late DateTime timestamp;
 
   /// Length of the message.
