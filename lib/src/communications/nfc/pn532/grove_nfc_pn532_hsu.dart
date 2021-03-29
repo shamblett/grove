@@ -115,7 +115,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     if (!eq(
         GroveNfcPn532Definitions.preambleAndStartCodes.length, bytes.length)) {
       print(
-          'GroveNfcPn532Hsu::readResponse - preamble and start codes not correct, ${bytes}');
+          'GroveNfcPn532Hsu::readResponse - preamble and start codes not correct, $bytes');
       return result;
     }
     // Length
@@ -129,12 +129,12 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       return result;
     }
     if (0 != bytes[0] + bytes[1]) {
-      print('GroveNfcPn532Hsu::readResponse - length check failed, ${bytes}');
+      print('GroveNfcPn532Hsu::readResponse - length check failed, $bytes');
       return result;
     }
     bytes[0] -= GroveNfcPn532Definitions.readResponseLength;
     if (bytes[0] > length) {
-      print('GroveNfcPn532Hsu::readResponse - no space error, ${bytes}');
+      print('GroveNfcPn532Hsu::readResponse - no space error, $bytes');
       return result;
     }
     final rxLength = bytes[0];
@@ -152,7 +152,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     if (GroveNfcPn532Definitions.pn532ToHost != bytes[0] ||
         command != bytes[1]) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read command byte 1 - error ${bytes}');
+          'GroveNfcPn532Hsu::readResponse - failed to read command byte 1 - error $bytes');
     }
     bytes.clear();
     ok = _mraaUart.receive(_context!, bytes, rxLength, timeout: maxTimeToWait);
@@ -163,7 +163,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     }
     if (bytes.length != rxLength) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read command byte 2, ${bytes}');
+          'GroveNfcPn532Hsu::readResponse - failed to read command byte 2, $bytes');
       return result;
     }
     var sum = GroveNfcPn532Definitions.pn532ToHost + command;
@@ -182,11 +182,11 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     }
     if (bytes.length != GroveNfcPn532Definitions.postambleChecksumlength) {
       print(
-          'GroveNfcPn532Hsu::readResponse - failed to read checksum and postamble, ${bytes}');
+          'GroveNfcPn532Hsu::readResponse - failed to read checksum and postamble, $bytes');
       return result;
     }
     if (0 != sum + bytes[0] || 0 != bytes[1]) {
-      print('GroveNfcPn532Hsu::readResponse - checksum error, ${bytes}');
+      print('GroveNfcPn532Hsu::readResponse - checksum error, $bytes');
       return result;
     }
 
@@ -213,7 +213,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     var isEqual = eq(GroveNfcPn532Definitions.acknowledge, bytes);
     if (!isEqual) {
       print(
-          'GroveNfcPn532Hsu::_readAcknowledgement - invalid acknowledge sequence received from device, ${bytes}');
+          'GroveNfcPn532Hsu::_readAcknowledgement - invalid acknowledge sequence received from device, $bytes');
     } else {
       ackCheck = true;
     }

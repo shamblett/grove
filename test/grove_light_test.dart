@@ -21,7 +21,7 @@ int main() {
     // Mock the Mraa AIO interface
     final Mraa mraa = MockMraa();
     final MraaAio mraaAio = MockMraaAio();
-    final context = allocate<MraaAioContext>();
+    final context = calloc.allocate<MraaAioContext>(1);
     when(mraa.aio).thenReturn(mraaAio);
 
     test('Values 1024 bit ADC', () {

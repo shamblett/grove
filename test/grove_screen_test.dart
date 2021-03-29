@@ -74,7 +74,8 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any!, any!)).thenAnswer((invocation) {
+        when(mraaI2c.writeByteData(context, any!, any!))
+            .thenAnswer((invocation) {
           virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
@@ -90,7 +91,8 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any!, any!)).thenAnswer((invocation) {
+        when(mraaI2c.writeByteData(context, any!, any!))
+            .thenAnswer((invocation) {
           virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;
@@ -106,7 +108,8 @@ int main() {
         final ret = oled.initialise();
         expect(ret, isTrue);
         final virt = GroveVirtualOled();
-        when(mraaI2c.writeByteData(context, any!, any!)).thenAnswer((invocation) {
+        when(mraaI2c.writeByteData(context, any!, any!))
+            .thenAnswer((invocation) {
           virt.writeCommandData(invocation.positionalArguments[2],
               invocation.positionalArguments[1]);
           return MraaReturnCode.success;

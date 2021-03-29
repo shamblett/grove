@@ -35,10 +35,6 @@ int main() {
   // Initialise the UART device.
   print('Initialising UART $defaultUart');
   final context = mraa.uart.initialiseRaw(defaultUart);
-  if (context == null) {
-    print('Failed to initialise UART - no context');
-    return -1;
-  }
 
   // Baud rate
   ret = mraa.uart.baudRate(context, 115200);

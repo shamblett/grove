@@ -21,7 +21,7 @@ int main() {
     // Mock the Mraa GPIO interface
     final Mraa mraa = MockMraa();
     final MraaGpio mraaGpio = MockMraaGpio();
-    final context =allocate<MraaGpioContext>();
+    final context = calloc.allocate<MraaGpioContext>(1);
     when(mraa.gpio).thenReturn(mraaGpio);
 
     test('Values and triggers', () {
