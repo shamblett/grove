@@ -14,8 +14,8 @@ part of grove;
 String groveList2Hex(List<int> values, {int lineLength = 8}) {
   final sb = StringBuffer();
   var count = 0;
-  values.forEach((e) {
-    var temp = '${e.toRadixString(16)}';
+  for (var e in values) {
+    var temp = e.toRadixString(16);
     if (temp.length == 1) {
       temp = '0$temp';
     }
@@ -27,7 +27,7 @@ String groveList2Hex(List<int> values, {int lineLength = 8}) {
     } else {
       count++;
     }
-  });
+  }
 
   var temp = sb.toString();
   return temp.substring(0, temp.length - 2);

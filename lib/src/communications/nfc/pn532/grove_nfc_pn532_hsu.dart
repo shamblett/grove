@@ -69,14 +69,14 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
     sequence.add(GroveNfcPn532Definitions.hostToPn532);
     var sum = GroveNfcPn532Definitions.hostToPn532;
     sequence.addAll(header);
-    header.forEach((int e) {
+    for (var e in header) {
       sum += e;
-    });
+    }
     if (body != null) {
       sequence.addAll(body);
-      body.forEach((int e) {
+      for (var e in body) {
         sum += e;
-      });
+      }
     }
     // checksum of TFI + DATA
     final checksum = ~sum + 1;
@@ -167,9 +167,9 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       return result;
     }
     var sum = GroveNfcPn532Definitions.pn532ToHost + command;
-    bytes.forEach((e) {
+    for (var e in bytes) {
       sum += e;
-    });
+    }
     // Checksum and postamble
     bytes.clear();
     ok = _mraaUart.receive(

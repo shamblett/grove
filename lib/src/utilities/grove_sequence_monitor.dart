@@ -14,7 +14,7 @@ class GroveSequenceMonitor<T> {
   /// A success value must be supplied for the monitored type
   GroveSequenceMonitor(this._successValue);
 
-  final _successValue;
+  final MraaReturnCode _successValue;
 
   final _results = <T>[];
 
