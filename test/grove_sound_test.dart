@@ -5,13 +5,14 @@
  * Copyright :  S.Hamblett
  */
 
+@TestOn('vm')
+
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
-@TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
 
 class MockMraaAio extends Mock implements MraaAio {}
@@ -21,7 +22,8 @@ int main() {
     // Mock the Mraa AIO interface
     final Mraa mraa = MockMraa();
     final MraaAio mraaAio = MockMraaAio();
-    final context = calloc.allocate<MraaAioContext>(1);
+    final contextAddr = calloc.allocate<MraaAioContext>(1).address;
+    final context = MraaAioContext.fromAddress(contextAddr);
     when(mraa.aio).thenReturn(mraaAio);
 
     test('Construction', () {

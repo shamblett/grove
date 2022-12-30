@@ -5,13 +5,14 @@
  * Copyright :  S.Hamblett
  */
 
+@TestOn('vm')
+
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
-@TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
 
 class MockMraaGpio extends Mock implements MraaGpio {}
@@ -21,7 +22,8 @@ int main() {
     // Mock the Mraa GPIO interface
     final Mraa mraa = MockMraa();
     final MraaGpio mraaGpio = MockMraaGpio();
-    final context = calloc.allocate<MraaGpioContext>(1);
+    final contextAddr = calloc.allocate<MraaGpioContext>(1).address;
+    final context = MraaGpioContext.fromAddress(contextAddr);
     when(mraa.gpio).thenReturn(mraaGpio);
 
     test('Values and triggers', () {

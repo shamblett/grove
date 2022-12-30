@@ -16,7 +16,7 @@ class GroveLoraRf95Hsu {
   }
   final MraaUart _mraaUart;
   String? _uartDevice;
-  Pointer<MraaUartContext>? _context;
+  MraaUartContext? _context;
 
   /// Initialise
   ///

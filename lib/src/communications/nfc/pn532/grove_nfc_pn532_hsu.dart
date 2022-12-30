@@ -17,7 +17,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
 
   final MraaUart _mraaUart;
   String? _uartDevice;
-  Pointer<MraaUartContext>? _context;
+  MraaUartContext? _context;
   int _commandAwaitingResponse = 0;
 
   /// Initialise the interface

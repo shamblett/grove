@@ -26,7 +26,7 @@ class GroveLightLM358 {
   final Mraa _mraa;
 
   /// The initialised device context
-  final Pointer<MraaAioContext> _context;
+  final MraaAioContext _context;
 
   /// Get the raw and Lux light values and timestamp them.
   ///
