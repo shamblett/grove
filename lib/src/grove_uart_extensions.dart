@@ -15,8 +15,7 @@ extension GroveUartExtensions on MraaUart {
   /// Send bytes with optional UART buffer flushing, defaults to flush.
   /// Sends the length of the data list.
   /// Returns true if the send succeeded.
-  bool send(MraaUartContext context, List<int> data,
-      {bool flush = true}) {
+  bool send(MraaUartContext context, List<int> data, {bool flush = true}) {
     final buffer = MraaUartBuffer();
     buffer.byteData = Uint8List.fromList(data);
     var ret = writeBytes(context, buffer, buffer.byteLength);

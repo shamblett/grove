@@ -362,7 +362,8 @@ class GroveOledSsd1327 {
     final ret = _mraa.i2c
         .writeByteData(_context, data, GroveOledSsd1327Definitions.oledData);
     if (ret != MraaReturnCode.success) {
-      print('_writeRegData - Failed to write data to the display, status is $ret');
+      print(
+          '_writeRegData - Failed to write data to the display, status is $ret');
     }
     return ret;
   }
