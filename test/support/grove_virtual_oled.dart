@@ -8,7 +8,7 @@
 import 'package:grove/grove.dart';
 
 /// Device states
-enum state {
+enum State {
   commandExpected,
   dataExpected,
   startColumnExpected,
@@ -18,9 +18,9 @@ enum state {
 }
 
 /// State machine
-const Map<int, state> sm = {
-  GroveOledSsd1327Definitions.setColumnAddress: state.startColumnExpected,
-  GroveOledSsd1327Definitions.setRowAddress: state.startRowExpected
+const Map<int, State> sm = {
+  GroveOledSsd1327Definitions.setColumnAddress: State.startColumnExpected,
+  GroveOledSsd1327Definitions.setRowAddress: State.startRowExpected
 };
 
 /// Virtual OLED test support package.
@@ -49,34 +49,34 @@ class GroveVirtualOled {
     _grayLow = level & 0x0F;
   }
 
-  state? currentState = state.commandExpected;
+  State? currentState = State.commandExpected;
 
   void writeCommandData(int? command, int? data) {
-    if (currentState != state.commandExpected) {
+    if (currentState != State.commandExpected) {
       commandDataStack.add(data);
       switch (currentState) {
-        case state.startColumnExpected:
+        case State.startColumnExpected:
           {
             startColumn = data;
-            currentState = state.endColumnExpected;
+            currentState = State.endColumnExpected;
             break;
           }
-        case state.endColumnExpected:
+        case State.endColumnExpected:
           {
             endColumn = data;
-            currentState = state.commandExpected;
+            currentState = State.commandExpected;
             break;
           }
-        case state.startRowExpected:
+        case State.startRowExpected:
           {
             startRow = data;
-            currentState = state.endRowExpected;
+            currentState = State.endRowExpected;
             break;
           }
-        case state.endRowExpected:
+        case State.endRowExpected:
           {
             endRow = data;
-            currentState = state.commandExpected;
+            currentState = State.commandExpected;
             break;
           }
         default:
@@ -100,7 +100,7 @@ class GroveVirtualOled {
     sb.writeln('Data stack length is ${dataDataStack.length}');
     sb.writeln();
     var count = 0;
-    dataDataStack.forEach((pixel) {
+    for (var pixel in dataDataStack) {
       if (pixel == _grayHigh + _grayLow) {
         sb.write('#');
       } else {
@@ -111,7 +111,7 @@ class GroveVirtualOled {
         count = 0;
         sb.writeln();
       }
-    });
+    }
     return sb.toString();
   }
 }
