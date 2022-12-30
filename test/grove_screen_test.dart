@@ -5,6 +5,8 @@
  * Copyright :  S.Hamblett
  */
 
+@TestOn('vm')
+
 import 'dart:ffi';
 import 'package:grove/grove.dart';
 import 'package:mockito/mockito.dart';
@@ -15,7 +17,6 @@ import 'support/grove_virtual_oled.dart';
 import 'support/grove_test_oled_ssd1327.dart';
 import 'support/images/grove_logos.dart';
 
-@TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
 
 class MockMraaI2c extends Mock implements MraaI2c {}
@@ -28,7 +29,7 @@ int main() {
     when(mraa.i2c).thenReturn(mraaI2c);
 
     group('SSD1372', () {
-      final context = Pointer<MraaI2cContext>.fromAddress(1);
+      final context = MraaI2cContext.fromAddress(1);
       test('Initialise - success', () {
         final oled = GroveOledSsd1327(mraa, context);
         expect(oled.initialised, isFalse);

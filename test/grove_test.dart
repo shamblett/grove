@@ -5,11 +5,12 @@
  * Copyright :  S.Hamblett
  */
 
+@TestOn('vm')
+
 import 'package:grove/grove.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
-@TestOn('VM')
 int main() {
   group('Sequence Monitor', () {
     test('Operation', () {

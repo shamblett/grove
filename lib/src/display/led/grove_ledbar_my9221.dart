@@ -225,13 +225,11 @@ class GroveLedBarMy9221 {
       var state = (localData! & 0x8000) != 0 ? 1 : 0;
       ret = _mraa.gpio.write(_dev!.gpioData, state);
       if (ret != MraaReturnCode.success) {
-        print('send16BitBlock - Failed to write state to data pin, status is '
-            '${returnCode.asString(ret)}, state is $state');
+        print('send16BitBlock - Failed to write state to data pin, status is $ret, state is $state');
       }
       state = _mraa.gpio.read(_dev!.gpioClk);
       if (state == Mraa.generalError) {
-        print('send16BitBlock - Failed to read state of clock pin, status is '
-            '${returnCode.asString(ret)}');
+        print('send16BitBlock - Failed to read state of clock pin, status is $ret');
       }
       if (state != 0) {
         state = 0;
@@ -240,8 +238,7 @@ class GroveLedBarMy9221 {
       }
       ret = _mraa.gpio.write(_dev!.gpioClk, state);
       if (ret != MraaReturnCode.success) {
-        print('send16BitBlock - Failed to write state to clock pin, status is '
-            '${returnCode.asString(ret)}, state is $state');
+        print('send16BitBlock - Failed to write state to clock pin, status is $ret, state is $state');
       }
       localData <<= 1;
     }

@@ -5,13 +5,13 @@
  * Copyright :  S.Hamblett
  */
 
-import 'dart:ffi';
+@TestOn('vm')
+
 import 'package:grove/grove.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
-@TestOn('VM')
 class MockMraa extends Mock implements Mraa {}
 
 class MockMraaGpio extends Mock implements MraaGpio {}
@@ -24,8 +24,8 @@ int main() {
     when(mraa.gpio).thenReturn(mraaGpio);
 
     group('MY9221', () {
-      final clockPin = Pointer<MraaGpioContext>.fromAddress(0);
-      final dataPin = Pointer<MraaGpioContext>.fromAddress(1);
+      final clockPin = MraaGpioContext.fromAddress(0);
+      final dataPin = MraaGpioContext.fromAddress(1);
 
       test('Initialise - success', () {
         when(mraaGpio.direction(any!, MraaGpioDirection.out))
