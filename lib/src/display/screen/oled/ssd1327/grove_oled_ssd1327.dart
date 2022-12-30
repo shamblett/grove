@@ -40,7 +40,7 @@ class GroveOledSsd1327 {
   Duration cmdSleep = cmdSleepDefault;
 
   /// The initialised I2C context
-  final Pointer<MraaI2cContext> _context;
+  final MraaI2cContext _context;
 
   var _initialisationState = GroveDeveiceInitialisationState.notInitialised;
 
@@ -345,8 +345,7 @@ class GroveOledSsd1327 {
         .writeByteData(_context, data, GroveOledSsd1327Definitions.oledCmd);
     if (ret != MraaReturnCode.success) {
       print(
-          '_writeRegCommand - Failed to write data to the command register, status is '
-          '${returnCode.asString(ret)}');
+          '_writeRegCommand - Failed to write data to the command register, status is $ret');
     }
     return ret;
   }
@@ -363,8 +362,7 @@ class GroveOledSsd1327 {
     final ret = _mraa.i2c
         .writeByteData(_context, data, GroveOledSsd1327Definitions.oledData);
     if (ret != MraaReturnCode.success) {
-      print('_writeRegData - Failed to write data to the display, status is '
-          '${returnCode.asString(ret)}');
+      print('_writeRegData - Failed to write data to the display, status is $ret');
     }
     return ret;
   }

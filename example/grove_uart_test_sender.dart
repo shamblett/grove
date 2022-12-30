@@ -24,8 +24,7 @@ int main() {
   print('Initialising MRAA');
   var ret = mraa.common.initialise();
   if (ret != MraaReturnCode.success) {
-    print('Failed to initialise MRAA, return code is '
-        '${returnCode.asString(ret)}');
+    print('Failed to initialise MRAA, return code is $ret');
     return -1;
   }
 

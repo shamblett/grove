@@ -38,7 +38,7 @@ class GroveTemperatureV12 {
   final Mraa _mraa;
 
   /// The initialised device context
-  final Pointer<MraaAioContext> _context;
+  final MraaAioContext _context;
 
   /// Get the raw and Celsius temperature values and timestamp them.
   GroveTemperatureValues get values {

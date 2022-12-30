@@ -10,10 +10,10 @@ part of grove;
 /// Local context for the MY9221 chip
 class My9221Context {
   /// GPIO clock pin context
-  late Pointer<MraaGpioContext> gpioClk;
+  late MraaGpioContext gpioClk;
 
   /// GPIO data pin context
-  late Pointer<MraaGpioContext> gpioData;
+  late MraaGpioContext gpioData;
 
   /// Auto refresh state
   bool autoRefresh = false;
@@ -56,8 +56,8 @@ class My9221Context {
 /// a 0xff value.
 class GroveLedBarMy9221 {
   /// Construction
-  GroveLedBarMy9221(Mraa mraa, Pointer<MraaGpioContext> clockPin,
-      Pointer<MraaGpioContext> dataPin) {
+  GroveLedBarMy9221(Mraa mraa, MraaGpioContext clockPin,
+      MraaGpioContext dataPin) {
     _dev = My9221Context();
     _dev!.gpioClk = clockPin;
     _dev!.gpioData = dataPin;

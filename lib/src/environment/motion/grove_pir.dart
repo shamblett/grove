@@ -22,7 +22,7 @@ class GrovePir {
   final Mraa _mraa;
 
   /// The initialised device context
-  final Pointer<MraaGpioContext> _context;
+  final MraaGpioContext _context;
 
   int _lastValue = -1;
 

@@ -29,7 +29,7 @@ class GroveSoundLM386 {
   final Mraa _mraa;
 
   /// The initialised device context
-  final Pointer<MraaAioContext> _context;
+  final MraaAioContext _context;
 
   int _sampleCount = 0;
 
