@@ -9,7 +9,7 @@
 
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
@@ -18,13 +18,18 @@ class MockMraa extends Mock implements Mraa {}
 class MockMraaAio extends Mock implements MraaAio {}
 
 int main() {
+  setUpAll(() {
+    final mraaAioContextAddr = MraaAioContext.fromAddress(1);
+    registerFallbackValue(mraaAioContextAddr);
+  });
+
   group('LM386', () {
     // Mock the Mraa AIO interface
     final Mraa mraa = MockMraa();
     final MraaAio mraaAio = MockMraaAio();
     final contextAddr = calloc.allocate<MraaAioContext>(1).address;
     final context = MraaAioContext.fromAddress(contextAddr);
-    when(mraa.aio).thenReturn(mraaAio);
+    when(() => mraa.aio).thenReturn(mraaAio);
 
     test('Construction', () {
       var sound = GroveSoundLM386(mraa, context, 10);
@@ -56,7 +61,8 @@ int main() {
         900,
         1000
       ];
-      when(mraaAio.read(context)).thenAnswer((_) => soundResponses.removeAt(0));
+      when(() => mraaAio.read(context))
+          .thenAnswer((_) => soundResponses.removeAt(0));
 
       var value = sound.value;
       expect(value, 100);
@@ -97,7 +103,8 @@ int main() {
         900,
         1000
       ];
-      when(mraaAio.read(context)).thenAnswer((_) => soundResponses.removeAt(0));
+      when(() => mraaAio.read(context))
+          .thenAnswer((_) => soundResponses.removeAt(0));
 
       var value = sound.scaled;
       expect(value, 1);
