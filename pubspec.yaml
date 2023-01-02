@@ -1,13 +1,14 @@
 name: grove
 description: A Dart library package for interfacing to the Grove range of devices
 version: 3.0.1
+repository: https://github.com/shamblett/grove
 homepage: https://github.com/shamblett/grove
 
 funding:
  - https://www.darticulate.com/#funding
 
 environment:
- sdk: '>=2.12.0 <3.0.0'
+ sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
  ffi: '^2.0.1'
@@ -18,7 +19,7 @@ dependencies:
 dev_dependencies:
  test: '^1.21.5'
  lints: '^2.0.0'
- mockito: '^5.0.3'
+ mocktail: '^0.3.0'
  
  
 

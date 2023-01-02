@@ -9,7 +9,7 @@
 
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
@@ -18,13 +18,18 @@ class MockMraa extends Mock implements Mraa {}
 class MockMraaAio extends Mock implements MraaAio {}
 
 int main() {
+  setUpAll(() {
+    final mraaAioContextAddr = MraaAioContext.fromAddress(1);
+    registerFallbackValue(mraaAioContextAddr);
+  });
+
   group('V12', () {
     // Mock the Mraa AIO interface
     final Mraa mraa = MockMraa();
     final MraaAio mraaAio = MockMraaAio();
     final contextAddr = calloc.allocate<MraaAioContext>(1).address;
     final context = MraaAioContext.fromAddress(contextAddr);
-    when(mraa.aio).thenReturn(mraaAio);
+    when(() => mraa.aio).thenReturn(mraaAio);
 
     test('Values', () {
       final temperature = GroveTemperatureV12(mraa, context);
@@ -40,7 +45,7 @@ int main() {
         900,
         1000
       ];
-      when(mraaAio.read(context))
+      when(() => mraaAio.read(context))
           .thenAnswer((_) => temperatureResponses.removeAt(0));
 
       var values = temperature.values;

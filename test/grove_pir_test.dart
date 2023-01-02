@@ -9,7 +9,7 @@
 
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
 
@@ -18,13 +18,18 @@ class MockMraa extends Mock implements Mraa {}
 class MockMraaGpio extends Mock implements MraaGpio {}
 
 int main() {
+  setUpAll(() {
+    final mraaGpioContextAddr = MraaGpioContext.fromAddress(1);
+    registerFallbackValue(mraaGpioContextAddr);
+  });
+
   group('Infrared', () {
     // Mock the Mraa GPIO interface
     final Mraa mraa = MockMraa();
     final MraaGpio mraaGpio = MockMraaGpio();
     final contextAddr = calloc.allocate<MraaGpioContext>(1).address;
     final context = MraaGpioContext.fromAddress(contextAddr);
-    when(mraa.gpio).thenReturn(mraaGpio);
+    when(() => mraa.gpio).thenReturn(mraaGpio);
 
     test('Values and triggers', () {
       final pir = GrovePir(mraa, context);
@@ -46,7 +51,8 @@ int main() {
         0,
         0
       ];
-      when(mraaGpio.read(context)).thenAnswer((_) => pirResponses.removeAt(0));
+      when(() => mraaGpio.read(context))
+          .thenAnswer((_) => pirResponses.removeAt(0));
 
       var value = pir.value;
       expect(value, 0);
