@@ -1,22 +1,22 @@
-SPDXVersion: SPDX-2.2DataLicense: CC0-1.0SPDXID: SPDXRef-DOCUMENTDocumentName: groveDocumentNamespace: https://pub.dev/packages/groveLicenseListVersion: 3.8Creator: Tool: https://pub.dev/packages/sbomCreated: 2023-01-02T11:21:49Z
+SPDXVersion: SPDX-2.2DataLicense: CC0-1.0SPDXID: SPDXRef-DOCUMENTDocumentName: groveDocumentNamespace: https://pub.dev/packages/groveLicenseListVersion: 3.8Creator: Tool: https://pub.dev/packages/sbomCreated: 2023-05-13T14:28:36Z
 
-PackageName: groveSPDXID: SPDXRef-Package-grovePackageVersion: 3.1.0PackageFileName: grovePackageSupplier: NOASSERTIONPackageOriginator: NOASSERTIONPackageDownloadLocation: https://pub.dev/packages/groveFilesAnalyzed: truePackageVerificationCode: b35cd851b5f110878b0eed63bacea908714422eePackageHomePage: https://pub.dev/packages/grovePackageLicenseConcluded: MITPackageLicenseInfoFromFiles: NOASSERTIONPackageLicenseDeclared: NOASSERTIONPackageCopyrightText: NOASSERTIONPackageSummary: <text>A Dart library package for interfacing to the Grove range of devices</text>
+PackageName: groveSPDXID: SPDXRef-Package-grovePackageVersion: 4.0.0PackageFileName: grovePackageSupplier: NOASSERTIONPackageOriginator: NOASSERTIONPackageDownloadLocation: https://pub.dev/packages/groveFilesAnalyzed: truePackageVerificationCode: 74e56ce9eb1ce5ca051d2cfd0e8fdef2252fd9e5PackageHomePage: https://pub.dev/packages/grovePackageLicenseConcluded: MITPackageLicenseInfoFromFiles: NOASSERTIONPackageLicenseDeclared: NOASSERTIONPackageCopyrightText: NOASSERTIONPackageSummary: <text>A Dart library package for interfacing to the Grove range of devices</text>
 
 FileName: /lib/grove.dartSPDXID: SPDXRef-grove-0FileType: SOURCEFileChecksum: SHA1: 35af2124bdba8de5eef50666ac85a199b71dee2fLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_configuration.dartSPDXID: SPDXRef-grove-lora-configuration-1FileType: SOURCEFileChecksum: SHA1: d626b77fc8dcd54808a4a2d13ed680589363df9dLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_configuration.dartSPDXID: SPDXRef-grove-lora-configuration-1FileType: SOURCEFileChecksum: SHA1: 2f294687d94ff0af9b878b2436a1dfd875e6878eLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_message.dartSPDXID: SPDXRef-grove-lora-message-2FileType: SOURCEFileChecksum: SHA1: 2f294687d94ff0af9b878b2436a1dfd875e6878eLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_message.dartSPDXID: SPDXRef-grove-lora-message-2FileType: SOURCEFileChecksum: SHA1: 22f970029a7327ec457f5723eb7faa767bf650b6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_operation.dartSPDXID: SPDXRef-grove-lora-operation-3FileType: SOURCEFileChecksum: SHA1: d019c9d5a894e30e10f18dabbbd44c5e6f4588e6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_operation.dartSPDXID: SPDXRef-grove-lora-operation-3FileType: SOURCEFileChecksum: SHA1: d626b77fc8dcd54808a4a2d13ed680589363df9dLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_rf95.dartSPDXID: SPDXRef-grove-lora-rf95-4FileType: SOURCEFileChecksum: SHA1: 22f970029a7327ec457f5723eb7faa767bf650b6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_rf95.dartSPDXID: SPDXRef-grove-lora-rf95-4FileType: SOURCEFileChecksum: SHA1: d019c9d5a894e30e10f18dabbbd44c5e6f4588e6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
 FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_definitions.dartSPDXID: SPDXRef-grove-lora-rf95-definitions-5FileType: SOURCEFileChecksum: SHA1: 2a8433834a3f3f11a36bd4a1807ad58435c24b10LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_hsu.dartSPDXID: SPDXRef-grove-lora-rf95-hsu-6FileType: SOURCEFileChecksum: SHA1: 9088cbf88d3505ff046d559d83c161748a0053e8LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_hsu.dartSPDXID: SPDXRef-grove-lora-rf95-hsu-6FileType: SOURCEFileChecksum: SHA1: 52f27cad854c453fd9b40688fc0b6f5466297163LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532.dartSPDXID: SPDXRef-grove-nfc-pn532-7FileType: SOURCEFileChecksum: SHA1: 52f27cad854c453fd9b40688fc0b6f5466297163LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532.dartSPDXID: SPDXRef-grove-nfc-pn532-7FileType: SOURCEFileChecksum: SHA1: 9088cbf88d3505ff046d559d83c161748a0053e8LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
 FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_definitions.dartSPDXID: SPDXRef-grove-nfc-pn532-definitions-8FileType: SOURCEFileChecksum: SHA1: fe85e1f5baf06000b395e3bd0900c02caabbfb90LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
@@ -50,7 +50,7 @@ FileName: /lib/src/utilities/grove_hex_conversions.dartSPDXID: SPDXRef-grove-he
 
 FileName: /lib/src/utilities/grove_sequence_monitor.dartSPDXID: SPDXRef-grove-sequence-monitor-23FileType: SOURCEFileChecksum: SHA1: af55cd1415385b733e5a3fd51cab57cf0f01a62cLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /pubspec.yamlSPDXID: SPDXRef-pubspec-24FileType: TEXTFileChecksum: SHA1: f4e8cd80df0b103ce29ca75fb917418ec9627b7cLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /pubspec.yamlSPDXID: SPDXRef-pubspec-24FileType: TEXTFileChecksum: SHA1: 028cecfb18239cf3e78581c1bd39eb1c577e22afLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
 Relationship: SPDXRef-pubspec-24 DEPENDENCY_MANIFEST_OF SPDXRef-Package-grove
 

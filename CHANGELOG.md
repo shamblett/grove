@@ -1,3 +1,6 @@
+# 4.0.0
+Issue 17 - Dart 3
+
 # 3.1.0
 Issue 13 and 14
 
