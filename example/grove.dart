@@ -5,6 +5,6 @@
  * Copyright :  S.Hamblett
  */
 
-///
-/// Please see the examples in this directory
-///
+//
+// Please see the examples in this directory
+//

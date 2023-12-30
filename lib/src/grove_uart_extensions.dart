@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../grove.dart';
 
 /// Equality function for modem command/response processing
 Function eq = const ListEquality().equals;

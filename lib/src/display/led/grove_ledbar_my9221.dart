@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../grove.dart';
 
 /// Local context for the MY9221 chip
 class My9221Context {

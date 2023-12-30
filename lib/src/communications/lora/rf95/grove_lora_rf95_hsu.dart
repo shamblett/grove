@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../../grove.dart';
 
 /// Communications interface to the RF95 High Speed Uart(HSU) interface.
 class GroveLoraRf95Hsu {

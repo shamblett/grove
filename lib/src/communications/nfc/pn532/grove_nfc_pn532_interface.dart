@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../../grove.dart';
 
 /// Communications interface to the PN532.
 abstract class GroveNfcPn532Interface {

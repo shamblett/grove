@@ -5,7 +5,7 @@
 * Copyright :  S.Hamblett
 */
 
-part of grove;
+part of '../../../../grove.dart';
 
 /// The Grove PN532 based NFC device.
 ///

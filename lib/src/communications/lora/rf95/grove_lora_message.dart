@@ -5,7 +5,7 @@
 * Copyright :  S.Hamblett
 */
 
-part of grove;
+part of '../../../../grove.dart';
 
 /// A LORA receive message
 class GroveLoraReceiveMessage extends GroveLoraMessage {

@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../../../grove.dart';
 
 /// Provides support for the Grove OLED 96*96 display module,
 /// which is an OLED monochrome display based on a SSD1327 chip.

@@ -5,7 +5,7 @@
 * Copyright :  S.Hamblett
 */
 
-part of grove;
+part of '../../../grove.dart';
 
 /// The Grove Sound Sensor can detect the sound intensity of the environment.
 ///
