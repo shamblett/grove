@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../../../grove.dart';
 
 /// Command, data and font definitions for the Grove OLED SSD1327 based device.
 class GroveOledSsd1327Definitions {

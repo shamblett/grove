@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../grove.dart';
 
 /// The sequence monitor is used to monitor and check for errors
 /// in a command sequence that must work, e.g. an initialisation

@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-/// Example configuration options. Update these as needed.
+// Example configuration options. Update these as needed.
 
 // Mraa library path.
 const mraaLibraryPath = 'lib/libmraa.so.2.0.0';

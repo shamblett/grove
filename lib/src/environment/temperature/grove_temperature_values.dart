@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../grove.dart';
 
 /// The values class for the Grove temperature sensors
 class GroveTemperatureValues {

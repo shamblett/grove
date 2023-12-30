@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../../grove.dart';
 
 ///Lora RF95 class
 class GroveLoraRf95 {

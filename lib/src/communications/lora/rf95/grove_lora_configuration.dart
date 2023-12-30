@@ -5,7 +5,7 @@
 * Copyright :  S.Hamblett
 */
 
-part of grove;
+part of '../../../../grove.dart';
 
 /// Choices for [GroveLoraRf95.setModemConfiguration] for a selected subset of common
 /// data rates. If you need another configuration,

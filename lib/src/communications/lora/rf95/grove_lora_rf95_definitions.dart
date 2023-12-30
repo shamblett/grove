@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-part of grove;
+part of '../../../../grove.dart';
 
 class GroveLoraRf95Definitions {
   /// Uart
