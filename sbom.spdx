@@ -1,56 +1,56 @@
-SPDXVersion: SPDX-2.2DataLicense: CC0-1.0SPDXID: SPDXRef-DOCUMENTDocumentName: groveDocumentNamespace: https://pub.dev/packages/groveLicenseListVersion: 3.8Creator: Tool: https://pub.dev/packages/sbomCreated: 2023-05-13T14:28:36Z
+SPDXVersion: SPDX-2.2DataLicense: CC0-1.0SPDXID: SPDXRef-DOCUMENTDocumentName: groveDocumentNamespace: https://pub.dev/packages/groveLicenseListVersion: 3.8Creator: Tool: https://pub.dev/packages/sbomCreated: 2023-12-30T13:54:01Z
 
-PackageName: groveSPDXID: SPDXRef-Package-grovePackageVersion: 4.0.0PackageFileName: grovePackageSupplier: NOASSERTIONPackageOriginator: NOASSERTIONPackageDownloadLocation: https://pub.dev/packages/groveFilesAnalyzed: truePackageVerificationCode: 74e56ce9eb1ce5ca051d2cfd0e8fdef2252fd9e5PackageHomePage: https://pub.dev/packages/grovePackageLicenseConcluded: MITPackageLicenseInfoFromFiles: NOASSERTIONPackageLicenseDeclared: NOASSERTIONPackageCopyrightText: NOASSERTIONPackageSummary: <text>A Dart library package for interfacing to the Grove range of devices</text>
+PackageName: groveSPDXID: SPDXRef-Package-grovePackageVersion: 4.0.1PackageFileName: grovePackageSupplier: NOASSERTIONPackageOriginator: NOASSERTIONPackageDownloadLocation: https://pub.dev/packages/groveFilesAnalyzed: truePackageVerificationCode: 5e025e9f6d9b3e595ccf167e8d8e201b495bbd1ePackageHomePage: https://pub.dev/packages/grovePackageLicenseConcluded: MITPackageLicenseInfoFromFiles: NOASSERTIONPackageLicenseDeclared: NOASSERTIONPackageCopyrightText: NOASSERTIONPackageSummary: <text>A Dart library package for interfacing to the Grove range of devices</text>
 
-FileName: /lib/grove.dartSPDXID: SPDXRef-grove-0FileType: SOURCEFileChecksum: SHA1: 35af2124bdba8de5eef50666ac85a199b71dee2fLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/grove.dartSPDXID: SPDXRef-grove-0FileType: SOURCEFileChecksum: SHA1: e3e9972a12ef760e168953ea30c374d21a50d76dLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_configuration.dartSPDXID: SPDXRef-grove-lora-configuration-1FileType: SOURCEFileChecksum: SHA1: 2f294687d94ff0af9b878b2436a1dfd875e6878eLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_configuration.dartSPDXID: SPDXRef-grove-lora-configuration-1FileType: SOURCEFileChecksum: SHA1: 0d2d30710a3577f4d701e1d5e79e1ce035a1d9b1LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_message.dartSPDXID: SPDXRef-grove-lora-message-2FileType: SOURCEFileChecksum: SHA1: 22f970029a7327ec457f5723eb7faa767bf650b6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_message.dartSPDXID: SPDXRef-grove-lora-message-2FileType: SOURCEFileChecksum: SHA1: 6f5193cb862ed2254e30885ad2f720878518b575LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_operation.dartSPDXID: SPDXRef-grove-lora-operation-3FileType: SOURCEFileChecksum: SHA1: d626b77fc8dcd54808a4a2d13ed680589363df9dLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_operation.dartSPDXID: SPDXRef-grove-lora-operation-3FileType: SOURCEFileChecksum: SHA1: 31184b36d94f7120a471842fe99908095e2f91d1LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_rf95.dartSPDXID: SPDXRef-grove-lora-rf95-4FileType: SOURCEFileChecksum: SHA1: d019c9d5a894e30e10f18dabbbd44c5e6f4588e6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_rf95.dartSPDXID: SPDXRef-grove-lora-rf95-4FileType: SOURCEFileChecksum: SHA1: 2859af77b607305502d938fe9a0ef9f1fa62a019LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_definitions.dartSPDXID: SPDXRef-grove-lora-rf95-definitions-5FileType: SOURCEFileChecksum: SHA1: 2a8433834a3f3f11a36bd4a1807ad58435c24b10LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_definitions.dartSPDXID: SPDXRef-grove-lora-rf95-definitions-5FileType: SOURCEFileChecksum: SHA1: 92b9c58b76a2e04b86180dbdeece3ce90d335c43LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_hsu.dartSPDXID: SPDXRef-grove-lora-rf95-hsu-6FileType: SOURCEFileChecksum: SHA1: 52f27cad854c453fd9b40688fc0b6f5466297163LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/lora/rf95/grove_lora_rf95_hsu.dartSPDXID: SPDXRef-grove-lora-rf95-hsu-6FileType: SOURCEFileChecksum: SHA1: 6ba60a25a6cd1ae74debd554a1737eca3a26b8adLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532.dartSPDXID: SPDXRef-grove-nfc-pn532-7FileType: SOURCEFileChecksum: SHA1: 9088cbf88d3505ff046d559d83c161748a0053e8LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532.dartSPDXID: SPDXRef-grove-nfc-pn532-7FileType: SOURCEFileChecksum: SHA1: 50880a8df163e61bddfd4c5776338c014bf8825bLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_definitions.dartSPDXID: SPDXRef-grove-nfc-pn532-definitions-8FileType: SOURCEFileChecksum: SHA1: fe85e1f5baf06000b395e3bd0900c02caabbfb90LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_definitions.dartSPDXID: SPDXRef-grove-nfc-pn532-definitions-8FileType: SOURCEFileChecksum: SHA1: e723cc46b0ed4355deb391e43b511eb0602e9cc3LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_hsu.dartSPDXID: SPDXRef-grove-nfc-pn532-hsu-9FileType: SOURCEFileChecksum: SHA1: 687a8da860ede5fa40d8acbf5a3abcb754e8d2ccLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_hsu.dartSPDXID: SPDXRef-grove-nfc-pn532-hsu-9FileType: SOURCEFileChecksum: SHA1: 60b941afc4e116cd4f38761b9360f4a03f782405LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_interface.dartSPDXID: SPDXRef-grove-nfc-pn532-interface-10FileType: SOURCEFileChecksum: SHA1: d852b69bc04841dc58e09511ef1d229268d47dfbLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/communications/nfc/pn532/grove_nfc_pn532_interface.dartSPDXID: SPDXRef-grove-nfc-pn532-interface-10FileType: SOURCEFileChecksum: SHA1: 13b956eef38d2de4f7154e128435218b20342846LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/display/led/grove_ledbar_my9221.dartSPDXID: SPDXRef-grove-ledbar-my9221-11FileType: SOURCEFileChecksum: SHA1: 744f203c1a4945c372afb8e704d2c7425ccba655LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/display/led/grove_ledbar_my9221.dartSPDXID: SPDXRef-grove-ledbar-my9221-11FileType: SOURCEFileChecksum: SHA1: e28ad67b131562fb45d5bed26edc2a521735b4e4LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/display/screen/oled/ssd1327/grove_oled_ssd1327.dartSPDXID: SPDXRef-grove-oled-ssd1327-12FileType: SOURCEFileChecksum: SHA1: 778f2e98b663ad5bc7f9bfead497bee14a21008eLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/display/screen/oled/ssd1327/grove_oled_ssd1327.dartSPDXID: SPDXRef-grove-oled-ssd1327-12FileType: SOURCEFileChecksum: SHA1: 188769c7e51ce30a30ecc4968d2c0585ab5465f6LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/display/screen/oled/ssd1327/grove_oled_ssd1327_definitions.dartSPDXID: SPDXRef-grove-oled-ssd1327-definitions-13FileType: SOURCEFileChecksum: SHA1: fc7473fb5bb8a2b97be236f9aef96741e32da9fcLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/display/screen/oled/ssd1327/grove_oled_ssd1327_definitions.dartSPDXID: SPDXRef-grove-oled-ssd1327-definitions-13FileType: SOURCEFileChecksum: SHA1: 776db5e440d5dbeae1df72dc6def02da6019e247LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/environment/light/grove_light_lm358.dartSPDXID: SPDXRef-grove-light-lm358-14FileType: SOURCEFileChecksum: SHA1: d06dc0245133f15c923e918314fe7608a485c1c8LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/environment/light/grove_light_lm358.dartSPDXID: SPDXRef-grove-light-lm358-14FileType: SOURCEFileChecksum: SHA1: 8e7f83b9a825c18a9b26263f872b4575df75977dLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/environment/light/grove_light_values.dartSPDXID: SPDXRef-grove-light-values-15FileType: SOURCEFileChecksum: SHA1: 8d9628f53bb3b2a4b2c99cfc1f7dc864c414334eLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/environment/light/grove_light_values.dartSPDXID: SPDXRef-grove-light-values-15FileType: SOURCEFileChecksum: SHA1: 4a62caf475ad457144e41588e2a29caf302fc2beLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/environment/motion/grove_pir.dartSPDXID: SPDXRef-grove-pir-16FileType: SOURCEFileChecksum: SHA1: 45555bb708b219d3bcddf8bdec8b5e852c11a27fLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/environment/motion/grove_pir.dartSPDXID: SPDXRef-grove-pir-16FileType: SOURCEFileChecksum: SHA1: f8383b55cadfb090b2445f866e40600210ced975LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/environment/sound/grove_sound_lm386.dartSPDXID: SPDXRef-grove-sound-lm386-17FileType: SOURCEFileChecksum: SHA1: 13839bb1c11aa1f5be98a2406de9eff9d2e7cebbLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/environment/sound/grove_sound_lm386.dartSPDXID: SPDXRef-grove-sound-lm386-17FileType: SOURCEFileChecksum: SHA1: 21276c88e90900f8d06b48b22ffd7bafc3ee2ed4LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/environment/temperature/grove_temperature_v12.dartSPDXID: SPDXRef-grove-temperature-v12-18FileType: SOURCEFileChecksum: SHA1: e33660d92484d0f18db8137f04ea14840b88a888LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/environment/temperature/grove_temperature_v12.dartSPDXID: SPDXRef-grove-temperature-v12-18FileType: SOURCEFileChecksum: SHA1: b6dfac359f671858b368161929ee09d875b48a31LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/environment/temperature/grove_temperature_values.dartSPDXID: SPDXRef-grove-temperature-values-19FileType: SOURCEFileChecksum: SHA1: 5677d1a006c7645e20d835d5460e3d9ca2d4c926LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/environment/temperature/grove_temperature_values.dartSPDXID: SPDXRef-grove-temperature-values-19FileType: SOURCEFileChecksum: SHA1: 1d2dc18cf109a72d775fed6840cc6d04c4a97ec2LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/grove_initialisation_states.dartSPDXID: SPDXRef-grove-initialisation-states-20FileType: SOURCEFileChecksum: SHA1: 748a6e5da06573486ac4b07318b8f09c2bd823d0LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/grove_initialisation_states.dartSPDXID: SPDXRef-grove-initialisation-states-20FileType: SOURCEFileChecksum: SHA1: 101963b2536a99acd5e25df6eade9c12ea6c5725LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/grove_uart_extensions.dartSPDXID: SPDXRef-grove-uart-extensions-21FileType: SOURCEFileChecksum: SHA1: c0861c7d89ecb2dac12c67a6e41e0eeb6b2f46ecLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/grove_uart_extensions.dartSPDXID: SPDXRef-grove-uart-extensions-21FileType: SOURCEFileChecksum: SHA1: ce33cff90e21d64a50c5cde67f92b59faf52d483LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /lib/src/utilities/grove_hex_conversions.dartSPDXID: SPDXRef-grove-hex-conversions-22FileType: SOURCEFileChecksum: SHA1: ef8b08d509e8adba3e8c6e77b9159c942fdf9f14LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /lib/src/utilities/grove_hex_conversions.dartSPDXID: SPDXRef-grove-hex-conversions-22FileType: SOURCEFileChecksum: SHA1: dbcba827f66e87a0467d92da3fa7148f72ca9d91LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
 FileName: /lib/src/utilities/grove_sequence_monitor.dartSPDXID: SPDXRef-grove-sequence-monitor-23FileType: SOURCEFileChecksum: SHA1: af55cd1415385b733e5a3fd51cab57cf0f01a62cLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
-FileName: /pubspec.yamlSPDXID: SPDXRef-pubspec-24FileType: TEXTFileChecksum: SHA1: 028cecfb18239cf3e78581c1bd39eb1c577e22afLicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
+FileName: /pubspec.yamlSPDXID: SPDXRef-pubspec-24FileType: TEXTFileChecksum: SHA1: 99d133e2dc672bcd06809c5c17da9d7b7df070b7LicenseConcluded: NOASSERTIONLicenseInfoInFile: NOASSERTIONFileCopyrightText: NOASSERTION
 
 Relationship: SPDXRef-pubspec-24 DEPENDENCY_MANIFEST_OF SPDXRef-Package-grove
 
