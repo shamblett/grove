@@ -6,6 +6,8 @@
  */
 
 @TestOn('vm')
+library;
+
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mocktail/mocktail.dart';

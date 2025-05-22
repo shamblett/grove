@@ -6,6 +6,8 @@
  */
 
 @TestOn('vm')
+library;
+
 import 'package:grove/grove.dart';
 import 'package:mraa/mraa.dart';
 import 'package:test/test.dart';
