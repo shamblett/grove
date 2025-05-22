@@ -24,6 +24,7 @@ class GroveTemperatureValues {
   DateTime? validAt;
 
   @override
-  String toString() => 'Temperature values at $validAt :: Raw : $raw : Celsius '
+  String toString() =>
+      'Temperature values at $validAt :: Raw : $raw : Celsius '
       '${celsius.toStringAsFixed(2)}';
 }

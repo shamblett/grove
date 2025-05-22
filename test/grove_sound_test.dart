@@ -6,7 +6,6 @@
  */
 
 @TestOn('vm')
-
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mocktail/mocktail.dart';
@@ -59,10 +58,11 @@ int main() {
         700,
         800,
         900,
-        1000
+        1000,
       ];
-      when(() => mraaAio.read(context))
-          .thenAnswer((_) => soundResponses.removeAt(0));
+      when(
+        () => mraaAio.read(context),
+      ).thenAnswer((_) => soundResponses.removeAt(0));
 
       var value = sound.value;
       expect(value, 100);
@@ -101,10 +101,11 @@ int main() {
         700,
         800,
         900,
-        1000
+        1000,
       ];
-      when(() => mraaAio.read(context))
-          .thenAnswer((_) => soundResponses.removeAt(0));
+      when(
+        () => mraaAio.read(context),
+      ).thenAnswer((_) => soundResponses.removeAt(0));
 
       var value = sound.scaled;
       expect(value, 1);

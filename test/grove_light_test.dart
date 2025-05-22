@@ -6,7 +6,6 @@
  */
 
 @TestOn('vm')
-
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mocktail/mocktail.dart';
@@ -42,11 +41,12 @@ int main() {
         700,
         800,
         900,
-        1000
+        1000,
       ];
       when(() => mraaAio.getBit(context)).thenReturn(10);
-      when(() => mraaAio.read(context))
-          .thenAnswer((_) => lightResponses.removeAt(0));
+      when(
+        () => mraaAio.read(context),
+      ).thenAnswer((_) => lightResponses.removeAt(0));
       var values = light.values;
       expect(values.lux.toStringAsFixed(2), '0.65');
       values = light.values;
@@ -80,11 +80,12 @@ int main() {
         2800,
         3200,
         3600,
-        4000
+        4000,
       ];
       when(() => mraaAio.getBit(context)).thenReturn(12);
-      when(() => mraaAio.read(context))
-          .thenAnswer((_) => lightResponses.removeAt(0));
+      when(
+        () => mraaAio.read(context),
+      ).thenAnswer((_) => lightResponses.removeAt(0));
       var values = light.values;
       expect(values.lux.toStringAsFixed(2), '0.09');
       values = light.values;

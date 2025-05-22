@@ -18,8 +18,11 @@ class GroveOledSsd1327 {
   static const int defaultDeviceAddress = 0x3c;
 
   /// Construction
-  GroveOledSsd1327(this._mraa, this._context,
-      [int deviceAddress = defaultDeviceAddress]) {
+  GroveOledSsd1327(
+    this._mraa,
+    this._context, [
+    int deviceAddress = defaultDeviceAddress,
+  ]) {
     // Set the device address
     _mraa.i2c.address(_context, deviceAddress);
   }
@@ -48,9 +51,10 @@ class GroveOledSsd1327 {
   bool get initialised =>
       _initialisationState == GroveDeveiceInitialisationState.initialised;
 
-  set initialised(bool state) => state
-      ? _initialisationState = GroveDeveiceInitialisationState.initialised
-      : GroveDeveiceInitialisationState.notInitialised;
+  set initialised(bool state) =>
+      state
+          ? _initialisationState = GroveDeveiceInitialisationState.initialised
+          : GroveDeveiceInitialisationState.notInitialised;
 
   final _monitor = GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
 
@@ -139,14 +143,16 @@ class GroveOledSsd1327 {
   /// cursor parameters of 0..11 to which they are constrained.
   MraaReturnCode setCursor(int pRow, int pColumn) {
     var error = MraaReturnCode.success;
-    final row = pRow.isNegative
-        ? 0
-        : pRow >= GroveOledSsd1327Definitions.textRowEnd - 1
+    final row =
+        pRow.isNegative
+            ? 0
+            : pRow >= GroveOledSsd1327Definitions.textRowEnd - 1
             ? GroveOledSsd1327Definitions.textRowEnd - 1
             : pRow;
-    final column = pColumn.isNegative
-        ? 0
-        : pColumn >= GroveOledSsd1327Definitions.textColumnEnd - 1
+    final column =
+        pColumn.isNegative
+            ? 0
+            : pColumn >= GroveOledSsd1327Definitions.textColumnEnd - 1
             ? GroveOledSsd1327Definitions.textColumnEnd - 1
             : pColumn;
     // Column Address
@@ -154,7 +160,8 @@ class GroveOledSsd1327 {
     io.sleep(cmdSleep);
     // Start Column
     error = _writeRegCommand(
-        GroveOledSsd1327Definitions.startColumnAddress + (column * 4));
+      GroveOledSsd1327Definitions.startColumnAddress + (column * 4),
+    );
     io.sleep(cmdSleep);
     // End column
     error = _writeRegCommand(GroveOledSsd1327Definitions.endColumnAddress);
@@ -280,9 +287,9 @@ class GroveOledSsd1327 {
         var data = 0x0;
         final bitOne =
             ((GroveOledSsd1327Definitions.basicFont[calcValue][row]) >> col) &
-                0x1;
-        final bitTwo = ((GroveOledSsd1327Definitions.basicFont[calcValue]
-                    [row + 1]) >>
+            0x1;
+        final bitTwo =
+            ((GroveOledSsd1327Definitions.basicFont[calcValue][row + 1]) >>
                 col) &
             0x1;
         data |= (bitOne != 0) ? _grayHigh : 0x00;
@@ -337,15 +344,20 @@ class GroveOledSsd1327 {
       if (_initialisationState !=
           GroveDeveiceInitialisationState.initialising) {
         print(
-            '_writeRegCommand - Failed to write data to the command register, not initialised');
+          '_writeRegCommand - Failed to write data to the command register, not initialised',
+        );
         return MraaReturnCode.errorPlatformNotInitialised;
       }
     }
-    final ret = _mraa.i2c
-        .writeByteData(_context, data, GroveOledSsd1327Definitions.oledCmd);
+    final ret = _mraa.i2c.writeByteData(
+      _context,
+      data,
+      GroveOledSsd1327Definitions.oledCmd,
+    );
     if (ret != MraaReturnCode.success) {
       print(
-          '_writeRegCommand - Failed to write data to the command register, status is $ret');
+        '_writeRegCommand - Failed to write data to the command register, status is $ret',
+      );
     }
     return ret;
   }
@@ -355,15 +367,20 @@ class GroveOledSsd1327 {
       if (_initialisationState !=
           GroveDeveiceInitialisationState.initialising) {
         print(
-            '_writeRegData - Failed to write data to the display, not initialised');
+          '_writeRegData - Failed to write data to the display, not initialised',
+        );
         return MraaReturnCode.errorPlatformNotInitialised;
       }
     }
-    final ret = _mraa.i2c
-        .writeByteData(_context, data, GroveOledSsd1327Definitions.oledData);
+    final ret = _mraa.i2c.writeByteData(
+      _context,
+      data,
+      GroveOledSsd1327Definitions.oledData,
+    );
     if (ret != MraaReturnCode.success) {
       print(
-          '_writeRegData - Failed to write data to the display, status is $ret');
+        '_writeRegData - Failed to write data to the display, status is $ret',
+      );
     }
     return ret;
   }

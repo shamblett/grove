@@ -6,7 +6,6 @@
  */
 
 @TestOn('vm')
-
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
 import 'package:mocktail/mocktail.dart';
@@ -43,10 +42,11 @@ int main() {
         700,
         800,
         900,
-        1000
+        1000,
       ];
-      when(() => mraaAio.read(context))
-          .thenAnswer((_) => temperatureResponses.removeAt(0));
+      when(
+        () => mraaAio.read(context),
+      ).thenAnswer((_) => temperatureResponses.removeAt(0));
 
       var values = temperature.values;
       expect(values.celsius.toStringAsFixed(2), '-15.01');

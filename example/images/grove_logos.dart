@@ -1158,7 +1158,7 @@ const List<int> seeedLogo96x96 = <int>[
   0x00,
   0x00,
   0x00,
-  0x00
+  0x00,
 ];
 
 /// The Dart logo.
@@ -2314,5 +2314,5 @@ const List<int> dartLogo96x96 = <int>[
   0x6d,
   0xb7,
   0xff,
-  0xff
+  0xff,
 ];

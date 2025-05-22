@@ -14,13 +14,13 @@ enum State {
   startColumnExpected,
   endColumnExpected,
   startRowExpected,
-  endRowExpected
+  endRowExpected,
 }
 
 /// State machine
 const Map<int, State> sm = {
   GroveOledSsd1327Definitions.setColumnAddress: State.startColumnExpected,
-  GroveOledSsd1327Definitions.setRowAddress: State.startRowExpected
+  GroveOledSsd1327Definitions.setRowAddress: State.startRowExpected,
 };
 
 /// Virtual OLED test support package.

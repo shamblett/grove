@@ -31,8 +31,12 @@ extension GroveUartExtensions on MraaUart {
   /// Receive a specified number of bytes in a specified timeout period.
   /// If [timeout] is 0 the method returns immediately, in practice a timeout should always be supplied.
   /// Return of true indicates OK, false is timed out or the receive operation failed.
-  bool receive(MraaUartContext context, List<int> bytes, int length,
-      {int timeout = 0}) {
+  bool receive(
+    MraaUartContext context,
+    List<int> bytes,
+    int length, {
+    int timeout = 0,
+  }) {
     var rxOk = false;
     var rxLength = length;
     if (dataAvailable(context, timeout)) {

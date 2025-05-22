@@ -59,9 +59,9 @@ class GroveLoraModemConfiguration {
 
 /// These are indexed by the values of [GroveLoraModemConfigurationChoice]
 const Map<GroveLoraModemConfigurationChoice, List<int>>
-    modemConfigurationTable = {
+modemConfigurationTable = {
   GroveLoraModemConfigurationChoice.bw125Cr45Sf128: [0x72, 0x74, 0x00],
   GroveLoraModemConfigurationChoice.bw500Cr45Sf128: [0x92, 0x74, 0x00],
   GroveLoraModemConfigurationChoice.bw3125Cr48Sf512: [0x48, 0x94, 0x00],
-  GroveLoraModemConfigurationChoice.bw125Cr48Sf4096: [0x78, 0xc4, 0x00]
+  GroveLoraModemConfigurationChoice.bw125Cr48Sf4096: [0x78, 0xc4, 0x00],
 };
