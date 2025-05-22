@@ -32,18 +32,18 @@ class GroveLoraReceiveMessage extends GroveLoraMessage {
 
 // A LORA transmit message
 class GroveLoraTransmitMessage extends GroveLoraMessage {
-  /// Construction
-  GroveLoraTransmitMessage() {
-    headerFrom = GroveLoraRf95Definitions.rhrBroadcastAddress;
-    headerTo = GroveLoraRf95Definitions.rhrBroadcastAddress;
-  }
-
   /// True if the message is valid to transmit.
   bool get isValid =>
       headerTo != 0 &&
       headerFrom != 0 &&
       message.isNotEmpty &&
       message.length > GroveLoraRf95Definitions.rhrF95MaxMessageLen;
+
+  /// Construction
+  GroveLoraTransmitMessage() {
+    headerFrom = GroveLoraRf95Definitions.rhrBroadcastAddress;
+    headerTo = GroveLoraRf95Definitions.rhrBroadcastAddress;
+  }
 
   @override
   String toString() {
@@ -60,6 +60,8 @@ class GroveLoraTransmitMessage extends GroveLoraMessage {
 
 /// A LORA message
 class GroveLoraMessage {
+  late DateTime timestamp;
+
   // The message buffer
   final List<int> message = <int>[];
 
@@ -76,8 +78,7 @@ class GroveLoraMessage {
   int headerFlags = 0;
 
   /// Timestamp of the message
-  String? get time => timestamp.toString().split('.')[0];
-  late DateTime timestamp;
+  String? get time => timestamp.toString().split('.').first;
 
   /// Length of the message.
   int get length => message.length;

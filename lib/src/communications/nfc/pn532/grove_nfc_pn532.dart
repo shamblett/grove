@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
 * Package : grove
 * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -13,6 +15,14 @@ part of '../../../../grove.dart';
 /// at 13.56MHz. You can read and write a 13.56MHz tag with this module or implement
 /// point to point data exchange with two NFCs.
 class GroveNfcPn532 {
+  bool initialised = false;
+
+  final Mraa _mraa;
+
+  String? _tty;
+
+  late GroveNfcPn532Interface _interface;
+
   /// Construction
   GroveNfcPn532(
     this._mraa, {
@@ -21,14 +31,6 @@ class GroveNfcPn532 {
     _tty = tty;
     _interface = GroveNfcPn532Hsu(_mraa.uart, uartDevice: _tty);
   }
-
-  final Mraa _mraa;
-
-  String? _tty;
-
-  late GroveNfcPn532Interface _interface;
-
-  bool initialised = false;
 
   /// Initialise
   ///
@@ -77,7 +79,7 @@ class GroveNfcPn532 {
       return 0;
     }
     var response = 0;
-    response = responseBuffer[0];
+    response = responseBuffer.first;
     response <<= 8;
     response |= responseBuffer[1];
     response <<= 8;

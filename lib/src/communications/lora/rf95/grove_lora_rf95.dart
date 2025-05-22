@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -9,6 +11,43 @@ part of '../../../../grove.dart';
 
 ///Lora RF95 class
 class GroveLoraRf95 {
+  bool initialised = false;
+
+  /// This node id
+  int thisAddress = GroveLoraRf95Definitions.rhrBroadcastAddress;
+
+  /// Whether the transport is in promiscuous mode
+  bool promiscuous = false;
+
+  /// Last received message
+  final lastReceivedMessage = GroveLoraReceiveMessage();
+
+  final Mraa _mraa;
+
+  String? _tty;
+
+  int _rxBad = 0;
+
+  int _txGood = 0;
+
+  int _rxGood = 0;
+
+  late GroveLoraRf95Hsu _interface;
+
+  GroveLoraMode _mode = GroveLoraMode.modeInitialising;
+
+  // Temporary Rx/Tx message buffer
+  final _rxTxBuffer = <int>[];
+
+  /// Count of the number of bad messages (eg bad checksum etc) received.
+  int get rxBad => _rxBad;
+
+  /// Count of the number of successfully transmitted messages.
+  int get txGood => _txGood;
+
+  /// Count of the number of successfully received messages.
+  int get rxGood => _rxGood;
+
   /// Construction
   GroveLoraRf95(
     this._mraa, {
@@ -17,40 +56,6 @@ class GroveLoraRf95 {
     _tty = tty;
     _interface = GroveLoraRf95Hsu(_mraa.uart, uartDevice: _tty);
   }
-
-  final Mraa _mraa;
-
-  String? _tty;
-
-  bool initialised = false;
-
-  late GroveLoraRf95Hsu _interface;
-
-  GroveLoraMode _mode = GroveLoraMode.modeInitialising;
-
-  /// Count of the number of bad messages (eg bad checksum etc) received.
-  int get rxBad => _rxBad;
-  int _rxBad = 0;
-
-  /// Count of the number of successfully transmitted messages.
-  int get txGood => _txGood;
-  int _txGood = 0;
-
-  /// Count of the number of successfully received messages.
-  int get rxGood => _rxGood;
-  int _rxGood = 0;
-
-  // This node id
-  int thisAddress = GroveLoraRf95Definitions.rhrBroadcastAddress;
-
-  // Whether the transport is in promiscuous mode
-  bool promiscuous = false;
-
-  /// Last received message
-  final lastReceivedMessage = GroveLoraReceiveMessage();
-
-  // Temporary Rx/Tx message buffer
-  final _rxTxBuffer = <int>[];
 
   /// Initialise
   ///
@@ -331,7 +336,7 @@ class GroveLoraRf95 {
       return;
     }
     // Extract the 4 headers
-    lastReceivedMessage.headerTo = _rxTxBuffer[0];
+    lastReceivedMessage.headerTo = _rxTxBuffer.first;
     lastReceivedMessage.headerFrom = _rxTxBuffer[1];
     lastReceivedMessage.headerId = _rxTxBuffer[2];
     lastReceivedMessage.headerFlags = _rxTxBuffer[3];

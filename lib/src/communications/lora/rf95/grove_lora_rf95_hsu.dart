@@ -9,6 +9,12 @@ part of '../../../../grove.dart';
 
 /// Communications interface to the RF95 High Speed Uart(HSU) interface.
 class GroveLoraRf95Hsu {
+  final MraaUart _mraaUart;
+
+  String? _uartDevice;
+
+  MraaUartContext? _context;
+
   /// Construction
   GroveLoraRf95Hsu(
     this._mraaUart, {
@@ -16,9 +22,6 @@ class GroveLoraRf95Hsu {
   }) {
     _uartDevice = uartDevice;
   }
-  final MraaUart _mraaUart;
-  String? _uartDevice;
-  MraaUartContext? _context;
 
   /// Initialise
   ///
@@ -55,7 +58,7 @@ class GroveLoraRf95Hsu {
       print('GroveLoraRf95Hsu::readByte - failed to read a byte, $bytes');
       return GroveLoraRf95Definitions.readError;
     }
-    return bytes[0];
+    return bytes.first;
   }
 
   /// UART transmit
@@ -131,7 +134,7 @@ class GroveLoraRf95Hsu {
       );
       return GroveLoraRf95Definitions.readError;
     }
-    return buffer[0];
+    return buffer.first;
   }
 
   /// Write a register value
