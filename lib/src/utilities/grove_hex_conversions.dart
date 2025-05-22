@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -30,6 +32,7 @@ String groveList2Hex(List<int> values, {int lineLength = 8}) {
   }
 
   var temp = sb.toString();
+  // ignore: avoid-substring
   return temp.substring(0, temp.length - 2);
 }
 

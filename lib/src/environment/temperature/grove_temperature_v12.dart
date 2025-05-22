@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -19,9 +21,6 @@ part of '../../../grove.dart';
 /// The detectable range of this sensor is -40 - 125ºC, and the
 /// accuracy is ±1.5ºC
 class GroveTemperatureV12 {
-  /// Construction
-  GroveTemperatureV12(this._mraa, this._context);
-
   /// Scaling factor for raw analog value from the ADC, useful for mixed
   /// 3.3V/5V boards, default 1.0
   static const double scale = 1;
@@ -55,4 +54,7 @@ class GroveTemperatureV12 {
     values.validAt = DateTime.now();
     return values;
   }
+
+  /// Construction
+  GroveTemperatureV12(this._mraa, this._context);
 }

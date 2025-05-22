@@ -15,13 +15,10 @@ part of '../../../grove.dart';
 /// When anyone moves in its detecting range, the sensor will
 /// output HIGH on its SIG pin.
 class GrovePir {
-  /// Construction
-  GrovePir(this._mraa, this._context);
-
-  /// The initialised MRAA library
+  // The initialised MRAA library
   final Mraa _mraa;
 
-  /// The initialised device context
+  // The initialised device context
   final MraaGpioContext _context;
 
   int _lastValue = -1;
@@ -43,4 +40,7 @@ class GrovePir {
     }
     return now == 1 ? true : false;
   }
+
+  /// Construction
+  GrovePir(this._mraa, this._context);
 }

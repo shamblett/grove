@@ -1,3 +1,5 @@
+// ignore_for_file: no-empty-block
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -8,7 +10,7 @@
 part of '../grove.dart';
 
 /// Equality function for modem command/response processing
-Function eq = const ListEquality().equals;
+final Function eq = const ListEquality().equals;
 
 /// Extension methods for Uart communication in Grove.
 extension GroveUartExtensions on MraaUart {
