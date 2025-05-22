@@ -1,6 +1,6 @@
 name: grove
 description: A Dart library package for interfacing to the Grove range of devices
-version: 4.0.1
+version: 4.0.2
 repository: https://github.com/shamblett/grove
 homepage: https://github.com/shamblett/grove
 
