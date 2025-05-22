@@ -9,6 +9,14 @@ part of '../../../../grove.dart';
 
 /// Communications interface to the PN532 High Speed Uart(HSU) interface.
 class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
+  final MraaUart _mraaUart;
+
+  String? _uartDevice;
+
+  MraaUartContext? _context;
+
+  int _commandAwaitingResponse = 0;
+
   /// Construction
   GroveNfcPn532Hsu(
     this._mraaUart, {
@@ -16,11 +24,6 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   }) {
     _uartDevice = uartDevice;
   }
-
-  final MraaUart _mraaUart;
-  String? _uartDevice;
-  MraaUartContext? _context;
-  int _commandAwaitingResponse = 0;
 
   /// Initialise the interface
   @override
@@ -57,7 +60,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
   /// Write a command to the PN532 and check the acknowledgement.
   @override
   CommandStatus writeCommand(List<int> header, {List<int>? body}) {
-    _commandAwaitingResponse = header[0];
+    _commandAwaitingResponse = header.first;
     final sequence = <int>[];
 
     // Preamble and start codes
@@ -148,16 +151,16 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       );
       return result;
     }
-    if (0 != bytes[0] + bytes[1]) {
+    if (0 != bytes.first + bytes[1]) {
       print('GroveNfcPn532Hsu::readResponse - length check failed, $bytes');
       return result;
     }
     bytes[0] -= GroveNfcPn532Definitions.readResponseLength;
-    if (bytes[0] > length) {
+    if (bytes.first > length) {
       print('GroveNfcPn532Hsu::readResponse - no space error, $bytes');
       return result;
     }
-    final rxLength = bytes[0];
+    final rxLength = bytes.first;
     // Receive the command byte
     bytes.clear();
     ok = _mraaUart.receive(
@@ -173,7 +176,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       return result;
     }
     final command = _commandAwaitingResponse + 1;
-    if (GroveNfcPn532Definitions.pn532ToHost != bytes[0] ||
+    if (GroveNfcPn532Definitions.pn532ToHost != bytes.first ||
         command != bytes[1]) {
       print(
         'GroveNfcPn532Hsu::readResponse - failed to read command byte 1 - error $bytes',
@@ -217,7 +220,7 @@ class GroveNfcPn532Hsu implements GroveNfcPn532Interface {
       );
       return result;
     }
-    if (0 != sum + bytes[0] || 0 != bytes[1]) {
+    if (0 != sum + bytes.first || 0 != bytes[1]) {
       print('GroveNfcPn532Hsu::readResponse - checksum error, $bytes');
       return result;
     }

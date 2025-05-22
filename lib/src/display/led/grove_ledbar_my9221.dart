@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -55,6 +57,39 @@ class My9221Context {
 /// be set as you wish, with a high intensity value 0x7f being half the intensity of
 /// a 0xff value.
 class GroveLedBarMy9221 {
+  /// Led bars per instance
+  static const int ledPerInstance = 10;
+
+  My9221Context? _dev;
+
+  // The initialised MRAA library
+  late Mraa _mraa;
+
+  final _monitor = GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
+
+  /// The My9221 context
+  My9221Context? get deviceContext => _dev;
+
+  /// Last monitored sequence status
+  GroveSequenceMonitor<MraaReturnCode> get monitored => _monitor;
+
+  /// Max led bars
+  int? get maxLed => _dev!.maxLed;
+
+  /// Set low intensity
+  set lowIntensity(int intensity) => _dev!.lowIntensity = intensity & 0xff;
+
+  /// Set high intensity
+  set highIntensity(int intensity) => _dev!.highIntensity = intensity & 0xff;
+
+  /// Auto refresh
+  ///
+  /// If true then any updates to the state of the led bar will be
+  /// automatically sent to the device. If false the user must do this
+  /// themselves.
+  /// Defaults to false.
+  set autoRefresh(bool enable) => _dev!.autoRefresh = enable;
+
   /// Construction
   GroveLedBarMy9221(
     Mraa mraa,
@@ -66,22 +101,6 @@ class GroveLedBarMy9221 {
     _dev!.gpioData = dataPin;
     _mraa = mraa;
   }
-
-  /// Led bars per instance
-  static const int ledPerInstance = 10;
-
-  My9221Context? _dev;
-
-  /// The My9221 context
-  My9221Context? get deviceContext => _dev;
-
-  /// The initialised MRAA library
-  late Mraa _mraa;
-
-  final _monitor = GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
-
-  /// Last monitored sequence status
-  GroveSequenceMonitor<MraaReturnCode> get monitored => _monitor;
 
   /// Initialise - must be called before use otherwise
   /// no commands will be sent to the device.
@@ -149,12 +168,6 @@ class GroveLedBarMy9221 {
     }
   }
 
-  /// Set low intensity
-  set lowIntensity(int intensity) => _dev!.lowIntensity = intensity & 0xff;
-
-  /// Set high intensity
-  set highIntensity(int intensity) => _dev!.highIntensity = intensity & 0xff;
-
   /// Set all Led's on
   void setAll() {
     for (var i = 0; i < maxLed!; i++) {
@@ -174,17 +187,6 @@ class GroveLedBarMy9221 {
       refresh();
     }
   }
-
-  /// Auto refresh
-  ///
-  /// If true then any updates to the state of the led bar will be
-  /// automatically sent to the device. If false the user must do this
-  /// themselves.
-  /// Defaults to false.
-  set autoRefresh(bool enable) => _dev!.autoRefresh = enable;
-
-  /// Max led bars
-  int? get maxLed => _dev!.maxLed;
 
   /// Refresh the display.
   /// This can be done automatically see [autoRefresh].
@@ -238,11 +240,7 @@ class GroveLedBarMy9221 {
           'send16BitBlock - Failed to read state of clock pin, status is $ret',
         );
       }
-      if (state != 0) {
-        state = 0;
-      } else {
-        state = 1;
-      }
+      state = state != 0 ? 0 : 1;
       ret = _mraa.gpio.write(_dev!.gpioClk, state);
       if (ret != MraaReturnCode.success) {
         print(
