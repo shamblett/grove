@@ -100,7 +100,7 @@ class GroveLoraRf95Definitions {
     rhrF95ReG25Fiforxbyteaddr,
     rhrF95ReG26ModemconfiG3,
     rhrF95ReG4DPaDac,
-    rhrF95Reg40DioMapping1
+    rhrF95Reg40DioMapping1,
   ];
 
   /// PA

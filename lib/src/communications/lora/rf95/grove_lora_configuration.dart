@@ -36,32 +36,35 @@ enum GroveLoraModemConfigurationChoice {
 /// register values from this structure to the appropriate registers
 /// to set the desired spreading factor, coding rate and bandwidth
 class GroveLoraModemConfiguration {
-  /// Construction
-  GroveLoraModemConfiguration(this._reg1d, this._reg1e, this._reg26);
-  GroveLoraModemConfiguration.fromList(List<int> settings) {
-    _reg1d = settings[0];
-    _reg1e = settings[1];
-    _reg26 = settings[2];
-  }
+  int _reg1d = 0;
+
+  int _reg1e = 0;
+
+  int _reg26 = 0;
 
   /// Value for [GroveLoraRf95Definitions.rhrF95ReG1DmodemconfiG1]
   int get reg1d => _reg1d;
-  int _reg1d = 0;
 
   /// Value for [GroveLoraRf95Definitions.rhrF95ReG1EmodemconfiG2]
   int get reg1e => _reg1e;
-  int _reg1e = 0;
 
   /// Value for [GroveLoraRf95Definitions.rhrF95ReG26ModemconfiG3]
   int get reg26 => _reg26;
-  int _reg26 = 0;
+
+  /// Construction
+  GroveLoraModemConfiguration(this._reg1d, this._reg1e, this._reg26);
+  GroveLoraModemConfiguration.fromList(List<int> settings) {
+    _reg1d = settings.first;
+    _reg1e = settings[1];
+    _reg26 = settings[2];
+  }
 }
 
 /// These are indexed by the values of [GroveLoraModemConfigurationChoice]
 const Map<GroveLoraModemConfigurationChoice, List<int>>
-    modemConfigurationTable = {
+modemConfigurationTable = {
   GroveLoraModemConfigurationChoice.bw125Cr45Sf128: [0x72, 0x74, 0x00],
   GroveLoraModemConfigurationChoice.bw500Cr45Sf128: [0x92, 0x74, 0x00],
   GroveLoraModemConfigurationChoice.bw3125Cr48Sf512: [0x48, 0x94, 0x00],
-  GroveLoraModemConfigurationChoice.bw125Cr48Sf4096: [0x78, 0xc4, 0x00]
+  GroveLoraModemConfigurationChoice.bw125Cr48Sf4096: [0x78, 0xc4, 0x00],
 };

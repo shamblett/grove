@@ -6,6 +6,7 @@
  */
 
 @TestOn('vm')
+library;
 
 import 'package:ffi/ffi.dart';
 import 'package:grove/grove.dart';
@@ -49,10 +50,11 @@ int main() {
         0,
         0,
         0,
-        0
+        0,
       ];
-      when(() => mraaGpio.read(context))
-          .thenAnswer((_) => pirResponses.removeAt(0));
+      when(
+        () => mraaGpio.read(context),
+      ).thenAnswer((_) => pirResponses.removeAt(0));
 
       var value = pir.value;
       expect(value, 0);

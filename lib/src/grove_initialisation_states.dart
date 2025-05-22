@@ -11,5 +11,5 @@ part of '../grove.dart';
 enum GroveDeveiceInitialisationState {
   notInitialised,
   initialising,
-  initialised
+  initialised,
 }

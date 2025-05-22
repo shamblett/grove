@@ -13,10 +13,11 @@ import 'example_config.dart';
 
 /// Simple exercises for the Grove Led Bar
 int main() {
-  final mraa = Mraa.fromLib(mraaLibraryPath)
-    ..noJsonLoading = noJsonLoading
-    ..useGrovePi = useGrovePi
-    ..initialise();
+  final mraa =
+      Mraa.fromLib(mraaLibraryPath)
+        ..noJsonLoading = noJsonLoading
+        ..useGrovePi = useGrovePi
+        ..initialise();
 
   // Version
   final mraaVersion = mraa.common.version();

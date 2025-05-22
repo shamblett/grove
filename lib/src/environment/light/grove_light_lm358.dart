@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -19,13 +21,10 @@ part of '../../../grove.dart';
 /// The output signal is analog value, the brighter the light is,
 /// the larger the value.
 class GroveLightLM358 {
-  /// Construction
-  GroveLightLM358(this._mraa, this._context);
-
-  /// The initialised MRAA library
+  // The initialised MRAA library
   final Mraa _mraa;
 
-  /// The initialised device context
+  // The initialised device context
   final MraaAioContext _context;
 
   /// Get the raw and Lux light values and timestamp them.
@@ -39,9 +38,13 @@ class GroveLightLM358 {
     final raw = _mraa.aio.read(_context);
     final values = GroveLightValues();
     values.raw = raw;
-    values.lux = 10000.0 /
+    values.lux =
+        10000.0 /
         pow(((maxAdc - values.raw) * 10.0 / values.raw) * 15.0, 4.0 / 3.0);
     values.validAt = DateTime.now();
     return values;
   }
+
+  /// Construction
+  GroveLightLM358(this._mraa, this._context);
 }

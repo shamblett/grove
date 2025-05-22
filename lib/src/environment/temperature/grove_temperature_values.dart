@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -9,11 +11,6 @@ part of '../../../grove.dart';
 
 /// The values class for the Grove temperature sensors
 class GroveTemperatureValues {
-  /// Construction
-  GroveTemperatureValues() {
-    validAt = DateTime.now();
-  }
-
   /// Raw value
   late int raw;
 
@@ -23,7 +20,13 @@ class GroveTemperatureValues {
   /// Timestamp
   DateTime? validAt;
 
+  /// Construction
+  GroveTemperatureValues() {
+    validAt = DateTime.now();
+  }
+
   @override
-  String toString() => 'Temperature values at $validAt :: Raw : $raw : Celsius '
+  String toString() =>
+      'Temperature values at $validAt :: Raw : $raw : Celsius '
       '${celsius.toStringAsFixed(2)}';
 }

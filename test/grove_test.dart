@@ -6,6 +6,7 @@
  */
 
 @TestOn('vm')
+library;
 
 import 'package:grove/grove.dart';
 import 'package:mraa/mraa.dart';
@@ -14,8 +15,9 @@ import 'package:test/test.dart';
 int main() {
   group('Sequence Monitor', () {
     test('Operation', () {
-      final monitor =
-          GroveSequenceMonitor<MraaReturnCode>(MraaReturnCode.success);
+      final monitor = GroveSequenceMonitor<MraaReturnCode>(
+        MraaReturnCode.success,
+      );
       expect(monitor.isOk, isFalse);
       expect(monitor.failureValues.isEmpty, isTrue);
       monitor + MraaReturnCode.success;
@@ -28,7 +30,9 @@ int main() {
       expect(monitor.isOk, isFalse);
       expect(monitor.failureValues.isEmpty, isFalse);
       expect(
-          monitor.failureValues[0], MraaReturnCode.errorFeatureNotImplemented);
+        monitor.failureValues[0],
+        MraaReturnCode.errorFeatureNotImplemented,
+      );
       expect(monitor.failureValues[1], MraaReturnCode.errorFeatureNotSupported);
       monitor.reset();
       expect(monitor.isOk, isFalse);

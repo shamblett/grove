@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
 * Package : grove
 * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -13,18 +15,6 @@ part of '../../../grove.dart';
 /// on the LM386 amplifier and an electret microphone. This module's output
 /// is analogue.
 class GroveSoundLM386 {
-  /// Sample count can be anything in the range 5..500, values outside this range assume
-  /// 5 or 500 as appropriate.
-  GroveSoundLM386(this._mraa, this._context, [int sampleCount = 5]) {
-    if (sampleCount < 5) {
-      _sampleCount = 5;
-    } else if (sampleCount > 500) {
-      _sampleCount = 500;
-    } else {
-      _sampleCount = sampleCount;
-    }
-  }
-
   /// The initialised MRAA library
   final Mraa _mraa;
 
@@ -53,4 +43,16 @@ class GroveSoundLM386 {
 
   /// Gat a scaled smooth value from 1..10, i.e for driving a led bar
   int get smoothScaled => smoothed ~/ 100;
+
+  /// Sample count can be anything in the range 5..500, values outside this range assume
+  /// 5 or 500 as appropriate.
+  GroveSoundLM386(this._mraa, this._context, [int sampleCount = 5]) {
+    if (sampleCount < 5) {
+      _sampleCount = 5;
+    } else if (sampleCount > 500) {
+      _sampleCount = 500;
+    } else {
+      _sampleCount = sampleCount;
+    }
+  }
 }

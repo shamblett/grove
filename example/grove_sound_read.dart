@@ -12,10 +12,11 @@ import 'example_config.dart';
 
 /// Read the sound level from the sound sensor
 int main() {
-  final mraa = Mraa.fromLib(mraaLibraryPath)
-    ..noJsonLoading = noJsonLoading
-    ..useGrovePi = useGrovePi
-    ..initialise();
+  final mraa =
+      Mraa.fromLib(mraaLibraryPath)
+        ..noJsonLoading = noJsonLoading
+        ..useGrovePi = useGrovePi
+        ..initialise();
 
   // Version
   final mraaVersion = mraa.common.version();

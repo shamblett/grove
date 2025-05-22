@@ -11,10 +11,11 @@ import 'example_config.dart';
 
 /// The reeiver part of loopback test of the UART device, please ensure you have TX/RX looped back.
 int main() {
-  final mraa = Mraa.fromLib(mraaLibraryPath)
-    ..noJsonLoading = noJsonLoading
-    ..useGrovePi = useGrovePi
-    ..initialise();
+  final mraa =
+      Mraa.fromLib(mraaLibraryPath)
+        ..noJsonLoading = noJsonLoading
+        ..useGrovePi = useGrovePi
+        ..initialise();
 
   // Version
   final mraaVersion = mraa.common.version();
@@ -49,11 +50,16 @@ int main() {
   }
 
   print(
-      'Reading the test string from the UART, you have 10 seconds to send....');
+    'Reading the test string from the UART, you have 10 seconds to send....',
+  );
   var message = <int>[];
   print('Starting receive.....');
-  final ok = mraa.uart
-      .receive(context, message, uartTestMessage.length, timeout: 10000);
+  final ok = mraa.uart.receive(
+    context,
+    message,
+    uartTestMessage.length,
+    timeout: 10000,
+  );
   if (ok) {
     final str = String.fromCharCodes(message);
     print('The message has been successfully received');

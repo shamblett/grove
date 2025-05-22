@@ -5,7 +5,7 @@
  * Copyright :  S.Hamblett
  */
 
-library grove;
+library;
 
 import 'dart:io' as io;
 import 'dart:math';

@@ -25,5 +25,5 @@ enum GroveLoraMode {
   modeTx,
 
   /// Transport is in the process of receiving a message.
-  modeRx
+  modeRx,
 }

@@ -12,10 +12,11 @@ import 'example_config.dart';
 
 /// Checks if the Grove PIR motion sensor has been triggered
 int main() {
-  final mraa = Mraa.fromLib(mraaLibraryPath)
-    ..noJsonLoading = noJsonLoading
-    ..useGrovePi = useGrovePi
-    ..initialise();
+  final mraa =
+      Mraa.fromLib(mraaLibraryPath)
+        ..noJsonLoading = noJsonLoading
+        ..useGrovePi = useGrovePi
+        ..initialise();
 
   // Version
   final mraaVersion = mraa.common.version();

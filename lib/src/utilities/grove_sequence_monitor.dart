@@ -11,9 +11,6 @@ part of '../../grove.dart';
 /// in a command sequence that must work, e.g. an initialisation
 /// sequence.
 class GroveSequenceMonitor<T> {
-  /// A success value must be supplied for the monitored type
-  GroveSequenceMonitor(this._successValue);
-
   final MraaReturnCode _successValue;
 
   final _results = <T>[];
@@ -25,6 +22,9 @@ class GroveSequenceMonitor<T> {
   /// List of failure codes.
   List<T> get failureValues =>
       _results.where((e) => e != _successValue).toList();
+
+  /// A success value must be supplied for the monitored type
+  GroveSequenceMonitor(this._successValue);
 
   /// Add to the result list.
   GroveSequenceMonitor<T> operator +(T result) {

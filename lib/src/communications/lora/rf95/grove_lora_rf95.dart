@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
  * Package : grove
  * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -9,46 +11,51 @@ part of '../../../../grove.dart';
 
 ///Lora RF95 class
 class GroveLoraRf95 {
-  /// Construction
-  GroveLoraRf95(this._mraa,
-      {String tty = GroveLoraRf95Definitions.uartDefaultDevice}) {
-    _tty = tty;
-    _interface = GroveLoraRf95Hsu(_mraa.uart, uartDevice: _tty);
-  }
-
-  final Mraa _mraa;
-
-  String? _tty;
-
   bool initialised = false;
 
-  late GroveLoraRf95Hsu _interface;
-
-  GroveLoraMode _mode = GroveLoraMode.modeInitialising;
-
-  /// Count of the number of bad messages (eg bad checksum etc) received.
-  int get rxBad => _rxBad;
-  int _rxBad = 0;
-
-  /// Count of the number of successfully transmitted messages.
-  int get txGood => _txGood;
-  int _txGood = 0;
-
-  /// Count of the number of successfully received messages.
-  int get rxGood => _rxGood;
-  int _rxGood = 0;
-
-  // This node id
+  /// This node id
   int thisAddress = GroveLoraRf95Definitions.rhrBroadcastAddress;
 
-  // Whether the transport is in promiscuous mode
+  /// Whether the transport is in promiscuous mode
   bool promiscuous = false;
 
   /// Last received message
   final lastReceivedMessage = GroveLoraReceiveMessage();
 
+  final Mraa _mraa;
+
+  String? _tty;
+
+  int _rxBad = 0;
+
+  int _txGood = 0;
+
+  int _rxGood = 0;
+
+  late GroveLoraRf95Hsu _interface;
+
+  GroveLoraMode _mode = GroveLoraMode.modeInitialising;
+
   // Temporary Rx/Tx message buffer
   final _rxTxBuffer = <int>[];
+
+  /// Count of the number of bad messages (eg bad checksum etc) received.
+  int get rxBad => _rxBad;
+
+  /// Count of the number of successfully transmitted messages.
+  int get txGood => _txGood;
+
+  /// Count of the number of successfully received messages.
+  int get rxGood => _rxGood;
+
+  /// Construction
+  GroveLoraRf95(
+    this._mraa, {
+    String tty = GroveLoraRf95Definitions.uartDefaultDevice,
+  }) {
+    _tty = tty;
+    _interface = GroveLoraRf95Hsu(_mraa.uart, uartDevice: _tty);
+  }
 
   /// Initialise
   ///
@@ -63,9 +70,10 @@ class GroveLoraRf95 {
 
     // Set sleep mode, so we can also set LORA mode:
     ok = _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG01Opmode,
-        GroveLoraRf95Definitions.rhrF95Modesleep |
-            GroveLoraRf95Definitions.rhrF95Longrangemode);
+      GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+      GroveLoraRf95Definitions.rhrF95Modesleep |
+          GroveLoraRf95Definitions.rhrF95Longrangemode,
+    );
 
     if (!ok) {
       print('GroveLoraRf95::initialise - failed to set sleep mode');
@@ -86,10 +94,14 @@ class GroveLoraRf95 {
     // Set up FIFO.
     // We configure so that we can use the entire 256 byte FIFO for either receive
     // or transmit, but not both at the same time.
-    ok =
-        _interface.write(GroveLoraRf95Definitions.rhrF95ReG0Efifotxbaseaddr, 0);
-    ok &=
-        _interface.write(GroveLoraRf95Definitions.rhrF95ReG0Ffiforxbaseaddr, 0);
+    ok = _interface.write(
+      GroveLoraRf95Definitions.rhrF95ReG0Efifotxbaseaddr,
+      0,
+    );
+    ok &= _interface.write(
+      GroveLoraRf95Definitions.rhrF95ReG0Ffiforxbaseaddr,
+      0,
+    );
     if (!ok) {
       print('GroveLoraRf95::initialise - failed to set up FIFO');
       return false;
@@ -110,7 +122,8 @@ class GroveLoraRf95 {
     // Set up default configuration
     // No Sync Words in LORA mode.
     ok = setModemConfiguration(
-        GroveLoraModemConfigurationChoice.bw125Cr45Sf128); // Radio default
+      GroveLoraModemConfigurationChoice.bw125Cr45Sf128,
+    ); // Radio default
     if (!ok) {
       print('GroveLoraRf95::initialise - failed to set modem configuration');
       return false;
@@ -120,7 +133,8 @@ class GroveLoraRf95 {
     ok = setPreambleLength(GroveLoraRf95Definitions.defaultPreambleLength);
     if (!ok) {
       print(
-          'GroveLoraRf95::initialise - failed to set default preamble length');
+        'GroveLoraRf95::initialise - failed to set default preamble length',
+      );
       return false;
     }
 
@@ -150,11 +164,17 @@ class GroveLoraRf95 {
   /// /// Returns true if the configuration is set.
   bool setModemRegisters(GroveLoraModemConfiguration configuration) {
     var ok = _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG1DmodemconfiG1, configuration.reg1d);
+      GroveLoraRf95Definitions.rhrF95ReG1DmodemconfiG1,
+      configuration.reg1d,
+    );
     ok &= _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG1EmodemconfiG2, configuration.reg1e);
+      GroveLoraRf95Definitions.rhrF95ReG1EmodemconfiG2,
+      configuration.reg1e,
+    );
     ok &= _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG26ModemconfiG3, configuration.reg26);
+      GroveLoraRf95Definitions.rhrF95ReG26ModemconfiG3,
+      configuration.reg26,
+    );
     if (!ok) {
       print('GroveLoraRf95::setModemRegisters - failed to set modem registers');
       return false;
@@ -168,8 +188,9 @@ class GroveLoraRf95 {
   ///  here, use [setModemRegisters()] with your own modem configuration.
   /// Returns true if the choice is set.
   bool setModemConfiguration(GroveLoraModemConfigurationChoice choice) {
-    final configuration =
-        GroveLoraModemConfiguration.fromList(modemConfigurationTable[choice]!);
+    final configuration = GroveLoraModemConfiguration.fromList(
+      modemConfigurationTable[choice]!,
+    );
     return setModemRegisters(configuration);
   }
 
@@ -182,9 +203,13 @@ class GroveLoraRf95 {
   /// Returns true if the preamable length is set.
   bool setPreambleLength(int bytes) {
     var ok = _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG20Preamblemsb, bytes >> 8);
+      GroveLoraRf95Definitions.rhrF95ReG20Preamblemsb,
+      bytes >> 8,
+    );
     ok &= _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG21Preamblelsb, bytes & 0xff);
+      GroveLoraRf95Definitions.rhrF95ReG21Preamblelsb,
+      bytes & 0xff,
+    );
     if (!ok) {
       print('GroveLoraRf95::setPreambleLength - failed to set preamble length');
       return false;
@@ -203,14 +228,21 @@ class GroveLoraRf95 {
     // Frf = FRF / FSTEP
     var frf = (centre * 1000000.0) ~/ GroveLoraRf95Definitions.rhrF95Fstep;
     var ok = _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG06Frfmsb, (frf >> 16) & 0xff);
+      GroveLoraRf95Definitions.rhrF95ReG06Frfmsb,
+      (frf >> 16) & 0xff,
+    );
     ok &= _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG07Frfmid, (frf >> 8) & 0xff);
+      GroveLoraRf95Definitions.rhrF95ReG07Frfmid,
+      (frf >> 8) & 0xff,
+    );
     ok &= _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG08Frflsb, frf & 0xff);
+      GroveLoraRf95Definitions.rhrF95ReG08Frflsb,
+      frf & 0xff,
+    );
     if (!ok) {
       print(
-          'GroveLoraRf95::setFrequency - failed to set the frequency $centre');
+        'GroveLoraRf95::setFrequency - failed to set the frequency $centre',
+      );
       return false;
     }
     return true;
@@ -231,12 +263,16 @@ class GroveLoraRf95 {
     // RH_RF95_PA_DAC_ENABLE actually adds about 3dBm to all power levels. We will us it
     // for 21 and 23dBm
     if (power > 20) {
-      ok = _interface.write(GroveLoraRf95Definitions.rhrF95ReG4DPaDac,
-          GroveLoraRf95Definitions.rhrF95PaDacEnable);
+      ok = _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG4DPaDac,
+        GroveLoraRf95Definitions.rhrF95PaDacEnable,
+      );
       power -= 3;
     } else {
-      ok = _interface.write(GroveLoraRf95Definitions.rhrF95ReG4DPaDac,
-          GroveLoraRf95Definitions.rhrF95PaDacDisable);
+      ok = _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG4DPaDac,
+        GroveLoraRf95Definitions.rhrF95PaDacDisable,
+      );
     }
 
     // RFM95/96/97/98 does not have RFO pins connected to anything. Only PA_BOOST
@@ -245,8 +281,10 @@ class GroveLoraRf95 {
     // The documentation is pretty confusing on this topic: PaSelect says the max power is 20dBm,
     // but OutputPower claims it would be 17dBm.
     // My measurements show 20dBm is correct
-    ok &= _interface.write(GroveLoraRf95Definitions.rhrF95ReG09Paconfig,
-        GroveLoraRf95Definitions.rhrF95PaSelect | (power - 5));
+    ok &= _interface.write(
+      GroveLoraRf95Definitions.rhrF95ReG09Paconfig,
+      GroveLoraRf95Definitions.rhrF95PaSelect | (power - 5),
+    );
     if (!ok) {
       print('GroveLoraRf95::setTxPower - failed to set the Tx power $power');
       return false;
@@ -261,8 +299,10 @@ class GroveLoraRf95 {
   /// Returns true if idle mode is set.
   bool setModeIdle() {
     if (_mode != GroveLoraMode.modeIdle) {
-      final ok = _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
-          GroveLoraRf95Definitions.rhrF95Modestdby);
+      final ok = _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+        GroveLoraRf95Definitions.rhrF95Modestdby,
+      );
       if (!ok) {
         print('GroveLoraRf95::_setModeIdle - failed to set mode to standby');
         return false;
@@ -296,7 +336,7 @@ class GroveLoraRf95 {
       return;
     }
     // Extract the 4 headers
-    lastReceivedMessage.headerTo = _rxTxBuffer[0];
+    lastReceivedMessage.headerTo = _rxTxBuffer.first;
     lastReceivedMessage.headerFrom = _rxTxBuffer[1];
     lastReceivedMessage.headerId = _rxTxBuffer[2];
     lastReceivedMessage.headerFlags = _rxTxBuffer[3];
@@ -320,8 +360,9 @@ class GroveLoraRf95 {
   void handleInterrupt() {
     // Read the interrupt register
     print('GroveLoraRf95::handleInterrupt - entered');
-    final irqFlags =
-        _interface.read(GroveLoraRf95Definitions.rhrF95ReG12Irqflags);
+    final irqFlags = _interface.read(
+      GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
+    );
     if (_mode == GroveLoraMode.modeRx &&
         (irqFlags &
                 (GroveLoraRf95Definitions.rhrF95RxTimeout |
@@ -331,26 +372,35 @@ class GroveLoraRf95 {
     } else if (_mode == GroveLoraMode.modeRx &&
         (irqFlags & GroveLoraRf95Definitions.rhrF95RxDone) != 0) {
       // We have received a packet
-      final length =
-          _interface.read(GroveLoraRf95Definitions.rhrF95ReG13Rxnbbytes);
+      final length = _interface.read(
+        GroveLoraRf95Definitions.rhrF95ReG13Rxnbbytes,
+      );
 
       // Reset the fifo read pointer to the beginning of the packet
-      final pointer = _interface
-          .read(GroveLoraRf95Definitions.rhrF95ReG10Fiforxcurrentaddr);
+      final pointer = _interface.read(
+        GroveLoraRf95Definitions.rhrF95ReG10Fiforxcurrentaddr,
+      );
       _interface.write(
-          GroveLoraRf95Definitions.rhrF95ReG0Dfifoaddrptr, pointer);
+        GroveLoraRf95Definitions.rhrF95ReG0Dfifoaddrptr,
+        pointer,
+      );
       _interface.burstRead(
-          GroveLoraRf95Definitions.rhrF95ReG00Fifo, _rxTxBuffer, length);
+        GroveLoraRf95Definitions.rhrF95ReG00Fifo,
+        _rxTxBuffer,
+        length,
+      );
       // Clear all IRQ flags
-      _interface.write(GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
-          GroveLoraRf95Definitions.clearIrqFlags);
+      _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
+        GroveLoraRf95Definitions.clearIrqFlags,
+      );
 
       // Remember the RSSI of this packet
       // this is according to the doc, but is it really correct?
       // weakest receivable signals are reported RSSI at about -66
       lastReceivedMessage.lastRssi =
           _interface.read(GroveLoraRf95Definitions.rhrF95ReG1Apktrssivalue) -
-              137;
+          137;
 
       // We have received a message.
       validateRxBuffer();
@@ -363,8 +413,10 @@ class GroveLoraRf95 {
       setModeIdle();
     }
 
-    _interface.write(GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
-        GroveLoraRf95Definitions.clearIrqFlags);
+    _interface.write(
+      GroveLoraRf95Definitions.rhrF95ReG12Irqflags,
+      GroveLoraRf95Definitions.clearIrqFlags,
+    );
   }
 
   /// setModeRx
@@ -373,8 +425,10 @@ class GroveLoraRf95 {
   /// Starts the receiver in the RF95/96/97/98.
   void setModeRx() {
     if (_mode != GroveLoraMode.modeRx) {
-      _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
-          GroveLoraRf95Definitions.rhrF95Moderxcontinuous);
+      _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+        GroveLoraRf95Definitions.rhrF95Moderxcontinuous,
+      );
       // Interrupt on RxDone
       _interface.write(GroveLoraRf95Definitions.rhrF95Rrg40DioMapping1, 0x00);
       _mode = GroveLoraMode.modeRx;
@@ -434,8 +488,10 @@ class GroveLoraRf95 {
   /// Starts the transmitter.
   void setModeTx() {
     if (_mode != GroveLoraMode.modeTx) {
-      _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
-          GroveLoraRf95Definitions.rhrF95Modetx);
+      _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+        GroveLoraRf95Definitions.rhrF95Modetx,
+      );
       // Interrupt on TxDone
       _interface.write(GroveLoraRf95Definitions.rhrF95Reg40DioMapping1, 0x40);
       _mode = GroveLoraMode.modeTx;
@@ -465,19 +521,31 @@ class GroveLoraRf95 {
 
     // Headers
     _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerTo);
+      GroveLoraRf95Definitions.rhrF95ReG00Fifo,
+      message.headerTo,
+    );
     _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerFrom);
+      GroveLoraRf95Definitions.rhrF95ReG00Fifo,
+      message.headerFrom,
+    );
     _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerId);
+      GroveLoraRf95Definitions.rhrF95ReG00Fifo,
+      message.headerId,
+    );
     _interface.write(
-        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.headerFlags);
+      GroveLoraRf95Definitions.rhrF95ReG00Fifo,
+      message.headerFlags,
+    );
 
     // The message data
     _interface.burstWrite(
-        GroveLoraRf95Definitions.rhrF95ReG00Fifo, message.message);
-    _interface.write(GroveLoraRf95Definitions.rhrF95ReG22PayloadLength,
-        message.length + GroveLoraRf95Definitions.rhrF95HeaderLen);
+      GroveLoraRf95Definitions.rhrF95ReG00Fifo,
+      message.message,
+    );
+    _interface.write(
+      GroveLoraRf95Definitions.rhrF95ReG22PayloadLength,
+      message.length + GroveLoraRf95Definitions.rhrF95HeaderLen,
+    );
 
     // Start the transmitter
     // When transmit is done, interruptHandler will fire and
@@ -528,8 +596,10 @@ class GroveLoraRf95 {
   /// Returns true if sleep mode was successfully entered.
   bool sleep() {
     if (_mode != GroveLoraMode.modeSleep) {
-      final ok = _interface.write(GroveLoraRf95Definitions.rhrF95ReG01Opmode,
-          GroveLoraRf95Definitions.rhrF95Modesleep);
+      final ok = _interface.write(
+        GroveLoraRf95Definitions.rhrF95ReG01Opmode,
+        GroveLoraRf95Definitions.rhrF95Modesleep,
+      );
       if (!ok) {
         print('GroveLoraRf95::sleep - failed to set sleep mode');
         return false;

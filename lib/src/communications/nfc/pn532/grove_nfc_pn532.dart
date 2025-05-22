@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 /*
 * Package : grove
 * Author : S. Hamblett <steve.hamblett@linux.com>
@@ -13,12 +15,7 @@ part of '../../../../grove.dart';
 /// at 13.56MHz. You can read and write a 13.56MHz tag with this module or implement
 /// point to point data exchange with two NFCs.
 class GroveNfcPn532 {
-  /// Construction
-  GroveNfcPn532(this._mraa,
-      {String tty = GroveNfcPn532Definitions.uartDefaultDevice}) {
-    _tty = tty;
-    _interface = GroveNfcPn532Hsu(_mraa.uart, uartDevice: _tty);
-  }
+  bool initialised = false;
 
   final Mraa _mraa;
 
@@ -26,7 +23,14 @@ class GroveNfcPn532 {
 
   late GroveNfcPn532Interface _interface;
 
-  bool initialised = false;
+  /// Construction
+  GroveNfcPn532(
+    this._mraa, {
+    String tty = GroveNfcPn532Definitions.uartDefaultDevice,
+  }) {
+    _tty = tty;
+    _interface = GroveNfcPn532Hsu(_mraa.uart, uartDevice: _tty);
+  }
 
   /// Initialise
   ///
@@ -36,7 +40,8 @@ class GroveNfcPn532 {
     var ok = _interface.initialise();
     if (!ok) {
       print(
-          'GroveNfcPn532::initialise - failed to initialise the HSU interface');
+        'GroveNfcPn532::initialise - failed to initialise the HSU interface',
+      );
       return false;
     }
     ok = _interface.wakeup();
@@ -55,22 +60,26 @@ class GroveNfcPn532 {
     if (!_prepareCommand()) {
       return 0;
     }
-    final ret =
-        _interface.writeCommand([GroveNfcPn532Definitions.getFirmwareVersion]);
+    final ret = _interface.writeCommand([
+      GroveNfcPn532Definitions.getFirmwareVersion,
+    ]);
     if (ret != CommandStatus.ok) {
       print('GroveNfcPn532::getFirmwareVersion - failed to execute command');
       return 0;
     }
     final responseBuffer = <int>[];
     final rLength = _interface.readResponse(
-        responseBuffer, GroveNfcPn532Definitions.getFirmwareVersionRlength);
+      responseBuffer,
+      GroveNfcPn532Definitions.getFirmwareVersionRlength,
+    );
     if (rLength != GroveNfcPn532Definitions.getFirmwareVersionRlength) {
       print(
-          'GroveNfcPn532::getFirmwareVersion - invalid response length, $rLength');
+        'GroveNfcPn532::getFirmwareVersion - invalid response length, $rLength',
+      );
       return 0;
     }
     var response = 0;
-    response = responseBuffer[0];
+    response = responseBuffer.first;
     response <<= 8;
     response |= responseBuffer[1];
     response <<= 8;

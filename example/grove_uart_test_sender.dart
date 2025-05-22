@@ -12,10 +12,11 @@ import 'example_config.dart';
 
 /// The sender part of loopback test of the UART device, please ensure you have TX/RX looped back.
 int main() {
-  final mraa = Mraa.fromLib(mraaLibraryPath)
-    ..noJsonLoading = noJsonLoading
-    ..useGrovePi = useGrovePi
-    ..initialise();
+  final mraa =
+      Mraa.fromLib(mraaLibraryPath)
+        ..noJsonLoading = noJsonLoading
+        ..useGrovePi = useGrovePi
+        ..initialise();
 
   // Version
   final mraaVersion = mraa.common.version();
@@ -52,7 +53,8 @@ int main() {
   while (!stop) {
     // Send a string.
     print(
-        'Press a key to send the test string, ensure the receiver is running.....');
+      'Press a key to send the test string, ensure the receiver is running.....',
+    );
     stdin.readByteSync();
     final ok = mraa.uart.send(context, uartTestMessage.codeUnits);
     if (!ok) {
